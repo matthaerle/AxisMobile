@@ -4,11 +4,10 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
-import com.acusportrtg.axismobile.Methods.Inventory;
+import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,9 +33,9 @@ public class Inventory_Task extends AppCompatActivity {
     private class GetInventoryGroups extends AsyncTask<URL,Void,Void> {
         @Override
         protected Void doInBackground(URL... urls) {
-            Inventory inv = new Inventory();
+            GetJSONStringWithoutPostData inv = new GetJSONStringWithoutPostData();
 
-            String jsonStr = inv.GetInventoryGroups(urls[0]);
+            String jsonStr = inv.GetJSONString(urls[0]);
 
 
             if (jsonStr != null) {
@@ -76,6 +75,17 @@ public class Inventory_Task extends AppCompatActivity {
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+
+            /*ListAdapter adapter = new SimpleAdapter(
+                    Inventory_Task.this, inventoryGroupList,
+
+            )*/
         }
 
     }

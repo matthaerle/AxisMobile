@@ -20,8 +20,8 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 4/6/2017.
  */
 
-public class Inventory {
-    public String GetInventoryGroups(URL reqUrl) {
+public class GetJSONStringWithoutPostData {
+    public String GetJSONString(URL reqUrl) {
         InputStream inputStream = null;
         String result = "";
         try {
