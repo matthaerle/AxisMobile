@@ -11,13 +11,14 @@ import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
+import com.acusportrtg.axismobile.Methods.ServerAddress;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Created by mhaerle on 4/6/2017.
@@ -54,12 +55,15 @@ public class ServerConnectActivity extends AppCompatActivity {
                         , verified.getConnectionVerified().toString(),
                         Toast.LENGTH_LONG).show();
             }
+            if(verified.getConnectionVerified()) {
+                ServerAddress.SetSavedServerAddress(addressInput,this);
+            }
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
 
-    private class VerifyServerConnected extends AsyncTask<URL,Void,Void> {
+    private class VerifyServerConnected extends AsyncTask<URL, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -72,7 +76,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(URL... params) {
             GetJSONStringWithoutPostData serveConnect = new GetJSONStringWithoutPostData();
-            String jsonStr = serveConnect.GetJSONString(params[0]);
+            String jsonStr = serveConnect.GetJSONString((URL)params[0]);
 
             if(jsonStr != null) {
                 try {
@@ -95,11 +99,6 @@ public class ServerConnectActivity extends AppCompatActivity {
             return null;
         }
 
-        @Override
-        protected  void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            if(pDialog.isShowing())
-                pDialog.dismiss();
-        }
+
     }
 }

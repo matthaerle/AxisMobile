@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
+import com.acusportrtg.axismobile.Methods.ServerAddress;
+import com.acusportrtg.axismobile.Methods.VerifyServerConnection;
+
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -22,6 +28,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(server_Connection);
             }
         });
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Check if server can connect and then move on
+                CheckServerConnected();
+            }
+        });
+    }
+
+    private void CheckServerConnected() {
+        VerifyServerConnection verify = new VerifyServerConnection();
+        ServerAddress serverAddress = new ServerAddress();
+        IsConnected verified;
+
+        verified =  verify.VerifyConnection(this);
+            if (verified.getConnectionVerified()) {
+                Intent task_chooser = new Intent(MainActivity.this,
+                        Task_Chooser.class);
+                startActivity(task_chooser);
+            }
+
     }
 
 }
