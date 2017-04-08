@@ -1,6 +1,7 @@
 package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,11 +31,12 @@ public class ServerConnectActivity extends AppCompatActivity {
     Button server_Connect_btn;
     IsConnected verified = new IsConnected();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.server_connect);
-
+        verified.setConnectionVerified(false);
         server_Connect_btn = (Button) findViewById(R.id.btn_Connect);
         server_address_txtbox = (EditText) findViewById(R.id.server_address_textbox);
         server_Connect_btn.setOnClickListener(new View.OnClickListener() {
@@ -50,14 +52,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         try {
             URL connectionUrl = new URL("http://" + addressInput + ":8899/RestWCFServiceLibrary/IsConnected");
             new VerifyServerConnected().execute(connectionUrl);
-            if(verified.getConnectionVerified() != null) {
-                Toast.makeText(ServerConnectActivity.this
-                        , verified.getConnectionVerified().toString(),
-                        Toast.LENGTH_LONG).show();
-            }
-            if(verified.getConnectionVerified()) {
-                ServerAddress.SetSavedServerAddress(addressInput,this);
-            }
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -76,7 +71,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(URL... params) {
             GetJSONStringWithoutPostData serveConnect = new GetJSONStringWithoutPostData();
-            String jsonStr = serveConnect.GetJSONString((URL)params[0]);
+            String jsonStr = serveConnect.GetJSONString(params[0]);
 
             if(jsonStr != null) {
                 try {
@@ -98,7 +93,28 @@ public class ServerConnectActivity extends AppCompatActivity {
             }
             return null;
         }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if(pDialog.isShowing())
+                pDialog.dismiss();
+            finishVerify();
+        }
 
+
+    }
+    private void finishVerify() {
+        if(verified.getConnectionVerified() != null) {
+            Toast.makeText(ServerConnectActivity.this
+                    , verified.getConnectionVerified().toString(),
+                    Toast.LENGTH_LONG).show();
+        }
+        if(verified.getConnectionVerified()) {
+            ServerAddress.SetSavedServerAddress(server_address_txtbox.getText().toString().trim(),this);
+            Intent task_chooser = new Intent(ServerConnectActivity.this,
+                    Task_Chooser.class);
+            startActivity(task_chooser);
+        }
 
     }
 }

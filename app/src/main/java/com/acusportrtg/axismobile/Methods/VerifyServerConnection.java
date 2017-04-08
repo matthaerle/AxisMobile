@@ -38,11 +38,11 @@ public class VerifyServerConnection {
         verified.setConnectionVerified(false);
         return verified;
     }
-    private class VerifyServerConnected extends AsyncTask<Object, Object, IsConnected> {
+    private class VerifyServerConnected extends AsyncTask<URL, Void, Void> {
 
 
         @Override
-        protected IsConnected doInBackground(Object... params) {
+        protected Void doInBackground(URL... params) {
             GetJSONStringWithoutPostData serveConnect = new GetJSONStringWithoutPostData();
             String jsonStr = serveConnect.GetJSONString((URL)params[0]);
 
@@ -54,11 +54,11 @@ public class VerifyServerConnection {
 
                 } catch (final JSONException e) {
                     verified.setConnectionVerified(false);
-                    return verified;
                 }
             }
-            return verified;
+            return null;
         }
+
 
 
     }
