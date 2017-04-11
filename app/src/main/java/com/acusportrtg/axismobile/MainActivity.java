@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -81,22 +82,14 @@ public class MainActivity extends AppCompatActivity {
             GetJSONStringWithoutPostData serveConnect = new GetJSONStringWithoutPostData();
             String jsonStr = serveConnect.GetJSONString(params[0]);
 
-            if(jsonStr != null) {
+            if(jsonStr != "") {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
 
                     verified.setConnectionVerified(jsonObj.getBoolean("ConnectionVerified"));
 
                 } catch (final JSONException e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
+                    Log.e("Error connecting", e.getMessage(), e);
                 }
             }
             return null;
@@ -115,11 +108,15 @@ public class MainActivity extends AppCompatActivity {
         if(verified.getConnectionVerified() != null) {
             if(verified.getConnectionVerified()) {
                 Toast.makeText(MainActivity.this
-                        , verified.getConnectionVerified().toString(),
+                        , "Successful Connection",
                         Toast.LENGTH_LONG).show();
-                Intent task_chooser = new Intent(MainActivity.this,
-                        Task_Chooser.class);
-                startActivity(task_chooser);
+                Intent employee_select = new Intent(MainActivity.this,
+                        Employee_Select_Activity.class);
+                startActivity(employee_select);
+            } else {
+                Toast.makeText(MainActivity.this
+                        , "Invalid Connection",
+                        Toast.LENGTH_LONG).show();
             }
 
         }

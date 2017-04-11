@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="">
+        android:name=".Methods.Globals">
 
 
         <activity android:name=".MainActivity" android:screenOrientation="portrait">
@@ -22,7 +22,7 @@
         <activity android:screenOrientation="portrait" android:name=".ServerConnectActivity" />
         <activity android:name=".Inventory_Task" android:screenOrientation="portrait" />
         <activity android:name=".Task_Chooser" android:screenOrientation="portrait" />
-
+        <activity android:name=".Employee_Select_Activity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>

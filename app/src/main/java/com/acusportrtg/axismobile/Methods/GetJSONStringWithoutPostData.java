@@ -41,7 +41,7 @@ public class GetJSONStringWithoutPostData {
         }
         return result;
     }
-
+// Below method takes JSON String regardless of request method
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -57,7 +57,7 @@ public class GetJSONStringWithoutPostData {
             try {
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "IOException: " + e.getMessage());
             }
         }
         return sb.toString();
