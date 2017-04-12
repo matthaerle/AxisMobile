@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Comment
+    //Comment Two
 
     private void CheckServerConnected() {
         VerifyServerConnection verify = new VerifyServerConnection();
