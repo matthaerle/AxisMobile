@@ -7,16 +7,15 @@
     android:backgroundTint="@android:color/holo_blue_bright">
 
     <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="328dp"
+        android:id="@+id/spn_Emp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline10"
-        app:layout_constraintRight_toLeftOf="@+id/guideline11"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline12"
+        app:layout_constraintRight_toLeftOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.0" />
+        android:layout_marginTop="32dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -32,54 +31,68 @@
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintLeft_toLeftOf="@+id/guideline12"
         app:layout_constraintRight_toLeftOf="@+id/guideline13"
-        app:layout_constraintTop_toTopOf="@+id/guideline14" />
+        app:layout_constraintTop_toTopOf="@+id/guideline14"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
     <Button
         android:id="@+id/button5"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="31dp"
         android:text="@string/btn_continue"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2"
+        app:layout_constraintTop_toBottomOf="@+id/spn_Emp"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline12"
         app:layout_constraintRight_toLeftOf="@+id/guideline13"
-        android:layout_marginRight="16dp" />
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline10"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
+        app:layout_constraintGuide_begin="16dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="16dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline11"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
+        app:layout_constraintGuide_end="16dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="368dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline12"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.15"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="58dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline13"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85833335" />
+        app:layout_constraintGuide_percent="0.85833335"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="330dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline14"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20939335" />
+        app:layout_constraintGuide_percent="0.20939335"
+        tools:layout_editor_absoluteY="107dp"
+        tools:layout_editor_absoluteX="0dp" />
 
 </android.support.constraint.ConstraintLayout>

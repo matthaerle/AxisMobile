@@ -9,6 +9,8 @@ public class GetEmployees {
     private String FirstName;
     private String MiddleName;
     private String LastName;
+    private String EmployeeNumber;
+
 
     public int getEmployeeID() {
         return EmployeeID;
@@ -40,5 +42,13 @@ public class GetEmployees {
 
     public void setLastName(String lastName) {
         LastName = lastName;
+    }
+
+    public String getEmployeeNumber() {
+        return EmployeeNumber;
+    }
+
+    public void setEmployeeNumber(String employeeNumber) {
+        EmployeeNumber = employeeNumber;
     }
 }
