@@ -9,12 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:background="#bad4ff"/>
 
-    <TextView
-        android:id="@+id/txtEmpId"
-        android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:visibility="invisible" />
+
 
 </LinearLayout>

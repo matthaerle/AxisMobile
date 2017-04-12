@@ -49,10 +49,9 @@ public class EmpSpinAdapter extends ArrayAdapter<GetEmployees> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.employee_spinner,parent, false);
         }
         TextView userName = (TextView) convertView.findViewById(R.id.txtUserName);
-        TextView empId = (TextView) convertView.findViewById(R.id.txtEmpId);
-        empId.setVisibility(View.INVISIBLE);
+
         userName.setTextColor(Color.BLACK);
-        userName.setText(employees.get(position).getEmployeeNumber());
+        userName.setText(employees.get(position).getEmployeeNumber() + " : " + employees.get(position).getFirstName()+ " " + employees.get(position).getLastName());
         return convertView;
     }
 
@@ -62,10 +61,9 @@ public class EmpSpinAdapter extends ArrayAdapter<GetEmployees> {
             currentView = LayoutInflater.from(getContext()).inflate(R.layout.employee_spinner,parent, false);
         }
         TextView userName = (TextView) currentView.findViewById(R.id.txtUserName);
-        TextView empId = (TextView) currentView.findViewById(R.id.txtEmpId);
-        empId.setVisibility(View.INVISIBLE);
+
         userName.setTextColor(Color.BLACK);
-        userName.setText(employees.get(position).getEmployeeNumber());
+        userName.setText(employees.get(position).getEmployeeNumber() + " : " + employees.get(position).getFirstName()+ " " + employees.get(position).getLastName());
         return currentView;
     }
 }

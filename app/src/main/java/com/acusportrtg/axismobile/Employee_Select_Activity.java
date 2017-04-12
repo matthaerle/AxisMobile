@@ -1,5 +1,6 @@
 package com.acusportrtg.axismobile;
 
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,13 +9,17 @@ import android.util.Log;
 import android.util.MalformedJsonException;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.EmpSpinAdapter;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
+import com.acusportrtg.axismobile.Methods.Globals;
 import com.acusportrtg.axismobile.Methods.ServerAddress;
 
 import org.json.JSONArray;
@@ -30,9 +35,10 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 4/11/2017.
  */
 
-public class Employee_Select_Activity extends AppCompatActivity {
-    ArrayList<GetEmployees> employeeList = new ArrayList<GetEmployees>();
+public class Employee_Select_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private ArrayList<GetEmployees> employeeList = new ArrayList<GetEmployees>();
     private SpinnerAdapter adapter;
+    private Button btn_Continue;
     private Spinner empSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +46,20 @@ public class Employee_Select_Activity extends AppCompatActivity {
         setContentView(R.layout.employee_select_activity);
         
         empSpinner = (Spinner) findViewById(R.id.spn_Emp);
+        btn_Continue = (Button) findViewById(R.id.btn_Continue);
         
         GetEmpData();
+        btn_Continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetEmployees employee ;
+                employee = (GetEmployees) adapter.getItem(empSpinner.getSelectedItemPosition());
+                Globals glob = ((Globals)getApplicationContext());
+                glob.setEmployee_Id(employee.getEmployeeID());
+                Intent task_chooser = new Intent(Employee_Select_Activity.this, Task_Chooser.class);
+                startActivity(task_chooser);
+            }
+        });
     }
 
     private void FillDropDown() {
@@ -59,6 +77,16 @@ public class Employee_Select_Activity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     private class GetEmployeesFromServer extends AsyncTask<URL, Void, Void> {
