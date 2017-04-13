@@ -40,7 +40,7 @@ public class EmpSpinAdapter extends ArrayAdapter<GetEmployees> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.singleSpinnerText,parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.singlespinnertext,parent, false);
         }
         TextView userName = (TextView) convertView.findViewById(R.id.txtSpinner);
 
@@ -52,7 +52,7 @@ public class EmpSpinAdapter extends ArrayAdapter<GetEmployees> {
     @Override
     public View getDropDownView(int position, View currentView, ViewGroup parent) {
         if(currentView == null) {
-            currentView = LayoutInflater.from(getContext()).inflate(R.layout.singleSpinnerText,parent, false);
+            currentView = LayoutInflater.from(getContext()).inflate(R.layout.singlespinnertext,parent, false);
         }
         TextView userName = (TextView) currentView.findViewById(R.id.txtSpinner);
 
