@@ -3,4 +3,8 @@
     <string name="Employee_Select">Select Employee</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_server_connect">Connect</string>
+    <string name="btn_Inventory">Inventory</string>
+    <string name="btn_Update_MinMax">Update Min Max</string>
+    <string name="btn_Firearm_Inventory">Firearm Inventory</string>
+    <string name="btn_Item_Lookup">Item Lookup</string>
 </resources>

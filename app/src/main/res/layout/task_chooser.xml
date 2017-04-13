@@ -7,56 +7,56 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_Inventory"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="@string/btn_Inventory"
         app:layout_constraintLeft_toLeftOf="@+id/guideline7"
         app:layout_constraintRight_toLeftOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btn_Update_MinMax"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="32dp"
-        android:text="Button"
+        android:text="@string/btn_Update_MinMax"
         app:layout_constraintLeft_toLeftOf="@+id/guideline7"
         app:layout_constraintRight_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_Inventory" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_Firearm_Inventory"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="32dp"
-        android:text="Button"
+        android:text="@string/btn_Firearm_Inventory"
         app:layout_constraintLeft_toLeftOf="@+id/guideline7"
         app:layout_constraintRight_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_Update_MinMax" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_Item_Search"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="32dp"
-        android:text="Button"
+        android:text="@string/btn_Item_Lookup"
         app:layout_constraintLeft_toLeftOf="@+id/guideline7"
         app:layout_constraintRight_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_Firearm_Inventory" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
