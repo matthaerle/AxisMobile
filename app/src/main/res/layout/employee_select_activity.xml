@@ -3,17 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorAccent"
-    android:backgroundTint="@android:color/holo_blue_bright">
+    android:layout_height="match_parent">
 
     <Spinner
         android:id="@+id/spn_Emp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:spinnerMode="dropdown"
+        android:dropDownWidth="200dp"
+        android:gravity="center_vertical"
         app:layout_constraintLeft_toLeftOf="@+id/guideline12"
         app:layout_constraintRight_toLeftOf="@+id/guideline13"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -32,8 +35,8 @@
         android:typeface="normal"
         app:layout_constraintTop_toTopOf="@+id/guideline14"
         app:layout_constraintRight_toLeftOf="@+id/guideline13"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline12" />
 
     <Button
@@ -67,7 +70,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp"
         tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="368dp" />
+        tools:layout_editor_absoluteX="344dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -76,14 +79,16 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15"
         tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="58dp" />
+        tools:layout_editor_absoluteX="54dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline13"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.859375" />
+        app:layout_constraintGuide_percent="0.859375"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="309dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"

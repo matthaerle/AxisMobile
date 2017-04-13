@@ -4,17 +4,22 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
+import com.acusportrtg.axismobile.Methods.ServerAddress;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by mhaerle on 4/6/2017.
@@ -28,6 +33,13 @@ public class Inventory_Task extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inventory_activity);
+
+        try {
+            URL url = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage());
+        }
+
     }
 
     private class GetInventoryGroups extends AsyncTask<URL,Void,Void> {

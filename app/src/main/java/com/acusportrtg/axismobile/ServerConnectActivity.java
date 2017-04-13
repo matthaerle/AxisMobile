@@ -37,19 +37,21 @@ public class ServerConnectActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ImageView imageView;
     private Bitmap bitMap;
-    EditText server_address_txtbox;
-    Button server_Connect_btn;
-    IsConnected verified = new IsConnected();
+    private EditText server_address_txtbox;
+    private Button server_Connect_btn;
+    private IsConnected verified = new IsConnected();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.server_connect);
-        imageView = (ImageView)findViewById(R.id.serverIcon);
-        verified.setConnectionVerified(false);
         LoadImage loadImg = new LoadImage(this);
         loadImg.execute();
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.server_connect);
+
+        verified.setConnectionVerified(false);
+
         server_Connect_btn = (Button) findViewById(R.id.btn_Connect);
         server_address_txtbox = (EditText) findViewById(R.id.server_address_textbox);
         server_Connect_btn.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +98,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String result) {
+            imageView = (ImageView)findViewById(R.id.serverIcon);
             imageView.setImageBitmap(bitMap);
             progressBar.dismiss();
         }

@@ -5,13 +5,12 @@
     android:weightSum="1">
 
     <TextView
-        android:id="@+id/txtUserName"
+        android:id="@+id/txtSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/spinner_border"
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:background="#bad4ff"/>
-
+        android:textSize="24sp" />
 
 
 </LinearLayout>
