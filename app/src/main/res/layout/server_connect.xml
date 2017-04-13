@@ -9,7 +9,6 @@
         android:id="@+id/serverIcon"
         android:layout_width="213dp"
         android:layout_height="187dp"
-        app:srcCompat="@mipmap/server_icon"
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"

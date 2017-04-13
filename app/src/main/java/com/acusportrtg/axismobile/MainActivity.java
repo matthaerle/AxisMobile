@@ -36,9 +36,15 @@ public class MainActivity extends AppCompatActivity {
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pDialog = new ProgressDialog(MainActivity.this);
+                pDialog.setMessage("Loading");
+                pDialog.setCancelable(false);
+                pDialog.show();
                 Intent server_Connection = new Intent(MainActivity.this,
                         ServerConnectActivity.class);
+                pDialog.dismiss();
                 startActivity(server_Connection);
+
             }
         });
         loginButton.setOnClickListener(new View.OnClickListener() {
