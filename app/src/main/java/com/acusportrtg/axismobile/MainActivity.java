@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Check if server can connect and then move on
-                CheckServerConnected();
+                //CheckServerConnected();
+                Intent taskChooser = new Intent(MainActivity.this,Task_Chooser.class);
+                startActivity(taskChooser);
             }
         });
     }
