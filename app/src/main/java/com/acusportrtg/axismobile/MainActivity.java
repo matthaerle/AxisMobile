@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Comment
+
     private void CheckServerConnected() {
         VerifyServerConnection verify = new VerifyServerConnection();
         ServerAddress serverAddress = new ServerAddress();
