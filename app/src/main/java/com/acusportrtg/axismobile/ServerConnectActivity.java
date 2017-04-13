@@ -13,21 +13,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
 import com.acusportrtg.axismobile.Methods.ServerAddress;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawableResource;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * Created by mhaerle on 4/6/2017.
