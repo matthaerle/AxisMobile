@@ -39,6 +39,7 @@ public class GetJSONStringWithoutPostData {
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
+        Log.v(TAG,"JSON String\n" + result);
         return result;
     }
 // Below method takes JSON String regardless of request method

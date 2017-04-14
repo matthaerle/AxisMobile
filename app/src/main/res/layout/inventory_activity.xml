@@ -5,38 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Spinner
-        android:id="@+id/spnr_Inventory"
-        android:layout_width="267dp"
-        android:layout_height="28dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline15"
-        app:layout_constraintRight_toLeftOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="@+id/guideline17"
-        tools:layout_editor_absoluteX="47dp" />
-
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline15"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.1"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="36dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline16"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.9"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="324dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline17"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.1"
+        tools:layout_editor_absoluteY="51dp"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -50,5 +44,27 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintLeft_toLeftOf="@+id/guideline15"
         app:layout_constraintRight_toLeftOf="@+id/guideline16"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <ListView
+        android:id="@+id/Inventory_ListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline25"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline15"
+        app:layout_constraintRight_toLeftOf="@+id/guideline16"
+        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline25"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
 </android.support.constraint.ConstraintLayout>
