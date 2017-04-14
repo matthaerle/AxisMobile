@@ -13,4 +13,15 @@
         android:text="@string/item_search_header"
         tools:layout_editor_absoluteX="118dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="UPC"
+        android:inputType="textNoSuggestions"
+        android:text="Name"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="45dp" />
 </android.support.constraint.ConstraintLayout>
