@@ -28,8 +28,8 @@ public class Task_Chooser extends AppCompatActivity{
         Globals glob = ((Globals)getApplicationContext());
         txt_Emp.setText(String.valueOf(glob.getEmployee_Id()));*/
         btn_Inventory = (Button)findViewById(R.id.btn_Inventory);
-        btn_Item_Search = (Button)findViewById(R.id.btn_Item_Search);
-        btn_Firearm_Inventory = (Button)findViewById(R.id.btn_Firearm_Inventory);
+        btn_Item_Search = (Button)findViewById(R.id.btn_Product_Search);
+        btn_Firearm_Inventory = (Button)findViewById(R.id.btn_Inventory);
         btn_Update_MinMax = (Button)findViewById(R.id.btn_Update_MinMax);
 
         btn_Update_MinMax.setOnClickListener(new View.OnClickListener() {
