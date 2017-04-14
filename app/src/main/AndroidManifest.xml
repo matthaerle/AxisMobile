@@ -25,6 +25,9 @@
         <activity android:name=".Inventory_Task" android:screenOrientation="portrait" />
         <activity android:name=".Task_Chooser" android:screenOrientation="portrait" />
         <activity android:name=".Employee_Select_Activity" android:screenOrientation="portrait" />
+        <activity android:name=".Item_Search_Activity" android:screenOrientation="portrait" />
+        <activity android:name=".Firearm_Inventory_Activity" android:screenOrientation="portrait" />
+        <activity android:name=".Update_Min_Max_Activity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>
