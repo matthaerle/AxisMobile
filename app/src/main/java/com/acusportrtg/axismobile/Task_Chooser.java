@@ -35,7 +35,8 @@ public class Task_Chooser extends AppCompatActivity{
         btn_Update_MinMax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent Update_Min_Max = new Intent(Task_Chooser.this, Update_Min_Max_Activity.class);
+                startActivity(Update_Min_Max);
             }
         });
         btn_Firearm_Inventory.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +48,8 @@ public class Task_Chooser extends AppCompatActivity{
         btn_Item_Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent Item_Search = new Intent(Task_Chooser.this,Item_Search_Activity.class);
+                startActivity(Item_Search);
             }
         });
         btn_Inventory.setOnClickListener(new View.OnClickListener() {

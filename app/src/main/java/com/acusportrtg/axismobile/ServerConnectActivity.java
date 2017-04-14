@@ -145,7 +145,7 @@ public class ServerConnectActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 ServerAddress.SetSavedServerAddress(server_address_txtbox.getText().toString().trim(),this);
                 Intent employee_select = new Intent(ServerConnectActivity.this,
-                        Employee_Select_Activity.class);
+                        MainActivity.class);
                 startActivity(employee_select);
             } else {
                 Toast.makeText(ServerConnectActivity.this

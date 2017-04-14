@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Check if server can connect and then move on
-                //CheckServerConnected();
+                CheckServerConnected();
                 Intent taskChooser = new Intent(MainActivity.this,Task_Chooser.class);
                 startActivity(taskChooser);
             }
@@ -116,17 +116,15 @@ public class MainActivity extends AppCompatActivity {
     }
     private void finishVerify() {
         if(verified.getConnectionVerified() != null) {
-            if(verified.getConnectionVerified()) {
-                Toast.makeText(MainActivity.this
-                        , "Successful Connection",
-                        Toast.LENGTH_LONG).show();
-                Intent employee_select = new Intent(MainActivity.this,
-                        Employee_Select_Activity.class);
-                startActivity(employee_select);
+
+
+            if (!verified.getConnectionVerified()) {
+                Toast.makeText(MainActivity.this, "Server Connection Needed", Toast.LENGTH_LONG).show();
+                Intent server_Connect = new Intent(MainActivity.this,
+                        ServerConnectActivity.class);
+                startActivity(server_Connect);
             } else {
-                Toast.makeText(MainActivity.this
-                        , "Invalid Connection",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Server Connected", Toast.LENGTH_LONG).show();
             }
 
         }
