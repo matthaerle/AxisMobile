@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_page);
+
         verified.setConnectionVerified(false);
         final Button setupButton = (Button) findViewById(R.id.btn_Setup);
         final Button loginButton = (Button) findViewById(R.id.btn_Login);
@@ -57,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    //Comment
 
     private void CheckServerConnected() {
         VerifyServerConnection verify = new VerifyServerConnection();
