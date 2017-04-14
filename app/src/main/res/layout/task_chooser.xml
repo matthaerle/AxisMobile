@@ -22,14 +22,14 @@
         android:paddingEnd="26dip"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/guideline8"
-        android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline22"
-        android:layout_marginTop="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/guideline8"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline23" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline24"
+        app:layout_constraintTop_toTopOf="@+id/guideline23"
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/btn_Update_MinMax"
@@ -64,22 +64,22 @@
         android:textSize="16sp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/btn_Firearm_Inventory"
+        android:text="@string/btn_firearm_search"
         android:drawableStart="@drawable/firearm_icon_selector"
         android:layout_gravity="start"
         android:drawablePadding="2dip"
         android:paddingStart="30dip"
         android:paddingEnd="26dip"
-        app:layout_constraintTop_toTopOf="@+id/guideline23"
-        android:layout_marginTop="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/guideline8"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/guideline22"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline24"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline23"
+        app:layout_constraintRight_toLeftOf="@+id/guideline8"
+        android:layout_marginRight="8dp" />
 
     <Button
         android:id="@+id/btn_Item_Search"
