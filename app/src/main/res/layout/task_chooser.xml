@@ -57,7 +57,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/guideline7" />
 
     <Button
-        android:id="@+id/btn_Firearm_Inventory"
+        android:id="@+id/btn_Firearm_Search"
         style="@style/Widget.AppCompat.Button.Colored"
         android:background="@drawable/task_button"
         android:textColor="@drawable/border_button_text_color"
@@ -82,15 +82,15 @@
         android:layout_marginRight="8dp" />
 
     <Button
-        android:id="@+id/btn_Item_Search"
+        android:id="@+id/btn_Product_Search"
         style="@style/Widget.AppCompat.Button.Colored"
         android:background="@drawable/task_button"
         android:textColor="@drawable/border_button_text_color"
         android:textSize="16sp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/btn_Item_Lookup"
-        android:drawableLeft="@drawable/itemlookup_icon_selector"
+        android:text="@string/btn_product_search"
+        android:drawableStart="@drawable/itemlookup_icon_selector"
         android:layout_gravity="start"
         android:drawablePadding="2dip"
         android:paddingStart="30dip"
