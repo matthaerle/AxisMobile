@@ -2,9 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
         <item>
                 <selector>
-                        <item android:state_pressed="true" android:drawable="@drawable/firearm_icon_light"
-                        android:width="50dp"
-                        android:height="50dp"/>
+                        <item
+                            android:state_pressed="true" android:drawable="@drawable/firearm_icon_light"
+                            android:width="50dp"
+                            android:height="50dp"
+                            />
                         <item
                         android:drawable="@drawable/firearm_icon"
                         android:width="50dp"
