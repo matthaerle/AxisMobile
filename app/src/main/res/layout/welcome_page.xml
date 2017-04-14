@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:ems="20"
-        android:inputType="text|numberDecimal"
+        android:inputType="textFilter|textNoSuggestions"
         android:hint="username"
         android:textColorHint="#95a5a6"
         app:layout_constraintTop_toBottomOf="@+id/axis_mobile_logo"
