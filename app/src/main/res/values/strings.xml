@@ -14,4 +14,6 @@
     <string name="firearm_inventory_title">Firearm Inventory</string>
     <string name="text_group_name">Group Name</string>
     <string name="non_firearm_inventory_title">Inventory Groups</string>
+    <string name="clear_upc_field">"Clear"</string>
+    <string name="search_upc">"Search"</string>
 </resources>

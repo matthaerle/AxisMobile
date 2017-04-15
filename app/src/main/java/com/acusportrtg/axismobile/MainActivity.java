@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
+import com.acusportrtg.axismobile.Methods.Globals;
 import com.acusportrtg.axismobile.Methods.ServerAddress;
 import com.acusportrtg.axismobile.Methods.VerifyServerConnection;
 
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
                     boolean activeUser = employeeList.contains(username.getText().toString());
                     if(activeUser){
                         Toast.makeText(MainActivity.this, "Employee Verified", Toast.LENGTH_LONG).show();
+                        String employee = username.getText().toString();
+                        Globals glob = ((Globals)getApplicationContext());
+                        glob.setEmployee_Id(employee);
                         Intent taskChooser = new Intent(MainActivity.this,Task_Chooser.class);
                         startActivity(taskChooser);
                         username.setText("");

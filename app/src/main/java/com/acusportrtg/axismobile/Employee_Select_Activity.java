@@ -53,9 +53,9 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
             @Override
             public void onClick(View v) {
                 GetEmployees employee ;
-                employee = (GetEmployees) adapter.getItem(empSpinner.getSelectedItemPosition());
-                Globals glob = ((Globals)getApplicationContext());
-                glob.setEmployee_Id(employee.getEmployeeID());
+                //employee = (GetEmployees) adapter.getItem(empSpinner.getSelectedItemPosition());
+                //Globals glob = ((Globals)getApplicationContext());
+                //glob.setEmployee_Id(employee.getEmployeeID());
                 Intent task_chooser = new Intent(Employee_Select_Activity.this, Task_Chooser.class);
                 startActivity(task_chooser);
             }

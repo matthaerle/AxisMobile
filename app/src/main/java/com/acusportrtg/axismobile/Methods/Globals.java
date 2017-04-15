@@ -7,13 +7,13 @@ import android.app.Application;
  */
 
 public class Globals extends Application {
-    private int Employee_Id;
+    private String Employee_Id;
 
-    public int getEmployee_Id() {
+    public String getEmployee_Id() {
         return Employee_Id;
     }
 
-    public void setEmployee_Id(int employee_Id) {
+    public void setEmployee_Id(String employee_Id) {
         Employee_Id = employee_Id;
     }
 }

@@ -23,10 +23,10 @@ public class Task_Chooser extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_chooser);
-        /*txt_Emp = (TextView)findViewById(R.id.txtEmpId);
+        txt_Emp = (TextView)findViewById(R.id.txtEmpId);
 
         Globals glob = ((Globals)getApplicationContext());
-        txt_Emp.setText(String.valueOf(glob.getEmployee_Id()));*/
+        txt_Emp.setText(String.valueOf(glob.getEmployee_Id()));
         btn_Product_Search = (Button)findViewById(R.id.btn_product_search);
         btn_Firearm_Search = (Button)findViewById(R.id.btn_firearm_search);
         btn_Inventory = (Button)findViewById(R.id.btn_inventory);
