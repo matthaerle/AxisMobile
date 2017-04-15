@@ -17,7 +17,7 @@ import org.w3c.dom.Text;
 
 public class Task_Chooser extends AppCompatActivity{
     private TextView txt_Emp;
-    private Button btn_Item_Search,btn_Inventory,btn_Update_MinMax,btn_Firearm_Inventory;
+    private Button btn_Product_Search,btn_Inventory,btn_Update_MinMax,btn_Firearm_Search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,36 +27,39 @@ public class Task_Chooser extends AppCompatActivity{
 
         Globals glob = ((Globals)getApplicationContext());
         txt_Emp.setText(String.valueOf(glob.getEmployee_Id()));*/
-        btn_Inventory = (Button)findViewById(R.id.btn_Inventory);
-        btn_Item_Search = (Button)findViewById(R.id.btn_Product_Search);
-        btn_Firearm_Inventory = (Button)findViewById(R.id.btn_Inventory);
-        btn_Update_MinMax = (Button)findViewById(R.id.btn_Update_MinMax);
+        btn_Product_Search = (Button)findViewById(R.id.btn_product_search);
+        btn_Firearm_Search = (Button)findViewById(R.id.btn_firearm_search);
+        btn_Inventory = (Button)findViewById(R.id.btn_inventory);
+        btn_Update_MinMax = (Button)findViewById(R.id.btn_update_minmax);
 
-        btn_Update_MinMax.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent Update_Min_Max = new Intent(Task_Chooser.this, Update_Min_Max_Activity.class);
-                startActivity(Update_Min_Max);
-            }
-        });
-        btn_Firearm_Inventory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        btn_Item_Search.setOnClickListener(new View.OnClickListener() {
+        btn_Product_Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent Item_Search = new Intent(Task_Chooser.this,Item_Search_Activity.class);
                 startActivity(Item_Search);
             }
         });
+
+        btn_Firearm_Search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         btn_Inventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent inventory_activity = new Intent(Task_Chooser.this, Inventory_Task.class);
+                Intent inventory_activity = new Intent(Task_Chooser.this, Inventory_Type_Select_Activity.class);
                 startActivity(inventory_activity);
+            }
+        });
+
+        btn_Update_MinMax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Update_Min_Max = new Intent(Task_Chooser.this, Update_Min_Max_Activity.class);
+                startActivity(Update_Min_Max);
             }
         });
     }

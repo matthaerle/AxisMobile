@@ -56,6 +56,12 @@ public class ServerConnectActivity extends AppCompatActivity {
                 VerifyConnection();
             }
         });
+
+        String serverIP = ServerAddress.GetSavedServerAddress(this);
+        if(!serverIP.isEmpty()){
+            server_address_txtbox.setText(serverIP);
+        }
+
     }
 
     private void VerifyConnection() {
