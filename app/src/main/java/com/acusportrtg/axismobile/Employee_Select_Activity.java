@@ -48,7 +48,7 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
         empSpinner = (Spinner) findViewById(R.id.spn_Emp);
         btn_Continue = (Button) findViewById(R.id.btn_Continue);
         
-        GetEmpData();
+        //GetEmpData();
         btn_Continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +69,7 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
         }
     }
 
-    private void GetEmpData() {
+    /*private void GetEmpData() {
         String stringAddress = ServerAddress.GetSavedServerAddress(this);
         try {
             URL servUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveEmployees");
@@ -77,7 +77,7 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         }
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +89,7 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
 
     }
 
-    private class GetEmployeesFromServer extends AsyncTask<URL, Void, Void> {
+    /*private class GetEmployeesFromServer extends AsyncTask<URL, Void, Void> {
 
         @Override
         protected Void doInBackground(URL... params) {
@@ -122,6 +122,6 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
             FillDropDown();
         }
     }
-
+    */
 
 }

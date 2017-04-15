@@ -19,7 +19,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline6"/>
 
     <EditText
-        android:id="@+id/server_address_textbox"
+        android:id="@+id/username_textbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -42,7 +42,7 @@
         android:text="Login"
         android:background="@drawable/border_button"
         android:textColor="@drawable/border_button_text_color"
-        app:layout_constraintTop_toBottomOf="@+id/server_address_textbox"
+        app:layout_constraintTop_toBottomOf="@+id/username_textbox"
         android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline20"
         app:layout_constraintRight_toLeftOf="@+id/guideline21"
