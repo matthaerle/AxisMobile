@@ -62,13 +62,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Check if server can connect and then move on
-                CheckServerConnected();
                 if(verified.getConnectionVerified()){
                     boolean activeUser = employeeList.contains(username.getText().toString());
                     if(activeUser){
                         Toast.makeText(MainActivity.this, "Employee Verified", Toast.LENGTH_LONG).show();
                         Intent taskChooser = new Intent(MainActivity.this,Task_Chooser.class);
                         startActivity(taskChooser);
+                        username.setText("");
                     }
                     else {
                         Toast.makeText(MainActivity.this, "Employee Not Found", Toast.LENGTH_LONG).show();
@@ -192,5 +192,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 }
