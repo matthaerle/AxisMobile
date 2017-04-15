@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 
-import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
+import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.Globals;
 import com.acusportrtg.axismobile.Methods.ServerAddress;
 
@@ -65,51 +65,19 @@ public class Item_Search_Activity extends AppCompatActivity {
         btn_search_UPC.setOnClickListener(new View.OnClickListener (){
             @Override
             public void onClick(View v) {
-                searchByUPC(upc_Field.getText().toString());
+                //searchByUPC(upc_Field.getText().toString());
             }
         });
     }
 
-    private void searchByUPC(String upc){
-        String stringAddress = ServerAddress.GetSavedServerAddress(this);
+    /*private void searchByUPC(String upc){
         try {
-            URL servUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
-            new getUPCDataFromServer().execute(servUrl);
+            //String jsonReturn = GetProductInfoJsonString(upc, this);
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         }
-    }
+    }*/
 
-    private class getUPCDataFromServer extends AsyncTask<URL, Void, Void> {
-
-        @Override
-        protected Void doInBackground(URL... params) {
-            GetJSONStringWithoutPostData prodget = new GetJSONStringWithoutPostData();
-            String jsonStr = prodget.GetJSONString(params[0]);
-
-            if(jsonStr != "") {
-                try {
-                    JSONArray jsonAr = new JSONArray(jsonStr);
-                    for (int i = 0; i < jsonAr.length(); i++) {
-                        JSONObject obj = jsonAr.getJSONObject(i);
-                        SendProductView prod = new SendProductView();
-                        prod.setProductID(obj.getLong("ProductID"));
-                        prod.setProductUPC(obj.getString("ProductUPC"));
-                        prod.setShortDescription(obj.getString("ShortDescription"));
-                        prod.setPhysicalQoH(obj.getInt("PhysicalQoH"));
-                    }
-                } catch (final JSONException e) {
-                    Log.e(TAG, e.getMessage(), e);
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
 
 
 }
