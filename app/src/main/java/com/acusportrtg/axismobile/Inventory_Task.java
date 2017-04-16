@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
@@ -31,11 +32,14 @@ public class Inventory_Task extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ArrayList<SendInventoryGroup> inventoryGroupList = new ArrayList<>();
     private ListView inventoryGroupListView;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inventory_activity);
+        title = (TextView) findViewById(R.id.txt_Title);
+        title.setText("Inventory");
 
         try {
             URL url = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveInventoryGroups");
