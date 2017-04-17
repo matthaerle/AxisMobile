@@ -2,6 +2,7 @@ package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.graphics.PorterDuff;
+import android.text.TextWatcher;
+import android.text.Editable;
 
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         final Button setupButton = (Button) findViewById(R.id.btn_Setup);
         final Button loginButton = (Button) findViewById(R.id.btn_Login);
         final EditText username = (EditText) findViewById(R.id.username_textbox);
+
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +64,26 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                username.setTextColor(Color.parseColor("#2980b9"));
+                username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+
+            }
+        });
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,9 +98,13 @@ public class MainActivity extends AppCompatActivity {
                         Intent taskChooser = new Intent(MainActivity.this,Task_Chooser.class);
                         startActivity(taskChooser);
                         username.setText("");
+                        username.setTextColor(Color.parseColor("#2980b9"));
+                        username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
                     }
                     else {
                         Toast.makeText(MainActivity.this, "Employee Not Found", Toast.LENGTH_LONG).show();
+                        username.setTextColor(Color.parseColor("#ff0000"));
+                        username.getBackground().setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP);
                     }
                 }
                 else {
