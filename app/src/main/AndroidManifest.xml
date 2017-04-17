@@ -1,34 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.acusportrtg.axismobile">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".Methods.Globals"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
-        android:name=".Methods.Globals">
-
-
-        <activity android:name=".MainActivity" android:screenOrientation="portrait">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:screenOrientation="portrait" android:name=".ServerConnectActivity" />
-        <activity android:name=".Inventory_Task" android:screenOrientation="portrait" />
-        <activity android:name=".Task_Chooser" android:screenOrientation="portrait" />
-        <activity android:name=".Employee_Select_Activity" android:screenOrientation="portrait" />
-        <activity android:name=".Item_Search_Activity" android:screenOrientation="portrait" />
-        <activity android:name=".Firearm_Inventory_Activity" android:screenOrientation="portrait" />
-        <activity android:name=".Update_Min_Max_Activity" android:screenOrientation="portrait" />
-        <activity android:name=".Inventory_Type_Select_Activity" android:screenOrientation="portrait" />
+        <activity
+            android:name=".ServerConnectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory_Task"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Task_Chooser"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Employee_Select_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Item_Search_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Firearm_Inventory_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Update_Min_Max_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory_Type_Select_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Navigation_Drawer_Activity"
+            android:label="@string/title_activity_navigation__drawer_"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

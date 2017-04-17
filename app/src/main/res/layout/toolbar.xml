@@ -21,5 +21,9 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="50dp"
         android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"/>
 
 </android.support.v7.widget.Toolbar>
