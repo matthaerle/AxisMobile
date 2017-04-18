@@ -13,7 +13,7 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -48,9 +48,9 @@
             android:name=".Inventory_Type_Select_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Navigation_Drawer_Activity"
-            android:label="@string/title_activity_navigation__drawer_"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:name=".Drawer_Activity"
+            android:label="@string/title_activity_drawer_"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
