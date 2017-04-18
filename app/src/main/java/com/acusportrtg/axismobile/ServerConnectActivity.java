@@ -5,9 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +61,33 @@ public class ServerConnectActivity extends AppCompatActivity {
                 VerifyConnection();
             }
         });
+
+
+        server_address_txtbox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                server_Connect_btn.setTextColor(Color.parseColor("#ffffff"));
+                server_Connect_btn.setBackgroundResource(R.drawable.solid_button);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if(server_address_txtbox.getText().toString().trim().length() == 0){
+                    server_Connect_btn.setEnabled(false);
+                    server_Connect_btn.setTextColor(Color.parseColor("#2980b9"));
+                    server_Connect_btn.setBackgroundResource(R.drawable.border_round_button);
+                }
+                else {
+                    server_Connect_btn.setEnabled(true);
+                }
+            }
+        });
+
 
         String serverIP = ServerAddress.GetSavedServerAddress(this);
         if(!serverIP.isEmpty()){

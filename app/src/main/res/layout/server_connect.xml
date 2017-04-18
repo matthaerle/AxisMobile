@@ -37,6 +37,10 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
         android:ems="10"
+        android:backgroundTint="#95a5a6"
+        android:textCursorDrawable="@drawable/grey_cursor"
+        android:textColor="#2980b9"
+        android:textColorHint="#95a5a6"
         android:inputType="textUri|number"
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"
@@ -49,17 +53,17 @@
     <Button
         android:id="@+id/btn_Connect"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/btn_server_connect"
-        android:background="@drawable/solid_button"
+        android:textColor="@drawable/border_button_text_color"
+        android:background="@drawable/border_round_button"
+        app:layout_constraintTop_toBottomOf="@+id/server_address_textbox"
+        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"
         app:layout_constraintRight_toLeftOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/server_address_textbox"
-        app:layout_constraintHorizontal_bias="0.504" />
+        android:layout_marginRight="8dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"

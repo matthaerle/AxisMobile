@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         final Button loginButton = (Button) findViewById(R.id.btn_Login);
         final EditText username = (EditText) findViewById(R.id.username_textbox);
 
+        loginButton.setEnabled(false);
+
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,11 +77,18 @@ public class MainActivity extends AppCompatActivity {
             public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
                 username.setTextColor(Color.parseColor("#2980b9"));
                 username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                loginButton.setEnabled(true);
+                loginButton.setTextColor(Color.parseColor("#ffffff"));
+                loginButton.setBackgroundResource(R.drawable.solid_square_button);
             }
 
             @Override
             public void afterTextChanged(final Editable s) {
-
+                if(username.getText().toString().trim().length() == 0){
+                    loginButton.setEnabled(false);
+                    loginButton.setTextColor(Color.parseColor("#2980b9"));
+                    loginButton.setBackgroundResource(R.drawable.border_button);
+                }
             }
         });
 
