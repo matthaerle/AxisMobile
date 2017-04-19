@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -12,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.acusportrtg.axismobile.Methods.MyDrawerLayout;
 
@@ -28,6 +32,8 @@ public class Inventory_Type_Select_Activity extends AppCompatActivity {
     private Button btn_Non_Firearm_Inventory, btn_Firearm_Inventory;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private String[] mTaskTitles;
     private String myActivityTitle;
 
     @Override
@@ -58,21 +64,6 @@ public class Inventory_Type_Select_Activity extends AppCompatActivity {
 
     }
 
-    private void setupDrawer() {
-        mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.drawer_open,R.string.drawer_close) {
-            public void OnDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
-                invalidateOptionsMenu();
-            }
-            public void OnDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(myActivityTitle);
-                invalidateOptionsMenu();
-            }
-        };
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

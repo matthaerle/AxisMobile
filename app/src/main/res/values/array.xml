@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="options_array">
+        <item>Item Search</item>
+        <item>Inventory</item>
+        <item>Firearm Search</item>
+        <item>Min Max Edit</item>
+    </string-array>
+</resources>

@@ -25,6 +25,7 @@ import static android.content.ContentValues.TAG;
 
 public class GetJSONStringWithPOSTData {
     private String JSONReturnData = "";
+
     public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
         String result = "";
         String stringAddress = ServerAddress.GetSavedServerAddress(context);

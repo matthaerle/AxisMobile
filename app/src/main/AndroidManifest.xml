@@ -47,10 +47,6 @@
         <activity
             android:name=".Inventory_Type_Select_Activity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".Drawer_Activity"
-            android:label="@string/title_activity_drawer_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
