@@ -65,9 +65,11 @@ public class Item_Search_Activity extends AppCompatActivity {
         btn_search_UPC.setOnClickListener(new View.OnClickListener (){
             @Override
             public void onClick(View v) {
-                SearchByUPC upc = new SearchByUPC()
+                SearchByUPC upc = new SearchByUPC();
                 upc.setProductUPC(upc_Field.getText().toString());
-                String productInfo = GetProductInfoJsonString(upc, getApplicationContext());
+                GetJSONStringWithPOSTData getProdData = new GetJSONStringWithPOSTData();
+
+                String productInfo = getProdData.GetProductInfoJsonString(upc, Item_Search_Activity.this);
             }
         });
     }
