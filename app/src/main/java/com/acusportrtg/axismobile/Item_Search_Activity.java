@@ -44,7 +44,7 @@ public class Item_Search_Activity extends AppCompatActivity {
 
        btn_clear_UPC_Field = (Button)findViewById(R.id.btn_clear);
        btn_search_UPC = (Button)findViewById(R.id.btn_search);
-       upc_Field = (EditText)findViewById(R.id.text_upc_field);
+       upc_Field = (EditText)findViewById(R.id.edt_upc_field);
        productListView = (ListView)findViewById(R.id.list_product_search);
 
         productListView.setVisibility(View.GONE);

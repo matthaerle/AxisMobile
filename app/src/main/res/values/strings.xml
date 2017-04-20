@@ -31,4 +31,7 @@
     <string name="txt_qoh_header">Qoh:</string>
     <string name="txt_min_header">Min:</string>
     <string name="txt_max_header">Max:</string>
+    <string name="txt_inventory_scan_head">Scan Item</string>
+    <string name="txt_count_qty_head">Count Qty:</string>
+    <string name="btn_submit_count">Submit</string>
 </resources>

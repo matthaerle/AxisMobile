@@ -40,6 +40,9 @@
             android:name=".Item_Search_Activity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Inventory_Scan_Activity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Firearm_Inventory_Activity"
             android:screenOrientation="portrait" />
         <activity

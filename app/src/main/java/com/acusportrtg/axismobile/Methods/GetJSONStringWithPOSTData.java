@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 
 import org.json.JSONException;
@@ -31,12 +32,11 @@ import static android.content.ContentValues.TAG;
 
 public class GetJSONStringWithPOSTData {
     private String JSONReturnData = "";
+    private String stringAddress;
 
     public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
-        String result = "";
-        String stringAddress = ServerAddress.GetSavedServerAddress(context);
+        stringAddress = ServerAddress.GetSavedServerAddress(context);
         JSONObject postData = new JSONObject();
-        GetJSONDataBack get = new GetJSONDataBack();
         try {
             URL reqUrl = new URL("http://" + stringAddress + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
             postData.put("ProductUPC", upc.getProductUPC());
@@ -50,6 +50,23 @@ public class GetJSONStringWithPOSTData {
         return JSONReturnData;
     }
 
+    public String VerifyProductInGroup (GetInventoryGroupProductID prod, Context context) {
+        stringAddress = ServerAddress.GetSavedServerAddress(context);
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + stringAddress + ":8899/RestWCFServiceLibrary/InventoryGroupProductID");
+            postData.put("ProductUPC", prod.getProductUPC());
+            postData.put("GroupID", prod.getGroupID());
+            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+
+    }
 
     private String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));

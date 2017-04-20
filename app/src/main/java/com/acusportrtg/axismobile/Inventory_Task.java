@@ -1,10 +1,13 @@
 package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ public class Inventory_Task extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ArrayList<SendInventoryGroup> inventoryGroupList = new ArrayList<>();
     private ListView inventoryGroupListView;
+    private Inventory_List_Adapter invAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +104,24 @@ public class Inventory_Task extends AppCompatActivity {
             super.onPostExecute(result);
             if (pDialog.isShowing())
                 pDialog.dismiss();
-            Inventory_List_Adapter invAdapter = new Inventory_List_Adapter(Inventory_Task.this,inventoryGroupList);
+
+            invAdapter = new Inventory_List_Adapter(Inventory_Task.this,inventoryGroupList);
             inventoryGroupListView = (ListView)findViewById(R.id.Inventory_ListView);
             inventoryGroupListView.setAdapter(invAdapter);
+            inventoryGroupListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                    SendInventoryGroup inv = new SendInventoryGroup();
+                    inv = invAdapter.getGroup(position);
+                    Globals glob = ((Globals)getApplicationContext());
+                    glob.setInvGroup(inv);
+                    //Toast.makeText(Inventory_Task.this,"Inventory GroupID: " + String.valueOf(inv.getInventoryGroupID()),Toast.LENGTH_LONG).show();
+
+                    Log.v(TAG,inv.getGroupName());
+                    Intent invScanIntent = new Intent(Inventory_Task.this,Inventory_Scan_Activity.class);
+                    startActivity(invScanIntent);
+                }
+            });
 
         }
 
