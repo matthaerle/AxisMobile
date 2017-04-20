@@ -18,7 +18,6 @@ import android.text.Editable;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
-import com.acusportrtg.axismobile.Methods.Globals;
 import com.acusportrtg.axismobile.Methods.ServerAddress;
 import com.acusportrtg.axismobile.Methods.VerifyServerConnection;
 
@@ -35,7 +34,7 @@ import static android.content.ContentValues.TAG;
 public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
-    IsConnected verified = new IsConnected();
+    private IsConnected verified = new IsConnected();
     private ArrayList<String> employeeList = new ArrayList<String>();
 
     @Override

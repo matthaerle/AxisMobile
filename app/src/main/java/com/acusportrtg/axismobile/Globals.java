@@ -1,4 +1,4 @@
-package com.acusportrtg.axismobile.Methods;
+package com.acusportrtg.axismobile;
 
 import android.app.Application;
 

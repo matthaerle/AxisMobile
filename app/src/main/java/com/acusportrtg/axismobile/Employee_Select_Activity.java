@@ -1,36 +1,19 @@
 package com.acusportrtg.axismobile;
 
 import android.content.Intent;
-import android.database.DataSetObserver;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.util.MalformedJsonException;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.EmpSpinAdapter;
-import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
-import com.acusportrtg.axismobile.Methods.Globals;
-import com.acusportrtg.axismobile.Methods.ServerAddress;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import static android.content.ContentValues.TAG;
 /**
  * Created by mhaerle on 4/11/2017.
  */

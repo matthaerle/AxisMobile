@@ -107,20 +107,33 @@
         tools:layout_editor_absoluteY="109dp"
         tools:layout_editor_absoluteX="0dp" />
 
-    <ListView
-        android:layout_width="0dp"
-        android:layout_height="18dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="264dp"
-        app:layout_constraintHorizontal_bias="1.0" />
-
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline35"
-        app:layout_constraintGuide_begin="188dp"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36790606" />
+
+    <ListView
+        android:id="@+id/list_product_search"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline36"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline35" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline36"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="421dp" />
 
 
 </android.support.constraint.ConstraintLayout>

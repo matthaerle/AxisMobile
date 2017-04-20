@@ -7,10 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.acusportrtg.axismobile.Methods.Globals;
-
-import org.w3c.dom.Text;
-
 /**
  * Created by mhaerle on 4/7/2017.
  */
