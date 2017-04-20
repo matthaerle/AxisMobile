@@ -38,6 +38,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Item_Search_Activity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Firearm_Inventory_Activity"
