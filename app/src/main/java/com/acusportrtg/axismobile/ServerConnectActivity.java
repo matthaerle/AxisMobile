@@ -145,7 +145,7 @@ public class ServerConnectActivity extends AppCompatActivity {
             super.onPreExecute();
             pDialog = new ProgressDialog(ServerConnectActivity.this);
             pDialog.setMessage("Verifing Connection...");
-            pDialog.setCancelable(false);
+            pDialog.setCancelable(true);
             pDialog.show();
         }
 
