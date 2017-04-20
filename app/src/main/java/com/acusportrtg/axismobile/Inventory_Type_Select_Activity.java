@@ -32,6 +32,7 @@ public class Inventory_Type_Select_Activity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         myActivityTitle = getSupportActionBar().getTitle().toString();
+        getSupportActionBar().setTitle("Choose Inventory Type");
 
 
         /*txt_Emp = (TextView)findViewById(R.id.txtEmpId);

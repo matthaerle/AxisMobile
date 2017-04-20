@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AxisMobile</string>
+    <string name="app_name">Axis Mobile</string>
     <string name="Employee_Select">Select Employee</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_server_connect">Connect</string>

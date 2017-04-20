@@ -48,6 +48,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         LoadImage loadImg = new LoadImage(this);
         loadImg.execute();
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("Enter Server Address");
 
         setContentView(R.layout.server_connect);
 

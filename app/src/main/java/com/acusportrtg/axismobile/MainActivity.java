@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_page);
+        getSupportActionBar().setTitle("Login");
 
         verified.setConnectionVerified(false);
         CheckServerConnected();

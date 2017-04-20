@@ -38,8 +38,8 @@ public class Inventory_Task extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inventory_activity);
-        title = (TextView) findViewById(R.id.txt_Title);
-        title.setText("Inventory");
+
+        getSupportActionBar().setTitle("Product Inventory");
 
         try {
             URL url = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveInventoryGroups");
