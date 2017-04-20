@@ -10,7 +10,24 @@ public class GetEmployees {
     private String MiddleName;
     private String LastName;
     private String EmployeeNumber;
+    private String PasswordEncrypted;
+    private String PasswordHashed;
 
+    public String getPasswordEncrypted() {
+        return PasswordEncrypted;
+    }
+
+    public void setPasswordEncrypted(String passwordEncrypted) {
+        PasswordEncrypted = passwordEncrypted;
+    }
+
+    public String getPasswordHashed() {
+        return PasswordHashed;
+    }
+
+    public void setPasswordHashed(String passwordHashed) {
+        PasswordHashed = passwordHashed;
+    }
 
     public int getEmployeeID() {
         return EmployeeID;
