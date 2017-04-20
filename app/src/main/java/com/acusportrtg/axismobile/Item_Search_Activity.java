@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -59,7 +60,8 @@ public class Item_Search_Activity extends AppCompatActivity {
         btn_search_UPC.setOnClickListener(new View.OnClickListener (){
             @Override
             public void onClick(View v) {
-                //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                InputMethodManager imm = (InputMethodManager)getSystemService(Item_Search_Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 SearchByUPC upc = new SearchByUPC();
                 upc.setProductUPC(upc_Field.getText().toString());
                 GetJSONStringWithPOSTData getProdData = new GetJSONStringWithPOSTData();
@@ -91,6 +93,7 @@ public class Item_Search_Activity extends AppCompatActivity {
                     JSONObject p = productJson.getJSONObject(i);
                     SendProductView productView = new SendProductView();
 
+                    productView.setProductUPC(p.getString("ProductUPC"));
                     productView.setItemNmbr(p.optString("ItemNbr"));
                     productView.setMaxLevel(p.getInt("MaxLevel"));
                     productView.setMinLevel(p.getInt("MinLevel"));
@@ -101,7 +104,17 @@ public class Item_Search_Activity extends AppCompatActivity {
                     productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
                     productView.setQtyCommitted(p.getInt("QtyCommitted"));
 
-                    productList.add(productView);
+                    if(productList.size() > 0){
+                        for(int j = 0; i < productList.size() - 1; j++){
+                            if(!(productList.get(j).getProductID() == productView.getProductID())){
+                                productList.add(productView);
+                            }
+                        }
+                    }
+                    else{
+                        productList.add(productView);
+                    }
+
                 }
             } catch (final JSONException e) {
                 runOnUiThread(new Runnable() {

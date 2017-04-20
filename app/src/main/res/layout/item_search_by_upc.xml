@@ -153,17 +153,17 @@
 
     <ListView
         android:id="@+id/list_product_search"
-        android:layout_width="373dp"
-        android:layout_height="218dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline35"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline36" />
+        android:layout_marginBottom="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline36"
+        app:layout_constraintTop_toTopOf="@+id/guideline37"
+        android:layout_marginTop="0dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"

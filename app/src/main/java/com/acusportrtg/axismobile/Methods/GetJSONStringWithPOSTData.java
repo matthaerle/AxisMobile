@@ -128,7 +128,7 @@ public class GetJSONStringWithPOSTData {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.e("TAG",result);
+            Log.v("TAG",result);
             JSONReturnData = result;
         }
     }
