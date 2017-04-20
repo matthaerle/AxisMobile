@@ -32,7 +32,6 @@ public class Inventory_Task extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ArrayList<SendInventoryGroup> inventoryGroupList = new ArrayList<>();
     private ListView inventoryGroupListView;
-    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

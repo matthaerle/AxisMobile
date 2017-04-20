@@ -16,8 +16,8 @@ import java.net.URL;
  */
 
 public class VerifyServerConnection {
-    IsConnected verified = new IsConnected();
-    Context context;
+    private IsConnected verified = new IsConnected();
+    private Context context;
 
     public  IsConnected VerifyConnection(Context context) {
         String address = ServerAddress.GetSavedServerAddress(context);
