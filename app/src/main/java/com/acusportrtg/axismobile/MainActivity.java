@@ -25,8 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         final Button setupButton = (Button) findViewById(R.id.btn_Setup);
         final Button loginButton = (Button) findViewById(R.id.btn_Login);
         final EditText username = (EditText) findViewById(R.id.username_textbox);
+        final EditText password = (EditText) findViewById(R.id.pass_textbox);
 
         loginButton.setEnabled(false);
 
@@ -102,9 +106,12 @@ public class MainActivity extends AppCompatActivity {
                 //Check if server can connect and then move on
                 if(verified.getConnectionVerified()){
                     boolean activeUser = employeeNameList.contains(username.getText().toString());
+
+                    //String resultHash = generateMD5Hash(password.getText().toString());
+                    //Toast.makeText(MainActivity.this, resultHash, Toast.LENGTH_LONG).show();
+
                     if(activeUser){
                         Toast.makeText(MainActivity.this, "Employee Verified", Toast.LENGTH_LONG).show();
-                        String employee = username.getText().toString();
                         Globals glob = ((Globals)getApplicationContext());
                         GetEmployees emp = employeeMap.get(username.getText().toString());
                         glob.setEmployee(emp);
@@ -239,4 +246,24 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    private String generateMD5Hash(String input) {
+        try {
+
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String md5 = number.toString(16);
+
+            while (md5.length() < 32)
+                md5 = "0" + md5;
+
+            return md5;
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("MD5", e.getLocalizedMessage());
+            return null;
+        }
+    }
+
+
 }
