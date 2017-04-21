@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edt_firearm_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Scan"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioButton
+        android:id="@+id/rdl_serialnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Serial Number"
+        app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan"
+        app:layout_constraintRight_toLeftOf="@+id/guideline44"
+        android:layout_marginRight="32dp" />
+
+    <RadioButton
+        android:id="@+id/rdl_log_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Log #"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline43"
+        app:layout_constraintRight_toLeftOf="@+id/rdl_serialnumber"
+        app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline43"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.14722222" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline44"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.86" />
+</android.support.constraint.ConstraintLayout>

@@ -40,7 +40,6 @@ public class Task_Chooser extends AppCompatActivity{
         btn_Firearm_Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
 

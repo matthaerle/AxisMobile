@@ -50,6 +50,14 @@ public class Inventory_Type_Select_Activity extends AppCompatActivity {
             }
         });
 
+        btn_Firearm_Inventory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent firearm_inventory_activity = new Intent(Inventory_Type_Select_Activity.this,Firearm_Scan_Activity.class);
+                startActivity(firearm_inventory_activity);
+            }
+        });
+
 
     }
 
