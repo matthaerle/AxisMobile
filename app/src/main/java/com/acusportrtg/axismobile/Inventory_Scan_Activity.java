@@ -2,13 +2,18 @@ package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -60,36 +65,68 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    String productUPC = edt_product_upc.getText().toString().trim();
-                    GetInventoryGroupProductID prod = new GetInventoryGroupProductID();
-                    prod.setGroupID(invGroupID);
-                    prod.setProductUPC(productUPC);
-                    GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
+                btn_submit.setEnabled(false);
+                if(!edt_product_upc.getText().toString().isEmpty()) {
+                    try {
+                        String productUPC = edt_product_upc.getText().toString().trim();
+                        GetInventoryGroupProductID prod = new GetInventoryGroupProductID();
+                        prod.setGroupID(invGroupID);
+                        prod.setProductUPC(productUPC);
+                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
 
-                    String productInfo = getJSONStringWithPOSTData.VerifyProductInGroup(prod,Inventory_Scan_Activity.this);
-                    Log.v(TAG,productInfo);
-                    SendProductView prodInfo = new VerifyProductInGroup().execute(productInfo).get();
+                        String productInfo = getJSONStringWithPOSTData.VerifyProductInGroup(prod, Inventory_Scan_Activity.this);
+                        Log.v(TAG, productInfo);
+                        SendProductView prodInfo = new VerifyProductInGroup().execute(productInfo).get();
+                        edt_count_qty.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Inventory_Scan_Activity.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(edt_count_qty, InputMethodManager.SHOW_IMPLICIT);
 
-
-                } catch (InterruptedException|ExecutionException e) {
-                    Log.e(TAG, e.getMessage());
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
+                    } catch (InterruptedException | ExecutionException e) {
+                        Log.e(TAG, e.getMessage());
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    }
                 }
-
-
             }
         });
         btn_submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                edt_count_qty.setText("");
+                edt_product_upc.setText("");
+                edt_product_upc.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Inventory_Scan_Activity.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(edt_product_upc, InputMethodManager.SHOW_IMPLICIT);
+                btn_submit.setEnabled(false);
                 product_info.setVisibility(View.INVISIBLE);
             }
         });
 
+        edt_count_qty.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                edt_count_qty.setTextColor(Color.parseColor("#2980b9"));
+                edt_count_qty.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                btn_submit.setEnabled(true);
+                btn_submit.setTextColor(Color.parseColor("#ffffff"));
+                btn_submit.setBackgroundResource(R.drawable.solid_square_button);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if(edt_count_qty.getText().toString().trim().length() == 0){
+                    btn_submit.setEnabled(false);
+                    btn_submit.setTextColor(Color.parseColor("#2980b9"));
+                    btn_submit.setBackgroundResource(R.drawable.border_button);
+                }
+            }
+        });
 
         getSupportActionBar().setTitle("Group: " + glob.getInvGroup().getGroupName());
     }
@@ -116,6 +153,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
                 if (json instanceof JSONObject) {
                     SendProductView productView = new SendProductView();
                     prodObject = (JSONObject)json;
+                    productView.setProductUPC(prodObject.getString("ProductUPC"));
                     productView.setItemNmbr(prodObject.optString("ItemNbr"));
                     productView.setMaxLevel(prodObject.getInt("MaxLevel"));
                     productView.setMinLevel(prodObject.getInt("MinLevel"));
