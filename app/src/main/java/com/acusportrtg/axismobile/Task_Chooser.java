@@ -23,7 +23,7 @@ public class Task_Chooser extends AppCompatActivity{
         getSupportActionBar().setTitle("Choose a task");
 
         Globals glob = ((Globals)getApplicationContext());
-        txt_Emp.setText(String.valueOf(glob.getEmployee_Id()));
+        txt_Emp.setText(String.valueOf(glob.getEmployee().getEmployeeNumber()));
         btn_Product_Search = (Button)findViewById(R.id.btn_product_search);
         btn_Firearm_Search = (Button)findViewById(R.id.btn_firearm_search);
         btn_Inventory = (Button)findViewById(R.id.btn_inventory);

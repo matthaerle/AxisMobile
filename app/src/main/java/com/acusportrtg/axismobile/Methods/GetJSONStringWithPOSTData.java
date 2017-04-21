@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
+import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,24 @@ public class GetJSONStringWithPOSTData {
         try {
             URL reqUrl = new URL("http://" + stringAddress + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
             postData.put("ProductUPC", upc.getProductUPC());
+            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+    }
+
+    public String UpdateInventoryCount (SubmitItemCount count, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InsertProductCountInventory");
+            postData.put("ProductUPC", count.getProductUPC());
+            postData.put("EmployeeID", count.getEmployeeID());
+            postData.put("CountQty", count.getCountQty());
+            postData.put("GroupID", count.getGroupID());
             JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
             return JSONReturnData;
         } catch (MalformedURLException e) {

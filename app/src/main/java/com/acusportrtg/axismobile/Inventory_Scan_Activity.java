@@ -17,9 +17,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
+import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
+import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 
 import org.json.JSONArray;
@@ -41,6 +45,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
     private ConstraintLayout product_info;
     private ProgressDialog pDialog;
     private int invGroupID;
+    private GetEmployees emp;
     private TextView txt_qoh_data,txt_upc_data,txt_price_data,txt_desc_data;
 
     @Override
@@ -49,6 +54,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
         setContentView(R.layout.inventory_scan);
         Globals glob = ((Globals)getApplicationContext());
         invGroupID = glob.getInvGroup().getInventoryGroupID();
+        emp = glob.getEmployee();
 
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_clear = (Button) findViewById(R.id.btn_clear);
@@ -93,6 +99,28 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                SubmitItemCount sub = new SubmitItemCount();
+                sub.setProductUPC(txt_upc_data.getText().toString().trim());
+                sub.setGroupID(invGroupID);
+                sub.setCountQty(Integer.parseInt(edt_count_qty.getText().toString().trim()));
+                sub.setEmployeeID(emp.getEmployeeID());
+
+                try{
+                    GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
+                    String postBack = getJSONStringWithPOSTData.UpdateInventoryCount(sub, Inventory_Scan_Activity.this);
+                    Log.v(TAG, postBack);
+                    UpdateStatus status = new ConvertJSONToObject().execute(postBack).get();
+                    if (status.isSuccesfull()) {
+                        Toast.makeText(Inventory_Scan_Activity.this,"UPC: " + sub.getProductUPC() + "Updated",Toast.LENGTH_LONG).show();
+                        Log.v(TAG,"UPC: " + sub.getProductUPC() + "Updated to Qty: " + String.valueOf(sub.getCountQty()));
+                    }
+                }catch (InterruptedException | ExecutionException e) {
+                    Log.e(TAG, e.getMessage());
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+
+
                 edt_count_qty.setText("");
                 edt_product_upc.setText("");
                 edt_product_upc.requestFocus();
@@ -130,6 +158,60 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Group: " + glob.getInvGroup().getGroupName());
     }
+    private class ConvertJSONToObject extends AsyncTask<String,Void,UpdateStatus> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(Inventory_Scan_Activity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+        @Override
+        protected UpdateStatus doInBackground(String... params) {
+            String jsonStr = params[0];
+            try {
+
+                JSONObject obj = new JSONObject(jsonStr);
+                Object json = obj;
+                JSONObject statusObject;
+                JSONArray statusArray;
+                if (json instanceof JSONObject) {
+                    UpdateStatus upd = new UpdateStatus();
+                    statusObject = (JSONObject)json;
+                    upd.setSuccesfull(statusObject.getBoolean("IsSuccesfull"));
+
+                    return upd;
+                } else if (json instanceof  JSONArray) {
+                    statusArray = (JSONArray)json;
+                    for (int i=0; i < statusArray.length(); i++) {
+                        JSONObject p = statusArray.getJSONObject(i);
+                        UpdateStatus upd = new UpdateStatus();
+                        upd.setSuccesfull(p.getBoolean("IsSuccesfull"));
+
+                        return upd;
+                    }
+
+                }
+            } catch (final JSONException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
+                    }
+                });
+            }
+            return null;
+        }
+        @Override
+        protected  void onPostExecute(UpdateStatus result) {
+            super.onPostExecute(result);
+            if(pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+        }
+    }
+
 
     private class VerifyProductInGroup extends AsyncTask<String,Void,SendProductView> {
         @Override
@@ -144,54 +226,56 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
         protected SendProductView doInBackground(String... params) {
             String jsonStr = params[0];
 
-            try {
+            if (jsonStr != "") {
+                try {
 
-                JSONObject obj = new JSONObject(jsonStr);
-                Object json = obj;
-                JSONObject prodObject;
-                JSONArray prodArray;
-                if (json instanceof JSONObject) {
-                    SendProductView productView = new SendProductView();
-                    prodObject = (JSONObject)json;
-                    productView.setProductUPC(prodObject.getString("ProductUPC"));
-                    productView.setItemNmbr(prodObject.optString("ItemNbr"));
-                    productView.setMaxLevel(prodObject.getInt("MaxLevel"));
-                    productView.setMinLevel(prodObject.getInt("MinLevel"));
-                    productView.setPhysicalQoH(prodObject.getInt("PhysicalQoH"));
-                    productView.setPrice(prodObject.getDouble("Price"));
-                    productView.setProductID(prodObject.getLong("ProductID"));
-                    productView.setShortDescription(prodObject.getString("ShortDescription"));
-                    productView.setQtyOnOrder(prodObject.getInt("QtyOnOrder"));
-                    productView.setQtyCommitted(prodObject.getInt("QtyCommitted"));
-
-                    return productView;
-                } else if (json instanceof  JSONArray) {
-                    prodArray = (JSONArray)json;
-                    for (int i=0; i < prodArray.length(); i++) {
-                        JSONObject p = prodArray.getJSONObject(i);
+                    JSONObject obj = new JSONObject(jsonStr);
+                    Object json = obj;
+                    JSONObject prodObject;
+                    JSONArray prodArray;
+                    if (json instanceof JSONObject) {
                         SendProductView productView = new SendProductView();
-
-                        productView.setItemNmbr(p.optString("ItemNbr"));
-                        productView.setMaxLevel(p.getInt("MaxLevel"));
-                        productView.setMinLevel(p.getInt("MinLevel"));
-                        productView.setPhysicalQoH(p.getInt("PhysicalQoH"));
-                        productView.setPrice(p.getDouble("Price"));
-                        productView.setProductID(p.getLong("ProductID"));
-                        productView.setShortDescription(p.getString("ShortDescription"));
-                        productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
-                        productView.setQtyCommitted(p.getInt("QtyCommitted"));
+                        prodObject = (JSONObject) json;
+                        productView.setProductUPC(prodObject.getString("ProductUPC"));
+                        productView.setItemNmbr(prodObject.optString("ItemNbr"));
+                        productView.setMaxLevel(prodObject.getInt("MaxLevel"));
+                        productView.setMinLevel(prodObject.getInt("MinLevel"));
+                        productView.setPhysicalQoH(prodObject.getInt("PhysicalQoH"));
+                        productView.setPrice(prodObject.getDouble("Price"));
+                        productView.setProductID(prodObject.getLong("ProductID"));
+                        productView.setShortDescription(prodObject.getString("ShortDescription"));
+                        productView.setQtyOnOrder(prodObject.getInt("QtyOnOrder"));
+                        productView.setQtyCommitted(prodObject.getInt("QtyCommitted"));
 
                         return productView;
-                }
+                    } else if (json instanceof JSONArray) {
+                        prodArray = (JSONArray) json;
+                        for (int i = 0; i < prodArray.length(); i++) {
+                            JSONObject p = prodArray.getJSONObject(i);
+                            SendProductView productView = new SendProductView();
 
-                }
-            } catch (final JSONException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
+                            productView.setItemNmbr(p.optString("ItemNbr"));
+                            productView.setMaxLevel(p.getInt("MaxLevel"));
+                            productView.setMinLevel(p.getInt("MinLevel"));
+                            productView.setPhysicalQoH(p.getInt("PhysicalQoH"));
+                            productView.setPrice(p.getDouble("Price"));
+                            productView.setProductID(p.getLong("ProductID"));
+                            productView.setShortDescription(p.getString("ShortDescription"));
+                            productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
+                            productView.setQtyCommitted(p.getInt("QtyCommitted"));
+
+                            return productView;
+                        }
+
                     }
-                });
+                } catch (final JSONException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
+                        }
+                    });
+                }
             }
             return null;
         }
@@ -199,12 +283,16 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
         @Override
         protected  void onPostExecute(SendProductView result) {
             super.onPostExecute(result);
-            txt_upc_data.setText(result.getProductUPC());
-            txt_price_data.setText(String.valueOf(result.getPrice()));
-            txt_desc_data.setText(result.getShortDescription());
-            txt_qoh_data.setText(String.valueOf(result.getPhysicalQoH()));
+            if (result != null) {
+                txt_upc_data.setText(result.getProductUPC());
+                txt_price_data.setText(String.valueOf(result.getPrice()));
+                txt_desc_data.setText(result.getShortDescription());
+                txt_qoh_data.setText(String.valueOf(result.getPhysicalQoH()));
 
-            product_info.setVisibility(View.VISIBLE);
+                product_info.setVisibility(View.VISIBLE);
+            } else {
+                Toast.makeText(Inventory_Scan_Activity.this,"Product Does Not Exist In Group",Toast.LENGTH_LONG).show();
+            }
             if(pDialog.isShowing()) {
                 pDialog.dismiss();
             }

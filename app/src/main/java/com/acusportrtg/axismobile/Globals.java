@@ -2,6 +2,7 @@ package com.acusportrtg.axismobile;
 
 import android.app.Application;
 
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
 
 /**
@@ -9,7 +10,7 @@ import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
  */
 
 public class Globals extends Application {
-    private String Employee_Id;
+    private GetEmployees Employee;
     private int Inventory_Group_Id;
     private SendInventoryGroup invGroup;
 
@@ -29,11 +30,11 @@ public class Globals extends Application {
         Inventory_Group_Id = inventory_Group_Id;
     }
 
-    public String getEmployee_Id() {
-        return Employee_Id;
+    public GetEmployees getEmployee() {
+        return Employee;
     }
 
-    public void setEmployee_Id(String employee_Id) {
-        Employee_Id = employee_Id;
+    public void setEmployee(GetEmployees employee) {
+        Employee = employee;
     }
 }

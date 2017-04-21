@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 
@@ -35,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     private IsConnected verified = new IsConnected();
-    private ArrayList<String> employeeList = new ArrayList<String>();
+    private ArrayList<String> employeeNameList = new ArrayList<String>();
+    private HashMap<String,GetEmployees> employeeMap = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +101,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Check if server can connect and then move on
                 if(verified.getConnectionVerified()){
-                    boolean activeUser = employeeList.contains(username.getText().toString());
+                    boolean activeUser = employeeNameList.contains(username.getText().toString());
                     if(activeUser){
                         Toast.makeText(MainActivity.this, "Employee Verified", Toast.LENGTH_LONG).show();
                         String employee = username.getText().toString();
                         Globals glob = ((Globals)getApplicationContext());
-                        glob.setEmployee_Id(employee);
+                        GetEmployees emp = employeeMap.get(username.getText().toString());
+                        glob.setEmployee(emp);
                         Intent taskChooser = new Intent(MainActivity.this,Task_Chooser.class);
                         startActivity(taskChooser);
                         username.setText("");
@@ -219,7 +223,8 @@ public class MainActivity extends AppCompatActivity {
                         emp.setMiddleName(obj.getString("MiddleName"));
                         emp.setLastName(obj.getString("LastName"));
                         emp.setEmployeeNumber(obj.getString("EmployeeNumber"));
-                        employeeList.add(emp.getEmployeeNumber());
+                        employeeNameList.add(emp.getEmployeeNumber());
+                        employeeMap.put(emp.getEmployeeNumber(),emp);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, e.getMessage(), e);
