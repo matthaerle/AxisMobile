@@ -13,13 +13,14 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Scan"
+        android:hint="Scan"
+        android:textColorHint="#95a5a6"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioButton
-        android:id="@+id/rdl_serialnumber"
+        android:id="@+id/rdl_serial_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -37,7 +38,7 @@
         android:layout_marginTop="8dp"
         android:text="Log #"
         app:layout_constraintLeft_toLeftOf="@+id/guideline43"
-        app:layout_constraintRight_toLeftOf="@+id/rdl_serialnumber"
+        app:layout_constraintRight_toLeftOf="@+id/rdl_serial_number"
         app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan" />
 
     <android.support.constraint.Guideline
