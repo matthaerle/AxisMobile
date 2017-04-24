@@ -6,7 +6,7 @@ package com.acusportrtg.axismobile.JSON_Classes;
 
 public class FirearmInfo {
     private String SerialNumber,UPC,Manufacturer,Model,GaugeCaliber,TypeOfAction,NewUsed,Description;
-    private Character Status;
+    private String Status;
     private Long InvNbr;
 
     public String getSerialNumber() {
@@ -73,11 +73,11 @@ public class FirearmInfo {
         Description = description;
     }
 
-    public Character getStatus() {
+    public String getStatus() {
         return Status;
     }
 
-    public void setStatus(Character status) {
+    public void setStatus(String status) {
         Status = status;
     }
 

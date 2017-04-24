@@ -269,13 +269,13 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
 
                     }
                 } catch (final JSONException e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
-                        }
-                    });
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
+                    }
+                });
+            }
             }
             return null;
         }

@@ -54,4 +54,16 @@
         android:id="@+id/guideline44"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.86" />
+
+    <Button
+        android:id="@+id/btn_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/btn_firearm_count"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline43"
+        app:layout_constraintRight_toLeftOf="@+id/guideline44"
+        app:layout_constraintTop_toBottomOf="@+id/rdl_serial_number" />
 </android.support.constraint.ConstraintLayout>

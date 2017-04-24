@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
+import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
 import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
@@ -34,6 +36,44 @@ import static android.content.ContentValues.TAG;
 public class GetJSONStringWithPOSTData {
     private String JSONReturnData = "";
     private String stringAddress;
+
+    public String GetFirearmDisposed (FirearmStockScan fss, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/VerifyFirearmNotDisposed");
+            postData.put("Log",fss.getLog());
+            postData.put("SerialNumber", fss.getSerialNumber());
+            postData.put("SerialScanned", fss.isSerialScanned());
+            postData.put("LogScanned", fss.isLogScanned());
+            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            Log.v(TAG,JSONReturnData);
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+    }
+
+    public String GetFirearmInfo (FirearmStockScan fss,Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation");
+            postData.put("Log",fss.getLog());
+            postData.put("SerialNumber", fss.getSerialNumber());
+            postData.put("SerialScanned", fss.isSerialScanned());
+            postData.put("LogScanned", fss.isLogScanned());
+            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            Log.v(TAG,JSONReturnData);
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+    }
 
     public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
         stringAddress = ServerAddress.GetSavedServerAddress(context);

@@ -34,4 +34,5 @@
     <string name="txt_inventory_scan_head">Scan Item</string>
     <string name="txt_count_qty_head">Count Qty:</string>
     <string name="btn_submit_count">Update</string>
+    <string name="btn_count">Count</string>
 </resources>
