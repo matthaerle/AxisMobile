@@ -35,4 +35,6 @@
     <string name="txt_count_qty_head">Count Qty:</string>
     <string name="btn_submit_count">Update</string>
     <string name="btn_count">Count</string>
+    <string name="btn_firearm_scan_search">Search</string>
+    <string name="txt_manufacturer_header">Manufacturer:</string>
 </resources>

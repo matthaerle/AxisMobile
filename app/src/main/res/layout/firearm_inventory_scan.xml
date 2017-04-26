@@ -27,7 +27,8 @@
         android:text="Serial Number"
         app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan"
         app:layout_constraintRight_toLeftOf="@+id/guideline44"
-        android:layout_marginRight="32dp" />
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp" />
 
     <RadioButton
         android:id="@+id/rdl_log_number"
@@ -39,31 +40,150 @@
         android:text="Log #"
         app:layout_constraintLeft_toLeftOf="@+id/guideline43"
         app:layout_constraintRight_toLeftOf="@+id/rdl_serial_number"
-        app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline43"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.14722222" />
+        app:layout_constraintGuide_percent="0.14722222"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="53dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline44"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.86" />
+        app:layout_constraintGuide_percent="0.86"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="310dp" />
 
     <Button
-        android:id="@+id/btn_count"
+        android:id="@+id/btn_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/btn_firearm_count"
+        android:text="@string/btn_firearm_scan_search"
         app:layout_constraintLeft_toLeftOf="@+id/guideline43"
         app:layout_constraintRight_toLeftOf="@+id/guideline44"
-        app:layout_constraintTop_toBottomOf="@+id/rdl_serial_number" />
+        app:layout_constraintTop_toBottomOf="@+id/rdl_serial_number"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_firearminfo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline45"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline47"
+        app:layout_constraintRight_toLeftOf="@+id/guideline48"
+        app:layout_constraintTop_toBottomOf="@+id/btn_search"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/btn_count_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Count"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_serial_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintLeft_toRightOf="@+id/txt_Serial_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_upc_data" />
+
+        <TextView
+            android:id="@+id/txt_Serial_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Serial Number:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_upc_header" />
+
+        <TextView
+            android:id="@+id/txt_upc_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintLeft_toRightOf="@+id/txt_upc_header"
+            app:layout_constraintTop_toBottomOf="@+id/txtManufactureData" />
+
+        <TextView
+            android:id="@+id/txt_upc_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="UPC:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_manufacturer_header" />
+
+        <TextView
+            android:id="@+id/txt_manufacturer_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_manufacturer_header"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtManufactureData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintLeft_toRightOf="@+id/txt_manufacturer_header"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline45"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.89" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline47"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.055555556" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline48"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".94" />
 </android.support.constraint.ConstraintLayout>

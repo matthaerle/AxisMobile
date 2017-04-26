@@ -46,7 +46,7 @@ public class GetJSONStringWithPOSTData {
             postData.put("SerialScanned", fss.isSerialScanned());
             postData.put("LogScanned", fss.isLogScanned());
             JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
-            Log.v(TAG,JSONReturnData);
+            Log.v("GetJSONWithPostData ",JSONReturnData);
             return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
@@ -59,7 +59,8 @@ public class GetJSONStringWithPOSTData {
     public String GetFirearmInfo (FirearmStockScan fss,Context context) {
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation");
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation" +
+                    "");
             postData.put("Log",fss.getLog());
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());
@@ -152,7 +153,7 @@ public class GetJSONStringWithPOSTData {
 
         @Override
         protected String doInBackground(String... params) {
-            Log.v(TAG, params[1]);
+            Log.v(TAG, "GetJSONStringWithPostData doInbackround:\n"+params[1]);
             String data = "";
             HttpURLConnection httpURLConnection = null;
             BufferedReader reader;
@@ -187,7 +188,7 @@ public class GetJSONStringWithPOSTData {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.v("TAG",result);
+            Log.v("TAG","GetJSONStringWithPostData onPostExecute:\n" +result);
             JSONReturnData = result;
         }
     }
