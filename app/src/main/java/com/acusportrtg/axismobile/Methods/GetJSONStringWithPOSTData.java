@@ -39,7 +39,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class GetJSONStringWithPOSTData {
-    private String JSONReturnData = "";
+    private static String JSONReturnData = "";
     private String stringAddress;
     private AppCompatActivity activity;
     private ProgressDialog progressDialog;
@@ -52,93 +52,7 @@ public interface CallbackReceiver {
         this.activity = activity;
     }
 
-    public String UpdateFirearmScan (FirearmStockUpdate fsu, Context context) {
-        JSONObject postData = new JSONObject();
-        try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/CountFirearm");
-            postData.put("InventoryNumber", fsu.getInventoryNumber());
-            postData.put("EmployeeID", fsu.getEmployeeID());
-            postData.put("MachineName", fsu.getMachineName());
-            Log.v("PostData to Send", postData.toString());
 
-
-            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
-                @Override
-                public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                }
-            };
-            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-
-
-            Log.v("GetJSONWithPostData ",JSONReturnData);
-            return JSONReturnData;
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        }
-        return JSONReturnData;
-    }
-
-    public String GetFirearmDisposed (FirearmStockScan fss, Context context) {
-        JSONObject postData = new JSONObject();
-        try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/VerifyFirearmNotDisposed");
-            postData.put("Log",fss.getLog());
-            postData.put("SerialNumber", fss.getSerialNumber());
-            postData.put("SerialScanned", fss.isSerialScanned());
-            postData.put("LogScanned", fss.isLogScanned());
-            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
-                @Override
-                public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                }
-            };
-            getJSONDataBack.execute(reqUrl.toString(), postData.toString()).wait(200);
-            for(long stop = System.nanoTime()+ TimeUnit.SECONDS.toNanos(5);stop>System.nanoTime();) {
-                if (!JSONReturnData.equals(""))
-                    return JSONReturnData;
-            }
-            Log.v("GetJSONWithPostData ",JSONReturnData);
-            return JSONReturnData;
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        }
-        return JSONReturnData;
-    }
-
-    public String GetFirearmInfo (FirearmStockScan fss,Context context) {
-        JSONObject postData = new JSONObject();
-        try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation" +
-                    "");
-            postData.put("Log",fss.getLog());
-            postData.put("SerialNumber", fss.getSerialNumber());
-            postData.put("SerialScanned", fss.isSerialScanned());
-            postData.put("LogScanned", fss.isLogScanned());
-            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
-                @Override
-                public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                }
-            };
-            getJSONDataBack.execute(reqUrl.toString(), postData.toString()).wait(200);
-            for(long stop = System.nanoTime()+ TimeUnit.SECONDS.toNanos(5);stop>System.nanoTime();) {
-                if (!JSONReturnData.equals(""))
-                    return JSONReturnData;
-            }
-            Log.v(TAG,JSONReturnData);
-            return JSONReturnData;
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        }
-        return JSONReturnData;
-    }
 
     public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
         stringAddress = ServerAddress.GetSavedServerAddress(context);
@@ -210,7 +124,7 @@ public interface CallbackReceiver {
 
     }
 
-    private String convertStreamToString(InputStream is) {
+    private static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
@@ -230,7 +144,7 @@ public interface CallbackReceiver {
         }
         return sb.toString();
     }
-    private abstract class GetJSONDataBack extends AsyncTask<String,Void,String> implements CallbackReceiver{
+    public abstract static class GetJSONDataBack extends AsyncTask<String,Void,String> implements CallbackReceiver{
         private Context context;
         ProgressDialog pDialog;
 
@@ -279,7 +193,6 @@ public interface CallbackReceiver {
                     httpURLConnection.disconnect();
                 }
             }
-            JSONReturnData = data;
             return data;
         }
         @Override

@@ -1,6 +1,7 @@
 package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -21,9 +22,14 @@ import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsFirearmDisposed;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
+import com.acusportrtg.axismobile.Methods.ServerAddress;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by mhaerle on 4/21/2017.
@@ -32,7 +38,9 @@ import org.json.JSONObject;
 public class Firearm_Scan_Activity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private FirearmInfo fi;
+    private String postBack = "";
     private GetEmployees emp;
+    private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
@@ -60,7 +68,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
 
                 try {
                     GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Firearm_Scan_Activity.this);
-                    String postBack = getJSONStringWithPOSTData.UpdateFirearmScan(fsu,Firearm_Scan_Activity.this);
+                    postBack = UpdateFirearmScan(fsu,Firearm_Scan_Activity.this);
                     Log.v("PostBack\n", postBack);
                     UpdateStatus us = FirearmCounted(postBack);
                     if (us.isSuccesfull()) {
@@ -88,11 +96,11 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                         fss.setLog(inv_nbr);
                         fss.setLogScanned(true);
                         fss.setSerialScanned(false);
+                        fss.setSerialNumber("");
 
                         //FirearmInfo fi = new GetMyFirearmInfo().execute(fss).get();
 
-                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Firearm_Scan_Activity.this);
-                        String postBack = getJSONStringWithPOSTData.GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
+                        postBack = GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
                         Log.v("Line 59: ",postBack);
                         IsFirearmDisposed ifd = VerifyFirearmDisposedA(postBack);
                         if (ifd ==null) {
@@ -101,7 +109,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                             if (ifd.isDisposed()) {
                                 Toast.makeText(Firearm_Scan_Activity.this,"Firearm Is Disposed",Toast.LENGTH_LONG).show();
                             } else if (!ifd.isDisposed()) {
-                                String firearmInfoPostBack =  getJSONStringWithPOSTData.GetFirearmInfo(fss,Firearm_Scan_Activity.this);
+                                String firearmInfoPostBack =  GetFirearmInfo(fss,Firearm_Scan_Activity.this);
                                 Log.v("Line 65: ",firearmInfoPostBack);
                                 fi = GetFirearmInfo(firearmInfoPostBack);
                                 Log.v("Line 67: ",fi.getManufacturer());
@@ -124,8 +132,8 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                         fss.setSerialNumber(serialNumber);
                         fss.setLogScanned(false);
                         fss.setSerialScanned(true);
-                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Firearm_Scan_Activity.this);
-                        String postBack = getJSONStringWithPOSTData.GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
+                        fss.setLog((long) 1);
+                        postBack = GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
                         Log.v("Line 92: ",postBack);
                         IsFirearmDisposed ifd = VerifyFirearmDisposedA(postBack);
                         if (ifd ==null) {
@@ -134,7 +142,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                             if (ifd.isDisposed()) {
                                 Toast.makeText(Firearm_Scan_Activity.this,"Firearm Is Disposed",Toast.LENGTH_LONG).show();
                             } else if (!ifd.isDisposed()) {
-                                String firearmInfoPostBack =  getJSONStringWithPOSTData.GetFirearmInfo(fss,Firearm_Scan_Activity.this);
+                                String firearmInfoPostBack =  GetFirearmInfo(fss,Firearm_Scan_Activity.this);
                                 Log.v("Line 65: ",firearmInfoPostBack);
                                 fi = GetFirearmInfo(firearmInfoPostBack);
                                 Log.v("Line 67: ",fi.getManufacturer());
@@ -244,5 +252,88 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    public String UpdateFirearmScan (FirearmStockUpdate fsu, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/CountFirearm");
+            postData.put("InventoryNumber", fsu.getInventoryNumber());
+            postData.put("EmployeeID", fsu.getEmployeeID());
+            postData.put("MachineName", fsu.getMachineName());
+            Log.v("PostData to Send", postData.toString());
+
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context){
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+
+
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+
+
+            Log.v("GetJSONWithPostData ",JSONReturnData);
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+    }
+
+    public String GetFirearmDisposed (FirearmStockScan fss, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/VerifyFirearmNotDisposed");
+            postData.put("Log",fss.getLog());
+            postData.put("SerialNumber", fss.getSerialNumber());
+            postData.put("SerialScanned", fss.isSerialScanned());
+            postData.put("LogScanned", fss.isLogScanned());
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+
+            Log.v("GetJSONWithPostData ",JSONReturnData);
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+    }
+
+    public String GetFirearmInfo (FirearmStockScan fss,Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation" +
+                    "");
+            postData.put("Log",fss.getLog());
+            postData.put("SerialNumber", fss.getSerialNumber());
+            postData.put("SerialScanned", fss.isSerialScanned());
+            postData.put("LogScanned", fss.isLogScanned());
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+
+            Log.v(TAG,JSONReturnData);
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
     }
 }

@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
             pDialog = new ProgressDialog(MainActivity.this);
             pDialog.setMessage("Verifing Connection...");
-            pDialog.setCancelable(false);
+            pDialog.setCancelable(true);
             pDialog.show();
         }
 
