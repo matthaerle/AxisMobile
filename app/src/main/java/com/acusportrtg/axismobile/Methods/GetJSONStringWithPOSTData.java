@@ -1,25 +1,14 @@
 package com.acusportrtg.axismobile.Methods;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
-import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
-import com.acusportrtg.axismobile.JSON_Classes.FirearmStockUpdate;
-import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
-import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,10 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.Buffer;
-import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
@@ -42,7 +28,6 @@ public class GetJSONStringWithPOSTData {
     private static String JSONReturnData = "";
     private String stringAddress;
     private AppCompatActivity activity;
-    private ProgressDialog progressDialog;
 
 public interface CallbackReceiver {
     public void receiveData(Object result);
@@ -106,7 +91,7 @@ public interface CallbackReceiver {
 
         public abstract void receiveData(Object object);
 
-        public GetJSONDataBack(Context cxt) {
+        protected GetJSONDataBack(Context cxt) {
             context = cxt;
             pDialog = new ProgressDialog(context);
         }
@@ -123,25 +108,20 @@ public interface CallbackReceiver {
             Log.v(TAG, "GetJSONStringWithPostData doInbackround:\n"+params[1]);
             String data = "";
             HttpURLConnection httpURLConnection = null;
-            BufferedReader reader;
             try {
                 httpURLConnection = (HttpURLConnection) new URL(params[0]).openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
-
                 Writer writer = new BufferedWriter(new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8"));
                 writer.write(params[1]);
                 writer.close();
-
                 InputStream inputStream = httpURLConnection.getInputStream();
                 data = convertStreamToString(inputStream);
                 return data;
-
             } catch (MalformedURLException e) {
                 Log.e(TAG, "MalformedURLException: " + e.getMessage());
-
             } catch (IOException e) {
                 Log.e(TAG, "IOException: " + e.getMessage());
             } finally {
@@ -155,10 +135,9 @@ public interface CallbackReceiver {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.v("TAG","GetJSONStringWithPostData onPostExecute:\n" +result);
-            if (result != null) {
-
+            if (result != null)
                 receiveData(result);
-            }
+
             JSONReturnData = result;
             pDialog.dismiss();
         }
