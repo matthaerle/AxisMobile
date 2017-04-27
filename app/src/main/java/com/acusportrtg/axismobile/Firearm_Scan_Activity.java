@@ -3,7 +3,6 @@ package com.acusportrtg.axismobile;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 import static android.content.ContentValues.TAG;
 import android.widget.CompoundButton;
 import android.app.AlertDialog;
-
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockUpdate;
@@ -27,24 +25,20 @@ import com.acusportrtg.axismobile.JSON_Classes.IsFirearmDisposed;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.ServerAddress;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by mhaerle on 4/21/2017.
  */
 
 public class Firearm_Scan_Activity extends AppCompatActivity {
-    private ProgressDialog pDialog;
-    private FirearmInfo fi;
-    private String postBack = "";
+    private FirearmInfo fi = new FirearmInfo();
     private GetEmployees emp;
     private boolean displayedHint = false;
+    private FirearmStockScan fss;
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +52,6 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
         final EditText edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
-        final TextView txt_manufacture_data = (TextView) findViewById(R.id.txtManufactureData);
-        final TextView txt_serial_data = (TextView) findViewById(R.id.txt_serial_data);
-        final TextView txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
-        final ConstraintLayout firearm_view = (ConstraintLayout) findViewById(R.id.constraint_firearminfo);
         final Switch switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
 
         radio_log.setChecked(true);
@@ -85,11 +75,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                                 })
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
-
-                    }
-                }
-            }
-        });
+                    }}}});
 
         btn_count.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,27 +86,17 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                 fsu.setMachineName("Axis Mobile");
 
                 try {
-                    GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Firearm_Scan_Activity.this);
-                    postBack = UpdateFirearmScan(fsu,Firearm_Scan_Activity.this);
-                    Log.v("PostBack\n", postBack);
-                    UpdateStatus us = FirearmCounted(postBack);
-                    if (us.isSuccesfull()) {
-                        Toast.makeText(Firearm_Scan_Activity.this,"Count succesfull.",Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(Firearm_Scan_Activity.this,"Unable to Update count.",Toast.LENGTH_LONG).show();
-                    }
+                    UpdateFirearmScan(fsu,Firearm_Scan_Activity.this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
-                }
-
-            }
+                }    }
         });
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fss = new FirearmStockScan();
                 String str_input_scanned = edt_input_scanned.getText().toString().trim();
-                FirearmStockScan fss = new FirearmStockScan();
                 if(radio_log.isChecked()){
                     //Do Log number stuff
 
@@ -130,75 +106,27 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                         fss.setLogScanned(true);
                         fss.setSerialScanned(false);
                         fss.setSerialNumber("");
-
-                        //FirearmInfo fi = new GetMyFirearmInfo().execute(fss).get();
-
-                        postBack = GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
-                        Log.v("Line 59: ",postBack);
-                        IsFirearmDisposed ifd = VerifyFirearmDisposedA(postBack);
-                        if (ifd ==null) {
-                            Toast.makeText(Firearm_Scan_Activity.this,"Invalid Log Number Scanned",Toast.LENGTH_LONG).show();
-                        } else {
-                            if (ifd.isDisposed()) {
-                                Toast.makeText(Firearm_Scan_Activity.this,"Firearm Is Disposed",Toast.LENGTH_LONG).show();
-                            } else if (!ifd.isDisposed()) {
-                                String firearmInfoPostBack =  GetFirearmInfo(fss,Firearm_Scan_Activity.this);
-                                Log.v("Line 65: ",firearmInfoPostBack);
-                                fi = GetFirearmInfo(firearmInfoPostBack);
-                                Log.v("Line 67: ",fi.getManufacturer());
-                                txt_manufacture_data.setText(fi.getManufacturer());
-                                txt_serial_data.setText(fi.getSerialNumber());
-                                txt_upc_data.setText(fi.getUPC());
-                                firearm_view.setVisibility(View.VISIBLE);
-                            }
-                        }
-
+                        GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
                     }  catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                     }
-
-
                 } else if (radio_serial.isChecked()) {
                     //Do Serialnumber stuff
                     try {
-                        String serialNumber = str_input_scanned;
-                        fss.setSerialNumber(serialNumber);
+                        fss.setSerialNumber(str_input_scanned);
                         fss.setLogScanned(false);
                         fss.setSerialScanned(true);
                         fss.setLog((long) 1);
-                        postBack = GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
-                        Log.v("Line 92: ",postBack);
-                        IsFirearmDisposed ifd = VerifyFirearmDisposedA(postBack);
-                        if (ifd ==null) {
-                            Toast.makeText(Firearm_Scan_Activity.this,"Invalid Serial Number Scanned",Toast.LENGTH_LONG).show();
-                        } else {
-                            if (ifd.isDisposed()) {
-                                Toast.makeText(Firearm_Scan_Activity.this,"Firearm Is Disposed",Toast.LENGTH_LONG).show();
-                            } else if (!ifd.isDisposed()) {
-                                String firearmInfoPostBack =  GetFirearmInfo(fss,Firearm_Scan_Activity.this);
-                                Log.v("Line 65: ",firearmInfoPostBack);
-                                fi = GetFirearmInfo(firearmInfoPostBack);
-                                Log.v("Line 67: ",fi.getManufacturer());
-                                txt_manufacture_data.setText(fi.getManufacturer());
-                                txt_serial_data.setText(fi.getSerialNumber());
-                                txt_upc_data.setText(fi.getUPC());
-                                firearm_view.setVisibility(View.VISIBLE);
-                            }
-                        }
-
+                        GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
                     }  catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                     }
-
-
                 } else {
                     Toast.makeText(Firearm_Scan_Activity.this,"Please Select a scanning mode.",Toast.LENGTH_LONG).show();
                 }
 
             }
         });
-
-
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
                 if(radio_log.isChecked()){
@@ -213,10 +141,8 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                 }
             }
         };
-
         radio_serial.setOnClickListener(radio_serial_listener);
         radio_log.setOnClickListener(radio_log_listener);
-
     }
 
     private UpdateStatus FirearmCounted(String jsonStr) {
@@ -281,14 +207,11 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
-                    }
-                });
-            }
-        }
-        return null;
+                    }});
+            }}return null;
     }
 
-    public String UpdateFirearmScan (FirearmStockUpdate fsu, Context context) {
+    public void UpdateFirearmScan (FirearmStockUpdate fsu, Context context) {
         JSONObject postData = new JSONObject();
         try {
             URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/CountFirearm");
@@ -301,24 +224,24 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                 @Override
                 public void receiveData(Object object) {
                     JSONReturnData = (String)object;
-                }
-            };
-
-
+                    Log.v(TAG, "Update FirearmScan JSONReturnData:\n"+JSONReturnData);
+                    UpdateStatus us = FirearmCounted(JSONReturnData);
+                    if (us != null) {
+                        if (us.isSuccesfull())
+                            Toast.makeText(Firearm_Scan_Activity.this,"Count succesfull.",Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(Firearm_Scan_Activity.this,"Unable to Update count.",Toast.LENGTH_LONG).show();
+                    }}};
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-
-
             Log.v("GetJSONWithPostData ",JSONReturnData);
-            return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         }
-        return JSONReturnData;
     }
 
-    public String GetFirearmDisposed (FirearmStockScan fss, Context context) {
+    public void GetFirearmDisposed (final FirearmStockScan fss, final Context context) {
         JSONObject postData = new JSONObject();
         try {
             URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/VerifyFirearmNotDisposed");
@@ -330,25 +253,41 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                 @Override
                 public void receiveData(Object object) {
                     JSONReturnData = (String)object;
-                }
-            };
+                    Log.v(TAG,"GetFirearm Disposed, JSONReturnData"+JSONReturnData);
+                    IsFirearmDisposed ifd = VerifyFirearmDisposedA(JSONReturnData);
+                    if (ifd ==null) {
+                        Toast.makeText(Firearm_Scan_Activity.this,"Invalid Log Number Scanned",Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (ifd.isDisposed()) {
+                            Toast.makeText(Firearm_Scan_Activity.this,"Firearm Is Disposed",Toast.LENGTH_SHORT).show();
+                        } else if (!ifd.isDisposed()) {
+                            Toast.makeText(Firearm_Scan_Activity.this,"Firearm is In-Stock", Toast.LENGTH_SHORT).show();
+                            GetFirearmInfo(fss, Firearm_Scan_Activity.this);
+                        }}}};
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-
             Log.v("GetJSONWithPostData ",JSONReturnData);
-            return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         }
-        return JSONReturnData;
     }
 
-    public String GetFirearmInfo (FirearmStockScan fss,Context context) {
+    private void fillFirearmInfo(FirearmInfo fi) {
+        TextView txt_manufacture_data = (TextView) findViewById(R.id.txtManufactureData);
+        TextView txt_serial_data = (TextView) findViewById(R.id.txt_serial_data);
+        TextView txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
+        ConstraintLayout firearm_view = (ConstraintLayout) findViewById(R.id.constraint_firearminfo);
+        txt_manufacture_data.setText(fi.getManufacturer());
+        txt_serial_data.setText(fi.getSerialNumber());
+        txt_upc_data.setText(fi.getUPC());
+        firearm_view.setVisibility(View.VISIBLE);
+    }
+
+    public void GetFirearmInfo (FirearmStockScan fss,Context context) {
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation" +
-                    "");
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation");
             postData.put("Log",fss.getLog());
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());
@@ -357,17 +296,19 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                 @Override
                 public void receiveData(Object object) {
                     JSONReturnData = (String)object;
-                }
-            };
+                    Log.v(TAG,"JSONReturnData GetFirearmInfo:\n"+JSONReturnData);
+                    fi = GetFirearmInfo(JSONReturnData);
+                    if (fi != null) {
+                        fillFirearmInfo(fi);
+                    } else {
+                        Log.e(TAG,"Error filling firearm info");
+                    }}};
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-
             Log.v(TAG,JSONReturnData);
-            return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         }
-        return JSONReturnData;
     }
 }
