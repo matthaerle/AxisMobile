@@ -1,16 +1,13 @@
 package com.acusportrtg.axismobile;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -25,13 +22,11 @@ import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
-
-import org.json.JSONArray;
+import com.acusportrtg.axismobile.Methods.ServerAddress;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-
-import java.util.concurrent.ExecutionException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static android.content.ContentValues.TAG;
 
@@ -41,9 +36,10 @@ import static android.content.ContentValues.TAG;
 
 public class Inventory_Scan_Activity extends AppCompatActivity {
     private Button btn_search,btn_clear,btn_submit;
+    private SubmitItemCount sub = new SubmitItemCount();
+    private String JSONReturnData = "";
     private EditText edt_product_upc,edt_count_qty;
     private ConstraintLayout product_info;
-    private ProgressDialog pDialog;
     private int invGroupID;
     private GetEmployees emp;
     private TextView txt_qoh_data,txt_upc_data,txt_price_data,txt_desc_data;
@@ -78,18 +74,12 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
                         GetInventoryGroupProductID prod = new GetInventoryGroupProductID();
                         prod.setGroupID(invGroupID);
                         prod.setProductUPC(productUPC);
-                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Inventory_Scan_Activity.this);
 
-                        String productInfo = getJSONStringWithPOSTData.VerifyProductInGroup(prod, Inventory_Scan_Activity.this);
-                        Log.v(TAG, productInfo);
-                        SendProductView prodInfo = new VerifyProductInGroup().execute(productInfo).get();
-                        edt_count_qty.requestFocus();
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Inventory_Scan_Activity.INPUT_METHOD_SERVICE);
-                        imm.showSoftInput(edt_count_qty, InputMethodManager.SHOW_IMPLICIT);
 
-                    } catch (InterruptedException | ExecutionException e) {
-                        Log.e(TAG, e.getMessage());
-                    } catch (Exception e) {
+                        VerifyProductInGroup(prod, Inventory_Scan_Activity.this);
+
+
+                    }  catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                     }
                 }
@@ -99,28 +89,16 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                SubmitItemCount sub = new SubmitItemCount();
+                sub = new SubmitItemCount();
                 sub.setProductUPC(txt_upc_data.getText().toString().trim());
                 sub.setGroupID(invGroupID);
                 sub.setCountQty(Integer.parseInt(edt_count_qty.getText().toString().trim()));
                 sub.setEmployeeID(emp.getEmployeeID());
-
                 try{
-                    GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Inventory_Scan_Activity.this);
-                    String postBack = getJSONStringWithPOSTData.UpdateInventoryCount(sub, Inventory_Scan_Activity.this);
-                    Log.v(TAG, postBack);
-                    UpdateStatus status = new ConvertJSONToObject().execute(postBack).get();
-                    if (status.isSuccesfull()) {
-                        Toast.makeText(Inventory_Scan_Activity.this,"UPC: " + sub.getProductUPC() + "Updated",Toast.LENGTH_LONG).show();
-                        Log.v(TAG,"UPC: " + sub.getProductUPC() + "Updated to Qty: " + String.valueOf(sub.getCountQty()));
-                    }
-                }catch (InterruptedException | ExecutionException e) {
-                    Log.e(TAG, e.getMessage());
+                    UpdateInventoryCount(sub, Inventory_Scan_Activity.this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
-
-
                 edt_count_qty.setText("");
                 edt_product_upc.setText("");
                 edt_product_upc.requestFocus();
@@ -158,41 +136,88 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Group: " + glob.getInvGroup().getGroupName());
     }
-    private class ConvertJSONToObject extends AsyncTask<String,Void,UpdateStatus> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(Inventory_Scan_Activity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
+
+
+    public String UpdateInventoryCount (SubmitItemCount count, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InsertProductCountInventory");
+            postData.put("ProductUPC", count.getProductUPC());
+            postData.put("EmployeeID", count.getEmployeeID());
+            postData.put("CountQty", count.getCountQty());
+            postData.put("GroupID", count.getGroupID());
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                    Log.v(TAG, "UpdateInventoryCount JSONReturnData\n"+JSONReturnData);
+                    UpdateStatus status = UpdateInventoryCountA(JSONReturnData);
+                    if (status.isSuccesfull()) {
+                        Toast.makeText(Inventory_Scan_Activity.this,"UPC: " + sub.getProductUPC() + "Updated",Toast.LENGTH_LONG).show();
+                        Log.v(TAG,"UPC: " + sub.getProductUPC() + "Updated to Qty: " + String.valueOf(sub.getCountQty()));
+                    }
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         }
-        @Override
-        protected UpdateStatus doInBackground(String... params) {
-            String jsonStr = params[0];
+        return JSONReturnData;
+    }
+
+    public String VerifyProductInGroup (GetInventoryGroupProductID prod, Context context) {
+
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InventoryGroupProductID");
+            postData.put("ProductUPC", prod.getProductUPC());
+            postData.put("GroupID", prod.getGroupID());
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                    Log.v(TAG, "VerifyProductInGroup JSONReturnData\n"+JSONReturnData);
+                    SendProductView prodInfo = VerifyProductInGroupA(JSONReturnData);
+                    edt_count_qty.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Inventory_Scan_Activity.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(edt_count_qty, InputMethodManager.SHOW_IMPLICIT);
+                    txt_desc_data = (TextView) findViewById(R.id.txt_desc_data);
+                    txt_price_data = (TextView) findViewById(R.id.txt_price_data);
+                    txt_qoh_data = (TextView) findViewById(R.id.txt_qoh_data);
+                    txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
+
+                    txt_upc_data.setText(prodInfo.getProductUPC());
+                    txt_price_data.setText(String.valueOf(prodInfo.getPrice()));
+                    txt_desc_data.setText(prodInfo.getShortDescription());
+                    txt_qoh_data.setText(String.valueOf(prodInfo.getPhysicalQoH()));
+
+                    product_info.setVisibility(View.VISIBLE);
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+
+    }
+
+    private UpdateStatus UpdateInventoryCountA (String jsonStr) {
+        if (!jsonStr.equals("")) {
             try {
 
-                JSONObject obj = new JSONObject(jsonStr);
-                Object json = obj;
-                JSONObject statusObject;
-                JSONArray statusArray;
-                if (json instanceof JSONObject) {
+                JSONObject statusObject = new JSONObject(jsonStr);
                     UpdateStatus upd = new UpdateStatus();
-                    statusObject = (JSONObject)json;
                     upd.setSuccesfull(statusObject.getBoolean("IsSuccesfull"));
 
                     return upd;
-                } else if (json instanceof  JSONArray) {
-                    statusArray = (JSONArray)json;
-                    for (int i=0; i < statusArray.length(); i++) {
-                        JSONObject p = statusArray.getJSONObject(i);
-                        UpdateStatus upd = new UpdateStatus();
-                        upd.setSuccesfull(p.getBoolean("IsSuccesfull"));
 
-                        return upd;
-                    }
-
-                }
             } catch (final JSONException e) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -201,74 +226,33 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
                     }
                 });
             }
-            return null;
         }
-        @Override
-        protected  void onPostExecute(UpdateStatus result) {
-            super.onPostExecute(result);
-            if(pDialog.isShowing()) {
-                pDialog.dismiss();
-            }
-        }
+
+        return null;
     }
 
+    private SendProductView VerifyProductInGroupA (String jsonStr) {
+        if (!jsonStr.equals("")) {
+            try {
+                JSONObject prodObject = new JSONObject(jsonStr);
 
-    private class VerifyProductInGroup extends AsyncTask<String,Void,SendProductView> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(Inventory_Scan_Activity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-        @Override
-        protected SendProductView doInBackground(String... params) {
-            String jsonStr = params[0];
+                    SendProductView productView = new SendProductView();
+                    productView.setProductUPC(prodObject.getString("ProductUPC"));
+                    productView.setItemNmbr(prodObject.optString("ItemNbr"));
+                    productView.setMaxLevel(prodObject.getInt("MaxLevel"));
+                    productView.setMinLevel(prodObject.getInt("MinLevel"));
+                    productView.setPhysicalQoH(prodObject.getInt("PhysicalQoH"));
+                    productView.setPrice(prodObject.getDouble("Price"));
+                    productView.setProductID(prodObject.getLong("ProductID"));
+                    productView.setShortDescription(prodObject.getString("ShortDescription"));
+                    productView.setQtyOnOrder(prodObject.getInt("QtyOnOrder"));
+                    productView.setQtyCommitted(prodObject.getInt("QtyCommitted"));
 
-            if (jsonStr != "") {
-                try {
+                    return productView;
 
-                    JSONObject obj = new JSONObject(jsonStr);
-                    Object json = obj;
-                    JSONObject prodObject;
-                    JSONArray prodArray;
-                    if (json instanceof JSONObject) {
-                        SendProductView productView = new SendProductView();
-                        prodObject = (JSONObject) json;
-                        productView.setProductUPC(prodObject.getString("ProductUPC"));
-                        productView.setItemNmbr(prodObject.optString("ItemNbr"));
-                        productView.setMaxLevel(prodObject.getInt("MaxLevel"));
-                        productView.setMinLevel(prodObject.getInt("MinLevel"));
-                        productView.setPhysicalQoH(prodObject.getInt("PhysicalQoH"));
-                        productView.setPrice(prodObject.getDouble("Price"));
-                        productView.setProductID(prodObject.getLong("ProductID"));
-                        productView.setShortDescription(prodObject.getString("ShortDescription"));
-                        productView.setQtyOnOrder(prodObject.getInt("QtyOnOrder"));
-                        productView.setQtyCommitted(prodObject.getInt("QtyCommitted"));
 
-                        return productView;
-                    } else if (json instanceof JSONArray) {
-                        prodArray = (JSONArray) json;
-                        for (int i = 0; i < prodArray.length(); i++) {
-                            JSONObject p = prodArray.getJSONObject(i);
-                            SendProductView productView = new SendProductView();
 
-                            productView.setItemNmbr(p.optString("ItemNbr"));
-                            productView.setMaxLevel(p.getInt("MaxLevel"));
-                            productView.setMinLevel(p.getInt("MinLevel"));
-                            productView.setPhysicalQoH(p.getInt("PhysicalQoH"));
-                            productView.setPrice(p.getDouble("Price"));
-                            productView.setProductID(p.getLong("ProductID"));
-                            productView.setShortDescription(p.getString("ShortDescription"));
-                            productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
-                            productView.setQtyCommitted(p.getInt("QtyCommitted"));
-
-                            return productView;
-                        }
-
-                    }
-                } catch (final JSONException e) {
+            } catch (final JSONException e) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -276,26 +260,10 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
                     }
                 });
             }
-            }
-            return null;
         }
-
-        @Override
-        protected  void onPostExecute(SendProductView result) {
-            super.onPostExecute(result);
-            if (result != null) {
-                txt_upc_data.setText(result.getProductUPC());
-                txt_price_data.setText(String.valueOf(result.getPrice()));
-                txt_desc_data.setText(result.getShortDescription());
-                txt_qoh_data.setText(String.valueOf(result.getPhysicalQoH()));
-
-                product_info.setVisibility(View.VISIBLE);
-            } else {
-                Toast.makeText(Inventory_Scan_Activity.this,"Product Does Not Exist In Group",Toast.LENGTH_LONG).show();
-            }
-            if(pDialog.isShowing()) {
-                pDialog.dismiss();
-            }
-        }
+        return null;
     }
+
+
+
 }

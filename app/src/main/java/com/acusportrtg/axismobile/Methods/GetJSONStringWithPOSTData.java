@@ -76,53 +76,9 @@ public interface CallbackReceiver {
         return JSONReturnData;
     }
 
-    public String UpdateInventoryCount (SubmitItemCount count, Context context) {
-        JSONObject postData = new JSONObject();
-        try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InsertProductCountInventory");
-            postData.put("ProductUPC", count.getProductUPC());
-            postData.put("EmployeeID", count.getEmployeeID());
-            postData.put("CountQty", count.getCountQty());
-            postData.put("GroupID", count.getGroupID());
-            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
-                @Override
-                public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                }
-            };
-            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-            return JSONReturnData;
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        }
-        return JSONReturnData;
-    }
 
-    public String VerifyProductInGroup (GetInventoryGroupProductID prod, Context context) {
-        stringAddress = ServerAddress.GetSavedServerAddress(context);
-        JSONObject postData = new JSONObject();
-        try {
-            URL reqUrl = new URL("http://" + stringAddress + ":8899/RestWCFServiceLibrary/InventoryGroupProductID");
-            postData.put("ProductUPC", prod.getProductUPC());
-            postData.put("GroupID", prod.getGroupID());
-            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
-                @Override
-                public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                }
-            };
-            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-            return JSONReturnData;
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        }
-        return JSONReturnData;
 
-    }
+
 
     private static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
