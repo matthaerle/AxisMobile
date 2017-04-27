@@ -37,4 +37,12 @@
     <string name="btn_count">Count</string>
     <string name="btn_firearm_scan_search">Search</string>
     <string name="txt_manufacturer_header">Manufacturer:</string>
+    <string name="txt_firearm_description">Description:</string>
+    <string name="txt_log_header">Log Number:</string>
+    <string name="txt_status_header">Status:</string>
+    <string name="txt_importer_header">Importer:</string>
+    <string name="txt_model_header">Model:</string>
+    <string name="txt_new_or_used_header">New/Used:</string>
+    <string name="txt_type_of_action_header">Type Of Action:</string>
+    <string name="txt_gauge_header">Gauge / Caliber:</string>
 </resources>

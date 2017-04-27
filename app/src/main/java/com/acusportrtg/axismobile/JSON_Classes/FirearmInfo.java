@@ -5,10 +5,37 @@ package com.acusportrtg.axismobile.JSON_Classes;
  */
 
 public class FirearmInfo {
-    private String SerialNumber,UPC,Manufacturer,Model,GaugeCaliber,TypeOfAction,NewUsed,Description;
+    private String SerialNumber,UPC,Manufacturer,Model,GaugeCaliber,TypeOfAction,NewUsed,Description,Importer;
     private String Status;
     private Long InvNbr;
     private int InventoryNumber;
+
+    public FirearmInfo() {
+        String serialNumber; String UPC; String manufacturer; String model; String gaugeCaliber; String typeOfAction; String newUsed; String description; String importer; String status; Long invNbr; int inventoryNumber;
+        serialNumber = "NODATA";UPC= "NOUPC";manufacturer = "No Manufacturer";model = "No Model"; gaugeCaliber = "No Gauge";typeOfAction = "No Action"; newUsed = "No Data"; description = "No Description"; importer = "No Importer"; status = "No Status";
+        invNbr = Long.getLong("0");
+        inventoryNumber = 0;
+        SerialNumber = serialNumber;
+        this.UPC = UPC;
+        Manufacturer = manufacturer;
+        Model = model;
+        GaugeCaliber = gaugeCaliber;
+        TypeOfAction = typeOfAction;
+        NewUsed = newUsed;
+        Description = description;
+        Importer = importer;
+        Status = status;
+        InvNbr = invNbr;
+        InventoryNumber = inventoryNumber;
+    }
+
+    public String getImporter() {
+        return Importer;
+    }
+
+    public void setImporter(String importer) {
+        Importer = importer;
+    }
 
     public int getInventoryNumber() {
         return InventoryNumber;
