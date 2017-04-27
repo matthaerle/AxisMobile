@@ -1,11 +1,15 @@
 package com.acusportrtg.axismobile.Methods;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
+import com.acusportrtg.axismobile.JSON_Classes.FirearmStockUpdate;
 import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
@@ -26,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.Buffer;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,6 +41,45 @@ import static android.content.ContentValues.TAG;
 public class GetJSONStringWithPOSTData {
     private String JSONReturnData = "";
     private String stringAddress;
+    private AppCompatActivity activity;
+    private ProgressDialog progressDialog;
+
+public interface CallbackReceiver {
+    public void receiveData(Object result);
+}
+
+    public GetJSONStringWithPOSTData(AppCompatActivity activity) {
+        this.activity = activity;
+    }
+
+    public String UpdateFirearmScan (FirearmStockUpdate fsu, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/CountFirearm");
+            postData.put("InventoryNumber", fsu.getInventoryNumber());
+            postData.put("EmployeeID", fsu.getEmployeeID());
+            postData.put("MachineName", fsu.getMachineName());
+            Log.v("PostData to Send", postData.toString());
+
+
+            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+
+
+            Log.v("GetJSONWithPostData ",JSONReturnData);
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+        return JSONReturnData;
+    }
 
     public String GetFirearmDisposed (FirearmStockScan fss, Context context) {
         JSONObject postData = new JSONObject();
@@ -45,7 +89,17 @@ public class GetJSONStringWithPOSTData {
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());
             postData.put("LogScanned", fss.isLogScanned());
-            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString()).wait(200);
+            for(long stop = System.nanoTime()+ TimeUnit.SECONDS.toNanos(5);stop>System.nanoTime();) {
+                if (!JSONReturnData.equals(""))
+                    return JSONReturnData;
+            }
             Log.v("GetJSONWithPostData ",JSONReturnData);
             return JSONReturnData;
         } catch (MalformedURLException e) {
@@ -65,7 +119,17 @@ public class GetJSONStringWithPOSTData {
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());
             postData.put("LogScanned", fss.isLogScanned());
-            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString()).wait(200);
+            for(long stop = System.nanoTime()+ TimeUnit.SECONDS.toNanos(5);stop>System.nanoTime();) {
+                if (!JSONReturnData.equals(""))
+                    return JSONReturnData;
+            }
             Log.v(TAG,JSONReturnData);
             return JSONReturnData;
         } catch (MalformedURLException e) {
@@ -82,7 +146,13 @@ public class GetJSONStringWithPOSTData {
         try {
             URL reqUrl = new URL("http://" + stringAddress + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
             postData.put("ProductUPC", upc.getProductUPC());
-            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
             return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
@@ -100,7 +170,13 @@ public class GetJSONStringWithPOSTData {
             postData.put("EmployeeID", count.getEmployeeID());
             postData.put("CountQty", count.getCountQty());
             postData.put("GroupID", count.getGroupID());
-            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
             return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
@@ -117,7 +193,13 @@ public class GetJSONStringWithPOSTData {
             URL reqUrl = new URL("http://" + stringAddress + ":8899/RestWCFServiceLibrary/InventoryGroupProductID");
             postData.put("ProductUPC", prod.getProductUPC());
             postData.put("GroupID", prod.getGroupID());
-            JSONReturnData = new GetJSONDataBack().execute(reqUrl.toString(), postData.toString()).get();
+            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
             return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
@@ -148,8 +230,23 @@ public class GetJSONStringWithPOSTData {
         }
         return sb.toString();
     }
-    private class GetJSONDataBack extends AsyncTask<String,Void,String> {
+    private abstract class GetJSONDataBack extends AsyncTask<String,Void,String> implements CallbackReceiver{
+        private Context context;
+        ProgressDialog pDialog;
 
+        public abstract void receiveData(Object object);
+
+        public GetJSONDataBack(Context cxt) {
+            context = cxt;
+            pDialog = new ProgressDialog(context);
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog.show();
+            pDialog.setMessage("Loading...");
+            pDialog.setCancelable(false);
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -189,7 +286,12 @@ public class GetJSONStringWithPOSTData {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.v("TAG","GetJSONStringWithPostData onPostExecute:\n" +result);
+            if (result != null) {
+
+                receiveData(result);
+            }
             JSONReturnData = result;
+            pDialog.dismiss();
         }
     }
 }

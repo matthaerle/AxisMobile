@@ -16,7 +16,10 @@ import static android.content.ContentValues.TAG;
 
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
+import com.acusportrtg.axismobile.JSON_Classes.FirearmStockUpdate;
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsFirearmDisposed;
+import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 
 import org.json.JSONException;
@@ -29,14 +32,17 @@ import org.json.JSONObject;
 public class Firearm_Scan_Activity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private FirearmInfo fi;
+    private GetEmployees emp;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
         setContentView(R.layout.firearm_inventory_scan);
 
         final RadioButton radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
         final RadioButton radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
-        final Button btn_count = (Button) findViewById(R.id.btn_submit_count);
+        final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
         final EditText edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
         final TextView txt_manufacture_data = (TextView) findViewById(R.id.txtManufactureData);
         final TextView txt_serial_data = (TextView) findViewById(R.id.txt_serial_data);
@@ -47,6 +53,24 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
         btn_count.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirearmStockUpdate fsu = new FirearmStockUpdate();
+                fsu.setInventoryNumber(fi.getInventoryNumber());
+                fsu.setEmployeeID(emp.getEmployeeID());
+                fsu.setMachineName("Axis Mobile");
+
+                try {
+                    GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Firearm_Scan_Activity.this);
+                    String postBack = getJSONStringWithPOSTData.UpdateFirearmScan(fsu,Firearm_Scan_Activity.this);
+                    Log.v("PostBack\n", postBack);
+                    UpdateStatus us = FirearmCounted(postBack);
+                    if (us.isSuccesfull()) {
+                        Toast.makeText(Firearm_Scan_Activity.this,"Count succesfull.",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Firearm_Scan_Activity.this,"Unable to Update count.",Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
 
             }
         });
@@ -67,7 +91,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
 
                         //FirearmInfo fi = new GetMyFirearmInfo().execute(fss).get();
 
-                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
+                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Firearm_Scan_Activity.this);
                         String postBack = getJSONStringWithPOSTData.GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
                         Log.v("Line 59: ",postBack);
                         IsFirearmDisposed ifd = VerifyFirearmDisposedA(postBack);
@@ -100,7 +124,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                         fss.setSerialNumber(serialNumber);
                         fss.setLogScanned(false);
                         fss.setSerialScanned(true);
-                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
+                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Firearm_Scan_Activity.this);
                         String postBack = getJSONStringWithPOSTData.GetFirearmDisposed(fss, Firearm_Scan_Activity.this);
                         Log.v("Line 92: ",postBack);
                         IsFirearmDisposed ifd = VerifyFirearmDisposedA(postBack);
@@ -153,118 +177,25 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
 
     }
 
-    private class GetMyFirearmInfo extends  AsyncTask<FirearmStockScan,Void,FirearmInfo> {
-
-
-        @Override
-        protected FirearmInfo doInBackground(FirearmStockScan... params) {
-            GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
-            String postBack = getJSONStringWithPOSTData.GetFirearmDisposed(params[0], Firearm_Scan_Activity.this);
-            IsFirearmDisposed iff = VerifyFirearmDisposedA(postBack);
-            if (iff.isDisposed()) {
-                return null;
-            } else if (iff == null) {
-                return null;
-            }
-            postBack = "";
-            postBack = getJSONStringWithPOSTData.GetFirearmInfo(params[0],Firearm_Scan_Activity.this);
-            FirearmInfo fi = GetFirearmInfo(postBack);
-
-            return fi;
-        }
-        @Override
-        protected void onPostExecute(FirearmInfo result) {
-            super.onPostExecute(result);
-            if (result == null) {
-                Log.v("Post Execute:\n", "FirarmInfo is null");
-            } else {
-                Log.v("FirearmInfo = ", result.getDescription());
+    private UpdateStatus FirearmCounted(String jsonStr) {
+        if (!jsonStr.equals("")) {
+            try {
+                JSONObject obj = new JSONObject(jsonStr);
+                UpdateStatus us = new UpdateStatus();
+                us.setSuccesfull(obj.getBoolean("IsSuccesfull"));
+                return us;
+            } catch (final JSONException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
+                    }
+                });
             }
         }
-    }
-    private class GetFirearmInfo extends AsyncTask<String,Void,FirearmInfo> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(Firearm_Scan_Activity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-        @Override
-        protected FirearmInfo doInBackground(String... params) {
-            String jsonStr = params[0];
-            if (!jsonStr.equals("")) {
-                try {
-                    JSONObject obj = new JSONObject(jsonStr);
-                    FirearmInfo fi = new FirearmInfo();
-                    fi.setSerialNumber(obj.getString("SerialNumber"));
-                    fi.setDescription(obj.getString("Description"));
-                    fi.setGaugeCaliber(obj.getString("GaugeCaliber"));
-                    fi.setInvNbr(obj.getLong("InvNbr"));
-                    fi.setManufacturer(obj.getString("Manufacturer"));
-                    fi.setModel(obj.getString("Model"));
-                    fi.setNewUsed(obj.getString("NewUsed"));
-                    fi.setStatus(obj.getString("Status"));
-                    fi.setUPC(obj.getString("UPC"));
-                    fi.setTypeOfAction(obj.getString("TypeOfAction"));
-                    return fi;
-                } catch (final JSONException e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
-                        }
-                    });
-                }
-            }
-            return null;
-        }
-        @Override
-        protected  void onPostExecute(FirearmInfo result) {
-            super.onPostExecute(result);
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-        }
+        return null;
     }
 
-    private class VerifyFirearmDisposed extends AsyncTask<String,Void,IsFirearmDisposed> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(Firearm_Scan_Activity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-        @Override
-        protected IsFirearmDisposed doInBackground(String... params) {
-            String jsonStr = params[0];
-            if(!jsonStr.equals("")) {
-                try {
-                    JSONObject obj = new JSONObject(jsonStr);
-                    IsFirearmDisposed ifd = new IsFirearmDisposed();
-                    ifd.setDisposed(obj.getBoolean("Disposed"));
-                    ifd.setInventoryNumber(obj.getInt("InventoryNumber"));
-                    return ifd;
-                }catch (final JSONException e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.e(TAG, "JSON parsing error: " + e.getMessage() + e.getLocalizedMessage());
-                        }
-                    });
-                }
-            }
-            return null;
-        }
-        @Override
-        protected  void onPostExecute(IsFirearmDisposed result) {
-            super.onPostExecute(result);
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-        }
-    }
 
     private FirearmInfo GetFirearmInfo(String jsonStr) {
         if (!jsonStr.equals("")) {
@@ -281,6 +212,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
                 fi.setStatus(obj.getString("Status"));
                 fi.setUPC(obj.getString("UPC"));
                 fi.setTypeOfAction(obj.getString("TypeOfAction"));
+                fi.setInventoryNumber(obj.getInt("InventoryNumber"));
                 return fi;
             } catch (final JSONException e) {
                 runOnUiThread(new Runnable() {

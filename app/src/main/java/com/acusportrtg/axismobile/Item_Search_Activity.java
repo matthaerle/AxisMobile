@@ -64,7 +64,7 @@ public class Item_Search_Activity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 SearchByUPC upc = new SearchByUPC();
                 upc.setProductUPC(upc_Field.getText().toString());
-                GetJSONStringWithPOSTData getProdData = new GetJSONStringWithPOSTData();
+                GetJSONStringWithPOSTData getProdData = new GetJSONStringWithPOSTData(Item_Search_Activity.this);
 
                 String productInfo = getProdData.GetProductInfoJsonString(upc, Item_Search_Activity.this);
                 Log.v(TAG,productInfo);

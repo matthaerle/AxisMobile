@@ -8,6 +8,15 @@ public class FirearmInfo {
     private String SerialNumber,UPC,Manufacturer,Model,GaugeCaliber,TypeOfAction,NewUsed,Description;
     private String Status;
     private Long InvNbr;
+    private int InventoryNumber;
+
+    public int getInventoryNumber() {
+        return InventoryNumber;
+    }
+
+    public void setInventoryNumber(int inventoryNumber) {
+        InventoryNumber = inventoryNumber;
+    }
 
     public String getSerialNumber() {
         return SerialNumber;

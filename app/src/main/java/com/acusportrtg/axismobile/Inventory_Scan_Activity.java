@@ -78,7 +78,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
                         GetInventoryGroupProductID prod = new GetInventoryGroupProductID();
                         prod.setGroupID(invGroupID);
                         prod.setProductUPC(productUPC);
-                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
+                        GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Inventory_Scan_Activity.this);
 
                         String productInfo = getJSONStringWithPOSTData.VerifyProductInGroup(prod, Inventory_Scan_Activity.this);
                         Log.v(TAG, productInfo);
@@ -106,7 +106,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
                 sub.setEmployeeID(emp.getEmployeeID());
 
                 try{
-                    GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData();
+                    GetJSONStringWithPOSTData getJSONStringWithPOSTData = new GetJSONStringWithPOSTData(Inventory_Scan_Activity.this);
                     String postBack = getJSONStringWithPOSTData.UpdateInventoryCount(sub, Inventory_Scan_Activity.this);
                     Log.v(TAG, postBack);
                     UpdateStatus status = new ConvertJSONToObject().execute(postBack).get();
