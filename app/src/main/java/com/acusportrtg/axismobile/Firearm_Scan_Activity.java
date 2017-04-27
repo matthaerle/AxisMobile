@@ -1,6 +1,7 @@
 package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,9 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import static android.content.ContentValues.TAG;
+import android.widget.CompoundButton;
+import android.app.AlertDialog;
 
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
@@ -40,6 +44,8 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
     private FirearmInfo fi;
     private String postBack = "";
     private GetEmployees emp;
+    private boolean displayedHint = false;
+
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +62,34 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
         final TextView txt_serial_data = (TextView) findViewById(R.id.txt_serial_data);
         final TextView txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
         final ConstraintLayout firearm_view = (ConstraintLayout) findViewById(R.id.constraint_firearminfo);
+        final Switch switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
 
+        radio_log.setChecked(true);
+
+        switch_continuous_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    if(!displayedHint){
+                        new AlertDialog.Builder(Firearm_Scan_Activity.this)
+                                .setTitle("Continuous Mode")
+                                .setMessage("With this active you can scan continuously without needing to click search or count after scanning.")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        displayedHint = true;
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch_continuous_mode.setChecked(false);
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+                    }
+                }
+            }
+        });
 
         btn_count.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +197,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
 
             }
         });
+
 
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
