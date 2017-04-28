@@ -140,10 +140,24 @@ public class Item_Search_Activity extends AppCompatActivity {
             if(pDialog.isShowing()) {
                 pDialog.dismiss();
             }
+            positiveFeedback();
         }
 
     }
 
+
+    private void positiveFeedback(){
+        Toast.makeText(Item_Search_Activity.this,"Entered code",Toast.LENGTH_LONG).show();
+        upc_Field.getBackground().setColorFilter(Color.parseColor("#27ae60"), PorterDuff.Mode.SRC_ATOP);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+            }
+        }, 3000);
+    }
 
     /*private void searchByUPC(String upc){
         try {
