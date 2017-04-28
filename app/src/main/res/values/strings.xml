@@ -7,7 +7,7 @@
     <string name="btn_Update_MinMax">Update Min Max</string>
     <string name="btn_firearm_search">Firearm Search</string>
     <string name="btn_product_search">Product Search</string>
-    <string name="item_search_header">Item Search By UPC</string>
+    <string name="txt_product_search_header">Product Search By UPC</string>
     <string name="update_min_max_header">Update Min Max</string>
     <string name="btn_non_firearm_inventory">Non-Firearm\r\nInventory</string>
     <string name="btn_firearm_inventory">Firearm\r\nInventory</string>

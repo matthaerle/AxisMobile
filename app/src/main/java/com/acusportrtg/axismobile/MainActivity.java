@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText password = (EditText) findViewById(R.id.pass_textbox);
 
         loginButton.setEnabled(false);
+        username.clearFocus();
 
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +95,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(final Editable s) {
                 if(username.getText().toString().trim().length() == 0){
+                    username.getBackground().setColorFilter(Color.parseColor("#95a5a6"),PorterDuff.Mode.SRC_ATOP);
                     loginButton.setEnabled(false);
                     loginButton.setTextColor(Color.parseColor("#2980b9"));
                     loginButton.setBackgroundResource(R.drawable.border_button);
+                }
+            }
+        });
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                password.setTextColor(Color.parseColor("#2980b9"));
+                password.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if(password.getText().toString().trim().length() == 0){
+                    password.getBackground().setColorFilter(Color.parseColor("#95a5a6"),PorterDuff.Mode.SRC_ATOP);
                 }
             }
         });

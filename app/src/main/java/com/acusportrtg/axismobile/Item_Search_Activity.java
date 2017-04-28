@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,7 +52,7 @@ public class Item_Search_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_search_by_upc);
-        getSupportActionBar().setTitle("Item Search");
+        getSupportActionBar().setTitle("Product Search");
 
        btn_clear_UPC_Field = (Button)findViewById(R.id.btn_clear);
        btn_search_UPC = (Button)findViewById(R.id.btn_search);
@@ -58,6 +60,27 @@ public class Item_Search_Activity extends AppCompatActivity {
        productListView = (ListView)findViewById(R.id.list_product_search);
 
         productListView.setVisibility(View.GONE);
+
+        upc_Field.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                upc_Field.setTextColor(Color.parseColor("#2980b9"));
+                upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if(upc_Field.getText().toString().trim().length() == 0){
+                    upc_Field.setTextColor(Color.parseColor("#95a5a6"));
+                    upc_Field.getBackground().setColorFilter(Color.parseColor("#95a5a6"), PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+        });
 
        btn_clear_UPC_Field.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +120,7 @@ public class Item_Search_Activity extends AppCompatActivity {
                 }
             };
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+            positiveFeedback();
             return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
@@ -162,7 +186,7 @@ public class Item_Search_Activity extends AppCompatActivity {
                 upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
                 upc_Field.setTextColor(Color.parseColor("#2980b9"));
             }
-        }, 300);
+        }, 1000);
     }
 
     /*private void searchByUPC(String upc){

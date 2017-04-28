@@ -32,8 +32,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/item_search_header"
-
+            android:text="@string/txt_product_search_header"
             tools:layout_constraintBaseline_creator="1"
             tools:layout_constraintLeft_creator="1"
             android:layout_marginRight="8dp"
