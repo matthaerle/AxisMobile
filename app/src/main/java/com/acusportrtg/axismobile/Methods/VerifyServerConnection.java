@@ -20,7 +20,7 @@ public class VerifyServerConnection {
     private Context context;
 
     public  IsConnected VerifyConnection(Context context) {
-        String address = ServerAddress.GetSavedServerAddress(context);
+        String address = SharedPrefs.GetSavedServerAddress(context);
         if (address != "") {
             try {
                 URL connectionUrl = new URL("http://" + address + ":8899/RestWCFServiceLibrary/IsConnected");

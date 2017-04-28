@@ -53,9 +53,9 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
     }
 
     /*private void GetEmpData() {
-        String stringAddress = ServerAddress.GetSavedServerAddress(this);
+        String stringAddress = SharedPrefs.GetSavedServerAddress(this);
         try {
-            URL servUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveEmployees");
+            URL servUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveEmployees");
             new GetEmployeesFromServer().execute(servUrl);
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());

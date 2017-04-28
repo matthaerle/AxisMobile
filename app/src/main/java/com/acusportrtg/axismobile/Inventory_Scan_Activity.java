@@ -22,7 +22,8 @@ import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
-import com.acusportrtg.axismobile.Methods.ServerAddress;
+import com.acusportrtg.axismobile.Methods.SharedPrefs;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
@@ -141,7 +142,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
     public String UpdateInventoryCount (SubmitItemCount count, Context context) {
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InsertProductCountInventory");
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InsertProductCountInventory");
             postData.put("ProductUPC", count.getProductUPC());
             postData.put("EmployeeID", count.getEmployeeID());
             postData.put("CountQty", count.getCountQty());
@@ -172,7 +173,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
 
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InventoryGroupProductID");
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/InventoryGroupProductID");
             postData.put("ProductUPC", prod.getProductUPC());
             postData.put("GroupID", prod.getGroupID());
             GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {

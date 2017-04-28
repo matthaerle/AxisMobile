@@ -1,6 +1,5 @@
 package com.acusportrtg.axismobile;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Context;
 import android.os.Bundle;
@@ -24,7 +23,8 @@ import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsFirearmDisposed;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
-import com.acusportrtg.axismobile.Methods.ServerAddress;
+import com.acusportrtg.axismobile.Methods.SharedPrefs;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
@@ -217,7 +217,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
     public void UpdateFirearmScan (FirearmStockUpdate fsu, Context context) {
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/CountFirearm");
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/CountFirearm");
             postData.put("InventoryNumber", fsu.getInventoryNumber());
             postData.put("EmployeeID", fsu.getEmployeeID());
             postData.put("MachineName", fsu.getMachineName());
@@ -248,7 +248,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
     public void GetFirearmDisposed (final FirearmStockScan fss, final Context context) {
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/VerifyFirearmNotDisposed");
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/VerifyFirearmNotDisposed");
             postData.put("Log",fss.getLog());
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());
@@ -312,7 +312,7 @@ public class Firearm_Scan_Activity extends AppCompatActivity {
     public void GetFirearmInfo (FirearmStockScan fss,Context context) {
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation");
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetFirearmInformation");
             postData.put("Log",fss.getLog());
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());

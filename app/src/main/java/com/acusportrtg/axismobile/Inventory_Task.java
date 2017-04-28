@@ -9,13 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
 import com.acusportrtg.axismobile.Methods.Inventory_List_Adapter;
-import com.acusportrtg.axismobile.Methods.ServerAddress;
+import com.acusportrtg.axismobile.Methods.SharedPrefs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +44,7 @@ public class Inventory_Task extends AppCompatActivity {
         getSupportActionBar().setTitle("Product Inventory");
 
         try {
-            URL url = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveInventoryGroups");
+            URL url = new URL("http://" + SharedPrefs.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveInventoryGroups");
             new GetInventoryGroups().execute(url);
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());

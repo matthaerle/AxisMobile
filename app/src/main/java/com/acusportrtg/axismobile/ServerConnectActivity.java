@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,7 +20,7 @@ import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
-import com.acusportrtg.axismobile.Methods.ServerAddress;
+import com.acusportrtg.axismobile.Methods.SharedPrefs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,7 +88,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         });
 
 
-        String serverIP = ServerAddress.GetSavedServerAddress(this);
+        String serverIP = SharedPrefs.GetSavedServerAddress(this);
         if(!serverIP.isEmpty()){
             server_address_txtbox.setText(serverIP);
         }
@@ -182,7 +180,7 @@ public class ServerConnectActivity extends AppCompatActivity {
                 Toast.makeText(ServerConnectActivity.this
                         , "Successful Connection",
                         Toast.LENGTH_LONG).show();
-                ServerAddress.SetSavedServerAddress(server_address_txtbox.getText().toString().trim(),this);
+                SharedPrefs.SetSavedServerAddress(server_address_txtbox.getText().toString().trim(),this);
                 Intent employee_select = new Intent(ServerConnectActivity.this,
                         MainActivity.class);
                 startActivity(employee_select);

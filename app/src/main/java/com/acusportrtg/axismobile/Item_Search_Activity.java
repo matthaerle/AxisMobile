@@ -1,5 +1,6 @@
 package com.acusportrtg.axismobile;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -8,23 +9,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.os.Handler;
-import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.Product_List_Adapter;
-import com.acusportrtg.axismobile.Methods.ServerAddress;
+import com.acusportrtg.axismobile.Methods.SharedPrefs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,11 +64,10 @@ public class Item_Search_Activity extends AppCompatActivity {
        upc_Field = (EditText)findViewById(R.id.edt_upc_field);
        productListView = (ListView)findViewById(R.id.list_product_search);
        horiz_rule = (ImageView) findViewById(R.id.horizontal_rule);
-       btn_clear_results_list = (Button)findViewById(R.id.btn_clear_list);
 
         productListView.setVisibility(View.GONE);
         horiz_rule.setVisibility(View.GONE);
-        btn_clear_results_list.setVisibility(View.GONE);
+
 
         upc_Field.addTextChangedListener(new TextWatcher() {
             @Override
@@ -117,24 +118,52 @@ public class Item_Search_Activity extends AppCompatActivity {
             }
         });
 
-        btn_clear_results_list.setOnClickListener(new View.OnClickListener (){
-            @Override
-            public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Item_Search_Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.drawer_product_search, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_clear_results:
                 prodAdapter.clear();
                 prodAdapter.notifyDataSetChanged();
                 productListView.setVisibility(View.GONE);
                 horiz_rule.setVisibility(View.GONE);
-                btn_clear_results_list.setVisibility(View.GONE);
-            }
-        });
+                break;
+            case R.id.action_input_method:
+                showDialog();
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    void showDialog() {
+        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("Input_Type_Dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        Input_Type_Dialog newFragment = new Input_Type_Dialog();
+        newFragment.show(ft, "dialog");
     }
 
     public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
         JSONObject postData = new JSONObject();
         try {
-            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
             postData.put("ProductUPC", upc.getProductUPC());
             GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
                 @Override
@@ -145,7 +174,6 @@ public class Item_Search_Activity extends AppCompatActivity {
                     prodAdapter = new Product_List_Adapter(Item_Search_Activity.this, productList);
                     productListView.setVisibility(View.VISIBLE);
                     horiz_rule.setVisibility(View.VISIBLE);
-                    btn_clear_results_list.setVisibility(View.VISIBLE);
                     productListView.setAdapter(prodAdapter);
                 }
             };

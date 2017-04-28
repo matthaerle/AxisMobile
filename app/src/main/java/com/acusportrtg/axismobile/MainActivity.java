@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +19,7 @@ import android.text.Editable;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
-import com.acusportrtg.axismobile.Methods.ServerAddress;
+import com.acusportrtg.axismobile.Methods.SharedPrefs;
 import com.acusportrtg.axismobile.Methods.VerifyServerConnection;
 
 import org.json.JSONArray;
@@ -196,12 +195,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void CheckServerConnected() {
         VerifyServerConnection verify = new VerifyServerConnection();
-        ServerAddress serverAddress = new ServerAddress();
+        SharedPrefs sharedPrefs = new SharedPrefs();
         IsConnected verified;
 
-        String stringAddress = ServerAddress.GetSavedServerAddress(this);
+        String stringAddress = SharedPrefs.GetSavedServerAddress(this);
         try{
-            URL servUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/IsConnected");
+            URL servUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/IsConnected");
             new VerifyServerConnected().execute(servUrl);
 
         } catch (MalformedURLException e) {
@@ -263,9 +262,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void GetEmpData() {
-        String stringAddress = ServerAddress.GetSavedServerAddress(this);
+        String stringAddress = SharedPrefs.GetSavedServerAddress(this);
         try {
-            URL servUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveEmployees");
+            URL servUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveEmployees");
             new MainActivity.GetEmployeesFromServer().execute(servUrl);
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
