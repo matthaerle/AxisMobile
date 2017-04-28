@@ -148,6 +148,41 @@ public class Item_Search_Activity extends AppCompatActivity {
         return null;
     }
 
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            Product_List_Adapter prodAdapter = new Product_List_Adapter(Item_Search_Activity.this,productList);
+            productListView.setVisibility(View.VISIBLE);
+            productListView.setAdapter(prodAdapter);
+            if(pDialog.isShowing()) {
+                pDialog.dismiss();
+            }
+            positiveFeedback();
+        }
+
+    }
+
+
+    private void positiveFeedback(){
+        Toast.makeText(Item_Search_Activity.this,"Entered code",Toast.LENGTH_LONG).show();
+        upc_Field.getBackground().setColorFilter(Color.parseColor("#27ae60"), PorterDuff.Mode.SRC_ATOP);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+            }
+        }, 3000);
+    }
+
+    /*private void searchByUPC(String upc){
+        try {
+            //String jsonReturn = GetProductInfoJsonString(upc, this);
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage());
+        }
+    }*/
 
 
 
