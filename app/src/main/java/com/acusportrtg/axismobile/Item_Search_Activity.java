@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -42,11 +43,13 @@ import static android.content.ContentValues.TAG;
 public class Item_Search_Activity extends AppCompatActivity {
 
     private EditText upc_Field;
-    private Button btn_clear_UPC_Field, btn_search_UPC;
+    private Button btn_clear_UPC_Field, btn_search_UPC, btn_clear_results_list;
+    private ImageView horiz_rule;
     private ArrayList<SendProductView> productList = new ArrayList<>();
     private ProgressDialog pDialog;
     private ListView productListView;
     private String JSONReturnData = "";
+    private Product_List_Adapter prodAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +61,12 @@ public class Item_Search_Activity extends AppCompatActivity {
        btn_search_UPC = (Button)findViewById(R.id.btn_search);
        upc_Field = (EditText)findViewById(R.id.edt_upc_field);
        productListView = (ListView)findViewById(R.id.list_product_search);
+       horiz_rule = (ImageView) findViewById(R.id.horizontal_rule);
+       btn_clear_results_list = (Button)findViewById(R.id.btn_clear_list);
 
         productListView.setVisibility(View.GONE);
+        horiz_rule.setVisibility(View.GONE);
+        btn_clear_results_list.setVisibility(View.GONE);
 
         upc_Field.addTextChangedListener(new TextWatcher() {
             @Override
@@ -99,6 +106,19 @@ public class Item_Search_Activity extends AppCompatActivity {
                 GetProductInfoJsonString(upc, Item_Search_Activity.this);
             }
         });
+
+        btn_clear_results_list.setOnClickListener(new View.OnClickListener (){
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Item_Search_Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                prodAdapter.clear();
+                prodAdapter.notifyDataSetChanged();
+                productListView.setVisibility(View.GONE);
+                horiz_rule.setVisibility(View.GONE);
+                btn_clear_results_list.setVisibility(View.GONE);
+            }
+        });
     }
 
     public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
@@ -112,8 +132,10 @@ public class Item_Search_Activity extends AppCompatActivity {
                     JSONReturnData = (String) object;
                     Log.v(TAG, "GetProductInfoJSONString JSONReturnData:\n");
                     GetProductA(JSONReturnData);
-                    Product_List_Adapter prodAdapter = new Product_List_Adapter(Item_Search_Activity.this, productList);
+                    prodAdapter = new Product_List_Adapter(Item_Search_Activity.this, productList);
                     productListView.setVisibility(View.VISIBLE);
+                    horiz_rule.setVisibility(View.VISIBLE);
+                    btn_clear_results_list.setVisibility(View.VISIBLE);
                     productListView.setAdapter(prodAdapter);
                 }
             };
