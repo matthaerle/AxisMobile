@@ -45,4 +45,8 @@
     <string name="txt_new_or_used_header">New/Used:</string>
     <string name="txt_type_of_action_header">Type Of Action:</string>
     <string name="txt_gauge_header">Gauge / Caliber:</string>
+    <string name="txt_department_header">Department:</string>
+    <string name="txt_manufacture_header">Manufacturer:</string>
+    <string name="txt_qty_on_order_header">Qty On Order:</string>
+    <string name="txt_qty_committed_header">Qty Committed:</string>
 </resources>

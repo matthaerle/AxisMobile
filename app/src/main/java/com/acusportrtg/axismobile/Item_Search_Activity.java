@@ -123,6 +123,8 @@ public class Item_Search_Activity extends AppCompatActivity {
                 productView.setShortDescription(p.getString("ShortDescription"));
                 productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
                 productView.setQtyCommitted(p.getInt("QtyCommitted"));
+                productView.setDepartment(p.getString("Department"));
+                productView.setManufacture(p.getString("Manufacture"));
 
                 if(productList.size() > 0){
                     for(int j = 0; j < productList.size(); j++){

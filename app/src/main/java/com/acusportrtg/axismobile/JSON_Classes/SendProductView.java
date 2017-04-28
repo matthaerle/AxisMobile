@@ -8,6 +8,8 @@ public class SendProductView {
     private Long ProductID;
     private String ProductUPC;
     private String ShortDescription;
+    private String Department;
+    private String Manufacture;
     private int MinLevel;
     private int MaxLevel;
     private String ItemNmbr;
@@ -15,6 +17,22 @@ public class SendProductView {
     private int PhysicalQoH;
     private int QtyOnOrder;
     private int QtyCommitted;
+
+    public String getDepartment() {
+        return Department;
+    }
+
+    public void setDepartment(String department) {
+        Department = department;
+    }
+
+    public String getManufacture() {
+        return Manufacture;
+    }
+
+    public void setManufacture(String manufacture) {
+        Manufacture = manufacture;
+    }
 
     public Long getProductID() {
         return ProductID;
