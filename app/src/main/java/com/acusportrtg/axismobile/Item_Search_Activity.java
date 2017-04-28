@@ -148,19 +148,8 @@ public class Item_Search_Activity extends AppCompatActivity {
         return null;
     }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Product_List_Adapter prodAdapter = new Product_List_Adapter(Item_Search_Activity.this,productList);
-            productListView.setVisibility(View.VISIBLE);
-            productListView.setAdapter(prodAdapter);
-            if(pDialog.isShowing()) {
-                pDialog.dismiss();
-            }
-            positiveFeedback();
-        }
 
-    }
+
 
 
     private void positiveFeedback(){
