@@ -88,10 +88,10 @@ public class Item_Search_Activity extends AppCompatActivity {
             GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
                 @Override
                 public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                    Log.v(TAG,"GetProductInfoJSONString JSONReturnData:\n");
+                    JSONReturnData = (String) object;
+                    Log.v(TAG, "GetProductInfoJSONString JSONReturnData:\n");
                     GetProductA(JSONReturnData);
-                    Product_List_Adapter prodAdapter = new Product_List_Adapter(Item_Search_Activity.this,productList);
+                    Product_List_Adapter prodAdapter = new Product_List_Adapter(Item_Search_Activity.this, productList);
                     productListView.setVisibility(View.VISIBLE);
                     productListView.setAdapter(prodAdapter);
                 }
@@ -103,9 +103,9 @@ public class Item_Search_Activity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         }
-        return JSONReturnData;
+        return null;
     }
-//hello
+
     private SendProductView GetProductA(String jsonStr) {
         try{
             JSONArray productJson = new JSONArray(jsonStr);
@@ -150,19 +150,17 @@ public class Item_Search_Activity extends AppCompatActivity {
 
 
 
-
-
     private void positiveFeedback(){
-        Toast.makeText(Item_Search_Activity.this,"Entered code",Toast.LENGTH_LONG).show();
         upc_Field.getBackground().setColorFilter(Color.parseColor("#27ae60"), PorterDuff.Mode.SRC_ATOP);
+        upc_Field.setTextColor(Color.parseColor("#27ae60"));
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Do something after 5s = 5000ms
                 upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                upc_Field.setTextColor(Color.parseColor("#2980b9"));
             }
-        }, 3000);
+        }, 300);
     }
 
     /*private void searchByUPC(String upc){
