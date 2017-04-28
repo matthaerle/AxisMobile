@@ -89,6 +89,16 @@ public class Item_Search_Activity extends AppCompatActivity {
             }
         });
 
+        upc_Field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(MainActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
        btn_clear_UPC_Field.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

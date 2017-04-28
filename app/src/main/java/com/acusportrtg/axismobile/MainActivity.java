@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,12 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<String,GetEmployees> employeeMap = new HashMap<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_page);
-        getSupportActionBar().setTitle("Login");
+        getSupportActionBar().setTitle("Axis Mobile - Login");
 
         verified.setConnectionVerified(false);
         CheckServerConnected();
@@ -61,6 +61,19 @@ public class MainActivity extends AppCompatActivity {
 
         loginButton.setEnabled(false);
         username.clearFocus();
+
+        username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    Log.d("focus", "focus loosed");
+                    // Do whatever you want here
+                } else {
+                    Log.d("focus", "focused");
+                }
+            }
+        });
+
 
         setupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +89,27 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!password.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(MainActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!password.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(MainActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
 
         username.addTextChangedListener(new TextWatcher() {
             @Override
@@ -132,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 if(verified.getConnectionVerified()){
                     boolean activeUser = employeeNameList.contains(username.getText().toString());
 
-                    //String resultHash = generateMD5Hash(password.getText().toString());
+                    String resultHash = generateMD5Hash(password.getText().toString());
                     //Toast.makeText(MainActivity.this, resultHash, Toast.LENGTH_LONG).show();
 
                     if(activeUser){
@@ -143,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent taskChooser = new Intent(MainActivity.this,Task_Chooser.class);
                         startActivity(taskChooser);
                         username.setText("");
+                        password.setText("");
                         username.setTextColor(Color.parseColor("#2980b9"));
                         username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
                     }
@@ -289,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+
 
 
 }
