@@ -105,7 +105,7 @@ public class Item_Search_Activity extends AppCompatActivity {
         }
         return JSONReturnData;
     }
-
+//hello
     private SendProductView GetProductA(String jsonStr) {
         try{
             JSONArray productJson = new JSONArray(jsonStr);
