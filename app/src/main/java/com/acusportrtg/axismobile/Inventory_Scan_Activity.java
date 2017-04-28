@@ -153,7 +153,7 @@ public class Inventory_Scan_Activity extends AppCompatActivity {
                     Log.v(TAG, "UpdateInventoryCount JSONReturnData\n"+JSONReturnData);
                     UpdateStatus status = UpdateInventoryCountA(JSONReturnData);
                     if (status.isSuccesfull()) {
-                        Toast.makeText(Inventory_Scan_Activity.this,"UPC: " + sub.getProductUPC() + "Updated",Toast.LENGTH_LONG).show();
+                        Toast.makeText(Inventory_Scan_Activity.this,"UPC: " + sub.getProductUPC() + " Updated",Toast.LENGTH_LONG).show();
                         Log.v(TAG,"UPC: " + sub.getProductUPC() + "Updated to Qty: " + String.valueOf(sub.getCountQty()));
                     }
                 }

@@ -1,6 +1,8 @@
 package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.ListView;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.os.Handler;
+import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -106,7 +110,7 @@ public class Item_Search_Activity extends AppCompatActivity {
 
                     if(productList.size() > 0){
                         for(int j = 0; i < productList.size() - 1; j++){
-                            if(!(productList.get(j).getProductID() == productView.getProductID())){
+                            if(!(productList.get(j).getProductID().equals(productView.getProductID()))){
                                 productList.add(productView);
                             }
                         }
@@ -139,6 +143,7 @@ public class Item_Search_Activity extends AppCompatActivity {
         }
 
     }
+
 
     /*private void searchByUPC(String upc){
         try {

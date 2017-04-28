@@ -7,93 +7,95 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <Button
         android:id="@+id/btn_non_firearm_inventory"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:background="@drawable/task_button"
+        android:textSize="16sp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:height="4dp"
-        android:background="@drawable/task_button"
-        android:drawablePadding="1dip"
-        android:drawableTop="@drawable/inventory_icon_selector"
-        android:elevation="4dp"
-        android:paddingBottom="15dip"
-        android:paddingTop="30dip"
         android:text="@string/btn_non_firearm_inventory"
         android:textColor="@drawable/border_button_text_color"
+        android:drawableStart="@drawable/inventory_icon_selector"
+        android:layout_gravity="start"
+        android:drawablePadding="2dip"
+        android:paddingStart="30dip"
+        android:paddingEnd="26dip"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline33"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/guideline29"
         app:layout_constraintRight_toLeftOf="@+id/guideline30"
         app:layout_constraintTop_toTopOf="@+id/guideline28"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+         />
 
     <Button
         android:id="@+id/btn_firearm_inventory"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:background="@drawable/task_button"
+        android:textSize="16sp"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:height="4dp"
-        android:background="@drawable/task_button"
-        android:drawablePadding="1dip"
-        android:drawableTop="@drawable/pistol_icon_selector"
-        android:elevation="4dp"
-        android:paddingBottom="15dip"
-        android:paddingTop="30dip"
         android:text="@string/btn_firearm_inventory"
         android:textColor="@drawable/border_button_text_color"
+        android:drawableStart="@drawable/pistol_icon_selector"
+        android:layout_gravity="start"
+        android:drawablePadding="2dip"
+        android:paddingStart="30dip"
+        android:paddingEnd="26dip"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline31"
         app:layout_constraintLeft_toLeftOf="@+id/guideline29"
         app:layout_constraintRight_toLeftOf="@+id/guideline30"
-        app:layout_constraintTop_toTopOf="@+id/guideline32" />
+        app:layout_constraintTop_toTopOf="@+id/guideline32"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        />
 
-
+    <TextView
+        android:id="@+id/txtEmpId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="8dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline28"
-        app:layout_constraintGuide_percent="0.1"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteY="57dp"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintGuide_percent="0.15"
+        android:orientation="horizontal" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline29"
-        app:layout_constraintGuide_percent="0.26"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="100dp" />
+        app:layout_constraintGuide_percent="0.1"
+        android:orientation="vertical" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline30"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.74"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="284dp" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline31"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9"
-        tools:layout_editor_absoluteY="511dp"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintGuide_percent="0.85" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"

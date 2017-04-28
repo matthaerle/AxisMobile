@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Created by jpederson on 4/15/2017.
@@ -28,17 +29,18 @@ public class Inventory_Type_Select_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inventory_task_chooser);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Inventory Type");
 
         myActivityTitle = getSupportActionBar().getTitle().toString();
-        getSupportActionBar().setTitle("Choose Inventory Type");
 
 
-        /*txt_Emp = (TextView)findViewById(R.id.txtEmpId);
+
+        TextView txt_Emp = (TextView)findViewById(R.id.txtEmpId);
 
         Globals glob = ((Globals)getApplicationContext());
-        txt_Emp.setText(String.valueOf(glob.getEmployee_Id()));*/
+        txt_Emp.setText(String.valueOf(glob.getEmployee().getEmployeeNumber()));
         btn_Non_Firearm_Inventory = (Button)findViewById(R.id.btn_non_firearm_inventory);
         btn_Firearm_Inventory = (Button)findViewById(R.id.btn_firearm_inventory);
 

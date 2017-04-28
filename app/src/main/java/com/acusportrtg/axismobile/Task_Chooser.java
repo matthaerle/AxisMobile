@@ -20,7 +20,7 @@ public class Task_Chooser extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_chooser);
         txt_Emp = (TextView)findViewById(R.id.txtEmpId);
-        getSupportActionBar().setTitle("Choose a task");
+        getSupportActionBar().setTitle("Main Menu");
 
         Globals glob = ((Globals)getApplicationContext());
         txt_Emp.setText(String.valueOf(glob.getEmployee().getEmployeeNumber()));
