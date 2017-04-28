@@ -96,8 +96,6 @@ public class Item_Search_Activity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 SearchByUPC upc = new SearchByUPC();
                 upc.setProductUPC(upc_Field.getText().toString());
-                GetJSONStringWithPOSTData getProdData = new GetJSONStringWithPOSTData(Item_Search_Activity.this);
-
                 GetProductInfoJsonString(upc, Item_Search_Activity.this);
             }
         });
@@ -120,7 +118,6 @@ public class Item_Search_Activity extends AppCompatActivity {
                 }
             };
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-            positiveFeedback();
             return JSONReturnData;
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
@@ -130,38 +127,43 @@ public class Item_Search_Activity extends AppCompatActivity {
         return null;
     }
 
-    private SendProductView GetProductA(String jsonStr) {
+    private void GetProductA(String jsonStr) {
         try{
             JSONArray productJson = new JSONArray(jsonStr);
-            for (int i=0; i <productJson.length(); i++) {
-                JSONObject p = productJson.getJSONObject(i);
-                SendProductView productView = new SendProductView();
+            if(productJson.length() == 0){
+                negativeFeedback();
+            }
+            else{
+                for (int i=0; i <productJson.length(); i++) {
+                    JSONObject p = productJson.getJSONObject(i);
+                    SendProductView productView = new SendProductView();
 
-                productView.setProductUPC(p.getString("ProductUPC"));
-                productView.setItemNmbr(p.optString("ItemNbr"));
-                productView.setMaxLevel(p.getInt("MaxLevel"));
-                productView.setMinLevel(p.getInt("MinLevel"));
-                productView.setPhysicalQoH(p.getInt("PhysicalQoH"));
-                productView.setPrice(p.getDouble("Price"));
-                productView.setProductID(p.getLong("ProductID"));
-                productView.setShortDescription(p.getString("ShortDescription"));
-                productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
-                productView.setQtyCommitted(p.getInt("QtyCommitted"));
-                productView.setDepartment(p.getString("Department"));
-                productView.setManufacture(p.getString("Manufacture"));
+                    productView.setProductUPC(p.getString("ProductUPC"));
+                    productView.setItemNmbr(p.optString("ItemNbr"));
+                    productView.setMaxLevel(p.getInt("MaxLevel"));
+                    productView.setMinLevel(p.getInt("MinLevel"));
+                    productView.setPhysicalQoH(p.getInt("PhysicalQoH"));
+                    productView.setPrice(p.getDouble("Price"));
+                    productView.setProductID(p.getLong("ProductID"));
+                    productView.setShortDescription(p.getString("ShortDescription"));
+                    productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
+                    productView.setQtyCommitted(p.getInt("QtyCommitted"));
+                    productView.setDepartment(p.getString("Department"));
+                    productView.setManufacture(p.getString("Manufacturer"));
 
-                if(productList.size() > 0){
-                    for(int j = 0; j < productList.size(); j++){
-                        if(!(productList.get(j).getProductID().equals(productView.getProductID()))){
-                            productList.add(productView);
-                            break;
+                    if(productList.size() > 0){
+                        for(int j = 0; j < productList.size(); j++){
+                            if(!(productList.get(j).getProductID().equals(productView.getProductID()))){
+                                productList.add(productView);
+                                break;
+                            }
                         }
                     }
+                    else{
+                        productList.add(productView);
+                    }
                 }
-                else{
-                    productList.add(productView);
-                }
-
+                positiveFeedback();
             }
         } catch (final JSONException e) {
             runOnUiThread(new Runnable() {
@@ -171,7 +173,6 @@ public class Item_Search_Activity extends AppCompatActivity {
                 }
             });
         }
-        return null;
     }
 
 
@@ -179,6 +180,20 @@ public class Item_Search_Activity extends AppCompatActivity {
     private void positiveFeedback(){
         upc_Field.getBackground().setColorFilter(Color.parseColor("#27ae60"), PorterDuff.Mode.SRC_ATOP);
         upc_Field.setTextColor(Color.parseColor("#27ae60"));
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                upc_Field.setTextColor(Color.parseColor("#2980b9"));
+                upc_Field.setText("");
+            }
+        }, 1000);
+    }
+
+    private void negativeFeedback(){
+        upc_Field.getBackground().setColorFilter(Color.parseColor("#c0392b"), PorterDuff.Mode.SRC_ATOP);
+        upc_Field.setTextColor(Color.parseColor("#c0392b"));
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
