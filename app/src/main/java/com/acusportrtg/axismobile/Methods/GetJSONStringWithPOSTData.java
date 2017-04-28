@@ -39,27 +39,7 @@ public interface CallbackReceiver {
 
 
 
-    public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
-        stringAddress = ServerAddress.GetSavedServerAddress(context);
-        JSONObject postData = new JSONObject();
-        try {
-            URL reqUrl = new URL("http://" + stringAddress + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
-            postData.put("ProductUPC", upc.getProductUPC());
-            GetJSONDataBack getJSONDataBack = new GetJSONDataBack(context) {
-                @Override
-                public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                }
-            };
-            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-            return JSONReturnData;
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        }
-        return JSONReturnData;
-    }
+
 
 
     private static String convertStreamToString(InputStream is) {

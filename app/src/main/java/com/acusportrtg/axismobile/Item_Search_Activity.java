@@ -1,6 +1,7 @@
 package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -20,11 +21,14 @@ import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.Product_List_Adapter;
+import com.acusportrtg.axismobile.Methods.ServerAddress;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
@@ -40,6 +44,7 @@ public class Item_Search_Activity extends AppCompatActivity {
     private ArrayList<SendProductView> productList = new ArrayList<>();
     private ProgressDialog pDialog;
     private ListView productListView;
+    private String JSONReturnData = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,88 +75,79 @@ public class Item_Search_Activity extends AppCompatActivity {
                 upc.setProductUPC(upc_Field.getText().toString());
                 GetJSONStringWithPOSTData getProdData = new GetJSONStringWithPOSTData(Item_Search_Activity.this);
 
-                String productInfo = getProdData.GetProductInfoJsonString(upc, Item_Search_Activity.this);
-                Log.v(TAG,productInfo);
-                new GetProduct().execute(productInfo);
+                GetProductInfoJsonString(upc, Item_Search_Activity.this);
             }
         });
     }
 
-
-    private class GetProduct extends AsyncTask<String,Void,Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(Item_Search_Activity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            String jsonStr = params[0];
-            try{
-                JSONArray productJson = new JSONArray(jsonStr);
-                for (int i=0; i <productJson.length(); i++) {
-                    JSONObject p = productJson.getJSONObject(i);
-                    SendProductView productView = new SendProductView();
-
-                    productView.setProductUPC(p.getString("ProductUPC"));
-                    productView.setItemNmbr(p.optString("ItemNbr"));
-                    productView.setMaxLevel(p.getInt("MaxLevel"));
-                    productView.setMinLevel(p.getInt("MinLevel"));
-                    productView.setPhysicalQoH(p.getInt("PhysicalQoH"));
-                    productView.setPrice(p.getDouble("Price"));
-                    productView.setProductID(p.getLong("ProductID"));
-                    productView.setShortDescription(p.getString("ShortDescription"));
-                    productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
-                    productView.setQtyCommitted(p.getInt("QtyCommitted"));
-
-                    if(productList.size() > 0){
-                        for(int j = 0; i < productList.size() - 1; j++){
-                            if(!(productList.get(j).getProductID().equals(productView.getProductID()))){
-                                productList.add(productView);
-                            }
-                        }
-                    }
-                    else{
-                        productList.add(productView);
-                    }
-
+    public String GetProductInfoJsonString (SearchByUPC upc, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + ServerAddress.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetProductsByUPC");
+            postData.put("ProductUPC", upc.getProductUPC());
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                    Log.v(TAG,"GetProductInfoJSONString JSONReturnData:\n");
+                    GetProductA(JSONReturnData);
+                    Product_List_Adapter prodAdapter = new Product_List_Adapter(Item_Search_Activity.this,productList);
+                    productListView.setVisibility(View.VISIBLE);
+                    productListView.setAdapter(prodAdapter);
                 }
-            } catch (final JSONException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e(TAG, "JSON parsing error: " + e.getMessage());
-                    }
-                });
-            }
-            return null;
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+            return JSONReturnData;
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            Product_List_Adapter prodAdapter = new Product_List_Adapter(Item_Search_Activity.this,productList);
-            productListView.setVisibility(View.VISIBLE);
-            productListView.setAdapter(prodAdapter);
-            if(pDialog.isShowing()) {
-                pDialog.dismiss();
-            }
-        }
-
+        return JSONReturnData;
     }
 
+    private SendProductView GetProductA(String jsonStr) {
+        try{
+            JSONArray productJson = new JSONArray(jsonStr);
+            for (int i=0; i <productJson.length(); i++) {
+                JSONObject p = productJson.getJSONObject(i);
+                SendProductView productView = new SendProductView();
 
-    /*private void searchByUPC(String upc){
-        try {
-            //String jsonReturn = GetProductInfoJsonString(upc, this);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage());
+                productView.setProductUPC(p.getString("ProductUPC"));
+                productView.setItemNmbr(p.optString("ItemNbr"));
+                productView.setMaxLevel(p.getInt("MaxLevel"));
+                productView.setMinLevel(p.getInt("MinLevel"));
+                productView.setPhysicalQoH(p.getInt("PhysicalQoH"));
+                productView.setPrice(p.getDouble("Price"));
+                productView.setProductID(p.getLong("ProductID"));
+                productView.setShortDescription(p.getString("ShortDescription"));
+                productView.setQtyOnOrder(p.getInt("QtyOnOrder"));
+                productView.setQtyCommitted(p.getInt("QtyCommitted"));
+
+                if(productList.size() > 0){
+                    for(int j = 0; j < productList.size(); j++){
+                        if(!(productList.get(j).getProductID().equals(productView.getProductID()))){
+                            productList.add(productView);
+                            break;
+                        }
+                    }
+                }
+                else{
+                    productList.add(productView);
+                }
+
+            }
+        } catch (final JSONException e) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, "JSON parsing error: " + e.getMessage());
+                }
+            });
         }
-    }*/
+        return null;
+    }
+
 
 
 
