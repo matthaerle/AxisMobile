@@ -6,7 +6,13 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
@@ -25,11 +31,79 @@ import static android.content.ContentValues.TAG;
 public class Firearm_Scan_Search extends AppCompatActivity {
     private String JSONReturnData = "";
     private FirearmInfo fi = new FirearmInfo();
+    private FirearmStockScan fss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.firearm_search_scan);
+        getSupportActionBar().setTitle("Firearm Search");
+
+        final RadioButton radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
+        final RadioButton radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
+        final Button btn_search = (Button) findViewById(R.id.btn_search);
+        final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
+        final EditText edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
+        final Button btn_clear = (Button) findViewById(R.id.btn_clear);
+
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstraintLayout firearm_view = (ConstraintLayout) findViewById(R.id.constraint_firearminfo);
+                firearm_view.setVisibility(View.INVISIBLE);
+            }
+        });
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fss = new FirearmStockScan();
+                String str_input_scanned = edt_input_scanned.getText().toString().trim();
+                edt_input_scanned.setText("");
+                if(radio_log.isChecked()){
+                    //Do Log number stuff
+                    try {
+                        Long inv_nbr = Long.parseLong(str_input_scanned);
+                        fss.setLog(inv_nbr);
+                        fss.setLogScanned(true);
+                        fss.setSerialScanned(false);
+                        fss.setSerialNumber("");
+                        GetFirearmInfo(fss,Firearm_Scan_Search.this);
+
+                    }  catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                } else if (radio_serial.isChecked()) {
+                    //Do Serialnumber stuff
+                    try {
+                        fss.setSerialNumber(str_input_scanned);
+                        fss.setLogScanned(false);
+                        fss.setSerialScanned(true);
+                        fss.setLog((long) 1);
+                        GetFirearmInfo(fss,Firearm_Scan_Search.this);
+                    }  catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                } else {
+                    Toast.makeText(Firearm_Scan_Search.this,"Please Select a scanning mode.",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        View.OnClickListener radio_serial_listener = new View.OnClickListener(){
+            public void onClick(View v) {
+                if(radio_log.isChecked()){
+                    radio_log.setChecked(false);
+                }
+            }
+        };
+        View.OnClickListener radio_log_listener = new View.OnClickListener(){
+            public void onClick(View v) {
+                if(radio_serial.isChecked()){
+                    radio_serial.setChecked(false);
+                }
+            }
+        };
+        radio_serial.setOnClickListener(radio_serial_listener);
+        radio_log.setOnClickListener(radio_log_listener);
     }
 
     public void GetFirearmInfo (FirearmStockScan fss, Context context) {
@@ -44,9 +118,13 @@ public class Firearm_Scan_Search extends AppCompatActivity {
                 @Override
                 public void receiveData(Object object) {
                     JSONReturnData = (String)object;
-                    Log.v(TAG,"JSONReturnData GetFirearmInfo:\n"+JSONReturnData);
-                    fi = GetFirearmInfo(JSONReturnData);
-                    fillFirearmInfo(fi);
+                    Log.v(TAG,"JSONReturnData GetFirearmInfo:\n<"+JSONReturnData + ">");
+                    if (JSONReturnData.equals("")) {
+                        Toast.makeText(Firearm_Scan_Search.this,"Invalid Scan",Toast.LENGTH_LONG).show();
+                    } else {
+                        fi = GetFirearmInfo(JSONReturnData);
+                        fillFirearmInfo(fi);
+                    }
 
                 }};
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());

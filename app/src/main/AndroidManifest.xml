@@ -30,6 +30,8 @@
         <activity
             android:name=".Inventory_Task"
             android:screenOrientation="portrait" />
+        <activity android:name=".Firearm_Scan_Search"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Task_Chooser"
             android:screenOrientation="portrait" />

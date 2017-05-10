@@ -15,7 +15,7 @@
         android:text="@string/txt_manufacture_header"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_department_header" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_description_data" />
 
     <TextView
         android:id="@+id/txt_qty_committed_data"
@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_qoh_header" />
 
     <TextView
-        android:id="@+id/txt_department_header"
+        android:id="@+id/txt_description_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -84,7 +84,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintLeft_toRightOf="@+id/txt_department_header"
+        app:layout_constraintLeft_toRightOf="@+id/txt_description_data"
         app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc" />
 
     <TextView

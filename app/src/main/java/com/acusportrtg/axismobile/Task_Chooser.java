@@ -40,7 +40,8 @@ public class Task_Chooser extends AppCompatActivity{
         btn_Firearm_Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent firearm_search = new Intent(Task_Chooser.this,Firearm_Scan_Search.class);
+                startActivity(firearm_search);
             }
         });
 
