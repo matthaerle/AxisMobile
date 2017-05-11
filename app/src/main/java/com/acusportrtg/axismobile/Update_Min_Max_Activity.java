@@ -14,8 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
+import com.acusportrtg.axismobile.JSON_Classes.UpdateMinMax;
+import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.Product_List_Adapter;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
@@ -40,23 +43,41 @@ import static android.content.ContentValues.TAG;
 public class Update_Min_Max_Activity extends AppCompatActivity {
     private SearchByUPC upc;
     private String JSONReturnData = "";
-    SendProductView productView;
+    private GetEmployees emp;
+    private SendProductView productView;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_min_max);
+        Globals glob = ((Globals)getApplicationContext());
         getSupportActionBar().setTitle("Update Min/Max");
+        emp = glob.getEmployee();
         
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final EditText edt_upc_field = (EditText) findViewById(R.id.edt_upc_field);
+        final Button btn_update = (Button) findViewById(R.id.btn_submit_change);
+        final EditText edt_min_value = (EditText) findViewById(R.id.edt_min_value),
+                edt_max_value = (EditText) findViewById(R.id.edt_max_value);
         
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConstraintLayout product_view = (ConstraintLayout)findViewById(R.id.const_item_info);
                 product_view.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateMinMax upd = new UpdateMinMax();
+                upd.setEmployeeID(emp.getEmployeeID());
+                upd.setMaxLevel(Integer.parseInt(edt_max_value.getText().toString()));
+                upd.setMinLevel(Integer.parseInt(edt_min_value.getText().toString()));
+                upd.setProductID(productView.getProductID());
+                Update_Product_Min_Max(upd,Update_Min_Max_Activity.this);
             }
         });
         
@@ -76,6 +97,32 @@ public class Update_Min_Max_Activity extends AppCompatActivity {
         
     }
 
+    private void Update_Product_Min_Max(UpdateMinMax upd, Context context) {
+        JSONObject postData = new JSONObject();
+        try {
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/UpdateMinMax");
+            postData.put("ProductID", upd.getProductID());
+            postData.put("MinLevel", upd.getMinLevel());
+            postData.put("MaxLevel", upd.getMaxLevel());
+            postData.put("EmployeeID", upd.getEmployeeID());
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String) object;
+                    Log.v(TAG, "GetProductInfoJSONString JSONReturnData:\n" + JSONReturnData);
+                    Verify_Updated(JSONReturnData);
+                }
+            };
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+    }
+
+
+
     private void GetProductInfo(SearchByUPC upc, Context context) {
         JSONObject postData = new JSONObject();
         try {
@@ -94,6 +141,33 @@ public class Update_Min_Max_Activity extends AppCompatActivity {
             Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+    }
+
+    private void Verify_Updated(String jsonStr) {
+        try {
+            UpdateStatus upd_status = new UpdateStatus();
+            JSONObject updateJson = new JSONObject(jsonStr);
+            if (updateJson.length() == 0) {
+                Toast.makeText(Update_Min_Max_Activity.this,"Error Updating Min and Max", Toast.LENGTH_SHORT).show();
+                upd_status.setSuccesfull(false);
+            } else {
+
+                upd_status.setSuccesfull(updateJson.getBoolean("IsSuccesfull"));
+            }
+            if (upd_status.isSuccesfull())
+                Toast.makeText(Update_Min_Max_Activity.this,"Update Complete", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(Update_Min_Max_Activity.this,"Update Failed", Toast.LENGTH_SHORT).show();
+
+
+        } catch (final JSONException e) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, "JSON parsing error: " + e.getMessage());
+                }
+            });
         }
     }
 
