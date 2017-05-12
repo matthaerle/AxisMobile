@@ -39,7 +39,7 @@ public class Inventory_Task extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.inventory_activity);
+        setContentView(R.layout.activity_inventory_products_groups);
 
         getSupportActionBar().setTitle("Product Inventory");
 
@@ -126,7 +126,7 @@ public class Inventory_Task extends AppCompatActivity {
                     //Toast.makeText(Inventory_Task.this,"Inventory GroupID: " + String.valueOf(inv.getInventoryGroupID()),Toast.LENGTH_LONG).show();
 
                     Log.v(TAG,inv.getGroupName());
-                    Intent invScanIntent = new Intent(Inventory_Task.this,Inventory_Scan_Activity.class);
+                    Intent invScanIntent = new Intent(Inventory_Task.this,InventoryProductsActivity.class);
                     startActivity(invScanIntent);
                 }
             });

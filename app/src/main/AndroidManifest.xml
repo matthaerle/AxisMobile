@@ -16,7 +16,7 @@
         android:windowSoftInputMode="adjustNothing"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,31 +30,31 @@
         <activity
             android:name=".Inventory_Task"
             android:screenOrientation="portrait" />
-        <activity android:name=".Firearm_Scan_Search"
+        <activity android:name=".SearchFirearmsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Task_Chooser"
+            android:name=".TaskChooserActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Employee_Select_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Item_Search_Activity"
+            android:name=".SearchProductsActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Inventory_Scan_Activity"
+            android:name=".InventoryProductsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Firearm_Inventory_Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Update_Min_Max_Activity"
+            android:name=".UpdateMinMaxActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Inventory_Type_Select_Activity"
+            android:name=".InventoryTasksActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Firearm_Scan_Activity"
+        <activity android:name=".InventoryFirearmsActivity"
             android:screenOrientation="portrait" />
     </application>
 

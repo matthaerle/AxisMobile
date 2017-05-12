@@ -48,7 +48,7 @@ public class ServerConnectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Enter Server Address");
 
-        setContentView(R.layout.server_connect);
+        setContentView(R.layout.activity_server_connection);
 
         verified.setConnectionVerified(false);
 
@@ -71,7 +71,7 @@ public class ServerConnectActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
                 server_Connect_btn.setTextColor(Color.parseColor("#ffffff"));
-                server_Connect_btn.setBackgroundResource(R.drawable.solid_button);
+                server_Connect_btn.setBackgroundResource(R.drawable.btn_solid_round);
             }
 
             @Override
@@ -79,7 +79,7 @@ public class ServerConnectActivity extends AppCompatActivity {
                 if(server_address_txtbox.getText().toString().trim().length() == 0){
                     server_Connect_btn.setEnabled(false);
                     server_Connect_btn.setTextColor(Color.parseColor("#2980b9"));
-                    server_Connect_btn.setBackgroundResource(R.drawable.border_round_button);
+                    server_Connect_btn.setBackgroundResource(R.drawable.btn_border_round);
                 }
                 else {
                     server_Connect_btn.setEnabled(true);
@@ -182,7 +182,7 @@ public class ServerConnectActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 SharedPrefs.SetSavedServerAddress(server_address_txtbox.getText().toString().trim(),this);
                 Intent employee_select = new Intent(ServerConnectActivity.this,
-                        MainActivity.class);
+                        LoginActivity.class);
                 startActivity(employee_select);
             } else {
                 Toast.makeText(ServerConnectActivity.this

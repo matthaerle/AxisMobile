@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/colorAccent"
-    tools:background="@drawable/solid_button">
+    tools:background="@drawable/btn_solid_round">
 
     <TextView
         android:id="@+id/textView6"
@@ -32,10 +32,10 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="7dp"
-        android:background="@drawable/task_button"
+        android:background="@drawable/btn_task"
         android:elevation="2dp"
         android:text="Soft Keyboard"
-        android:textColor="@drawable/border_button_text_color"
+        android:textColor="@drawable/txt_border_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -50,9 +50,9 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/task_button"
+        android:background="@drawable/btn_task"
         android:text="Bluetooth Scanner"
-        android:textColor="@drawable/border_button_text_color"
+        android:textColor="@drawable/txt_border_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"

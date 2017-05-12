@@ -29,7 +29,7 @@ public class Inventory_List_Adapter extends ArrayAdapter<SendInventoryGroup> {
     public View getView(int position, View convertView, ViewGroup parent) {
         SendInventoryGroup inv = getItem(position);
         if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.inventory_line_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_inventory_group, parent, false);
         }
         TextView tv_Group_Name = (TextView)convertView.findViewById(R.id.txt_Group_Name);
 

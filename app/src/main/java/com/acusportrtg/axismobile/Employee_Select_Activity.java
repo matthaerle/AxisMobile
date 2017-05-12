@@ -26,7 +26,7 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.employee_select_activity);
+        setContentView(R.layout.activity_employee_select);
         
         empSpinner = (Spinner) findViewById(R.id.spn_Emp);
         btn_Continue = (Button) findViewById(R.id.btn_Continue);
@@ -39,7 +39,7 @@ public class Employee_Select_Activity extends AppCompatActivity implements Adapt
                 //employee = (GetEmployees) adapter.getItem(empSpinner.getSelectedItemPosition());
                 //Globals glob = ((Globals)getApplicationContext());
                 //glob.setEmployee_Id(employee.getEmployeeID());
-                Intent task_chooser = new Intent(Employee_Select_Activity.this, Task_Chooser.class);
+                Intent task_chooser = new Intent(Employee_Select_Activity.this, TaskChooserActivity.class);
                 startActivity(task_chooser);
             }
         });
