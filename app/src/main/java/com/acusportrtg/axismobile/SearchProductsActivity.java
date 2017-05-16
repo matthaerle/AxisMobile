@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +21,9 @@ import android.widget.ListView;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.os.Handler;
+import android.widget.Toast;
+
+import com.acusportrtg.axismobile.ClearableEditText;
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -44,7 +48,7 @@ import static android.content.ContentValues.TAG;
 
 public class SearchProductsActivity extends AppCompatActivity {
 
-    private EditText upc_Field;
+    private ClearableEditText upc_Field;
     private Button btn_clear_UPC_Field, btn_search_UPC, btn_clear_results_list;
     private ImageView horiz_rule;
     private ArrayList<SendProductView> productList = new ArrayList<>();
@@ -59,9 +63,8 @@ public class SearchProductsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_products);
         getSupportActionBar().setTitle("Product Search");
 
-       btn_clear_UPC_Field = (Button)findViewById(R.id.btn_clear);
        btn_search_UPC = (Button)findViewById(R.id.btn_search);
-       upc_Field = (EditText)findViewById(R.id.edt_upc_field);
+       upc_Field = (ClearableEditText)findViewById(R.id.edt_upc_field);
        productListView = (ListView)findViewById(R.id.list_product_search);
        horiz_rule = (ImageView) findViewById(R.id.horizontal_rule);
 
@@ -69,49 +72,14 @@ public class SearchProductsActivity extends AppCompatActivity {
         horiz_rule.setVisibility(View.GONE);
 
 
-        upc_Field.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                upc_Field.setTextColor(Color.parseColor("#2980b9"));
-                upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-                if(upc_Field.getText().toString().trim().length() == 0){
-                    upc_Field.setTextColor(Color.parseColor("#95a5a6"));
-                    upc_Field.getBackground().setColorFilter(Color.parseColor("#95a5a6"), PorterDuff.Mode.SRC_ATOP);
-                }
-            }
-        });
-
-        upc_Field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-        });
-
-       btn_clear_UPC_Field.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                upc_Field.setText("");
-            }
-        });
 
         btn_search_UPC.setOnClickListener(new View.OnClickListener (){
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(SearchProductsActivity.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                upc_Field.hideClearButton();
+                upc_Field.clearFocus();
                 SearchByUPC upc = new SearchByUPC();
                 upc.setProductUPC(upc_Field.getText().toString());
                 GetProductInfoJsonString(upc, SearchProductsActivity.this);
@@ -191,7 +159,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         try{
             JSONArray productJson = new JSONArray(jsonStr);
             if(productJson.length() == 0){
-                negativeFeedback();
+                upc_Field.negativeFeedback();
             }
             else{
                 for (int i=0; i <productJson.length(); i++) {
@@ -223,7 +191,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                         productList.add(productView);
                     }
                 }
-                positiveFeedback();
+                upc_Field.positiveFeedback();
             }
         } catch (final JSONException e) {
             runOnUiThread(new Runnable() {
@@ -237,32 +205,7 @@ public class SearchProductsActivity extends AppCompatActivity {
 
 
 
-    private void positiveFeedback(){
-        upc_Field.getBackground().setColorFilter(Color.parseColor("#27ae60"), PorterDuff.Mode.SRC_ATOP);
-        upc_Field.setTextColor(Color.parseColor("#27ae60"));
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
-                upc_Field.setTextColor(Color.parseColor("#2980b9"));
-                upc_Field.setText("");
-            }
-        }, 1000);
-    }
 
-    private void negativeFeedback(){
-        upc_Field.getBackground().setColorFilter(Color.parseColor("#c0392b"), PorterDuff.Mode.SRC_ATOP);
-        upc_Field.setTextColor(Color.parseColor("#c0392b"));
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
-                upc_Field.setTextColor(Color.parseColor("#2980b9"));
-            }
-        }, 1000);
-    }
 
     /*private void searchByUPC(String upc){
         try {
