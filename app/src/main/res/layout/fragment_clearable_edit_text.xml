@@ -13,12 +13,13 @@
         android:textCursorDrawable="@drawable/cursor_grey"
         android:paddingRight="35dip"
         />
+
     <Button
         android:id="@+id/clearable_button_clear"
-        android:layout_width="30dip"
-        android:layout_height="30dip"
+        android:layout_width="15dip"
+        android:layout_height="25dip"
         android:layout_alignParentRight="true"
-        android:background="@drawable/icon_clear"
         android:layout_centerVertical="true"
-        android:layout_marginRight="0dip"/>
+        android:layout_marginRight="5dip"
+        android:background="@drawable/icon_clear" />
 </RelativeLayout>
