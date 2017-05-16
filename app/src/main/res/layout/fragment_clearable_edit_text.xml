@@ -16,7 +16,7 @@
 
     <Button
         android:id="@+id/clearable_button_clear"
-        android:layout_width="22dip"
+        android:layout_width="20dip"
         android:layout_height="17dip"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
