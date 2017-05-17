@@ -15,12 +15,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.os.Handler;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acusportrtg.axismobile.ClearableEditText;
@@ -35,6 +39,7 @@ import com.acusportrtg.axismobile.Methods.SharedPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,6 +54,7 @@ import static android.content.ContentValues.TAG;
 public class SearchProductsActivity extends AppCompatActivity {
 
     private ClearableEditText upc_Field;
+    private TextView txt_sum_value, txt_total_header;
     private Button btn_clear_UPC_Field, btn_search_UPC, btn_clear_results_list;
     private ImageView horiz_rule;
     private ArrayList<SendProductView> productList = new ArrayList<>();
@@ -56,6 +62,10 @@ public class SearchProductsActivity extends AppCompatActivity {
     private ListView productListView;
     private String JSONReturnData = "";
     private Product_List_Adapter prodAdapter;
+    private Switch swtch_multi_mode;
+    private CheckBox chk_include_subtotal;
+    private double sum_value = 0.00;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +77,34 @@ public class SearchProductsActivity extends AppCompatActivity {
        upc_Field = (ClearableEditText)findViewById(R.id.edt_upc_field);
        productListView = (ListView)findViewById(R.id.list_product_search);
        horiz_rule = (ImageView) findViewById(R.id.horizontal_rule);
+       btn_clear_results_list = (Button) findViewById(R.id.btn_clear_list);
+       txt_sum_value = (TextView) findViewById(R.id.txt_sum_value);
+       txt_total_header = (TextView) findViewById(R.id.txt_total_header);
+       chk_include_subtotal = (CheckBox) findViewById(R.id.chk_include_subtotal);
+       swtch_multi_mode = (Switch) findViewById(R.id.swtch_multi_mode);
 
         productListView.setVisibility(View.GONE);
         horiz_rule.setVisibility(View.GONE);
+        btn_clear_results_list.setVisibility(View.GONE);
+        txt_sum_value.setVisibility(View.GONE);
+        txt_total_header.setVisibility(View.GONE);
+        txt_sum_value.setText("$" + Double.toString(sum_value));
+        chk_include_subtotal.setVisibility(View.GONE);
 
 
+        btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prodAdapter.clear();
+                prodAdapter.notifyDataSetChanged();
+                productListView.setVisibility(View.GONE);
+                horiz_rule.setVisibility(View.GONE);
+                btn_clear_results_list.setVisibility(View.GONE);
+                txt_sum_value.setVisibility(View.GONE);
+                txt_total_header.setVisibility(View.GONE);
+                sum_value = 0.00;
+            }
+        });
 
         btn_search_UPC.setOnClickListener(new View.OnClickListener (){
             @Override
@@ -83,6 +116,32 @@ public class SearchProductsActivity extends AppCompatActivity {
                 SearchByUPC upc = new SearchByUPC();
                 upc.setProductUPC(upc_Field.getText().toString());
                 GetProductInfoJsonString(upc, SearchProductsActivity.this);
+            }
+        });
+
+        swtch_multi_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    chk_include_subtotal.setVisibility(View.VISIBLE);
+                }
+                else{
+                    ClearMultiProducts();
+                }
+            }
+        });
+
+        chk_include_subtotal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked && (productListView.getVisibility() == View.VISIBLE)){
+                    txt_sum_value.setVisibility(View.VISIBLE);
+                    txt_total_header.setVisibility(View.VISIBLE);
+                }
+                else if(!isChecked) {
+                    txt_sum_value.setVisibility(View.GONE);
+                    txt_total_header.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -100,10 +159,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_clear_results:
-                prodAdapter.clear();
-                prodAdapter.notifyDataSetChanged();
-                productListView.setVisibility(View.GONE);
-                horiz_rule.setVisibility(View.GONE);
+                ClearMultiProducts();
                 break;
             case R.id.action_input_method:
                 showDialog();
@@ -142,7 +198,14 @@ public class SearchProductsActivity extends AppCompatActivity {
                     prodAdapter = new Product_List_Adapter(SearchProductsActivity.this, productList);
                     productListView.setVisibility(View.VISIBLE);
                     horiz_rule.setVisibility(View.VISIBLE);
+                    btn_clear_results_list.setVisibility(View.VISIBLE);
+
+
                     productListView.setAdapter(prodAdapter);
+                    if(chk_include_subtotal.isChecked()){
+                        txt_sum_value.setVisibility(View.VISIBLE);
+                        txt_total_header.setVisibility((View.VISIBLE));
+                    }
                 }
             };
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
@@ -178,17 +241,22 @@ public class SearchProductsActivity extends AppCompatActivity {
                     productView.setQtyCommitted(p.getInt("QtyCommitted"));
                     productView.setDepartment(p.getString("Department"));
                     productView.setManufacture(p.getString("Manufacturer"));
+                    sum_value += productView.getPrice();
 
                     if(productList.size() > 0){
                         for(int j = 0; j < productList.size(); j++){
                             if(!(productList.get(j).getProductID().equals(productView.getProductID()))){
                                 productList.add(productView);
+                                Double sum_rounded = (double) Math.round(sum_value * 100) / 100;
+                                txt_sum_value.setText("$" + Double.toString(sum_rounded));
                                 break;
                             }
                         }
                     }
                     else{
                         productList.add(productView);
+                        Double sum_rounded = (double) Math.round(sum_value * 100) / 100;
+                        txt_sum_value.setText("$" + Double.toString(sum_rounded));
                     }
                 }
                 upc_Field.positiveFeedback();
@@ -201,6 +269,20 @@ public class SearchProductsActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void ClearMultiProducts(){
+        prodAdapter.clear();
+        prodAdapter.notifyDataSetChanged();
+        productListView.setVisibility(View.GONE);
+        horiz_rule.setVisibility(View.GONE);
+        btn_clear_results_list.setVisibility(View.GONE);
+        txt_sum_value.setVisibility(View.GONE);
+        txt_total_header.setVisibility(View.GONE);
+        chk_include_subtotal.setChecked(false);
+        chk_include_subtotal.setVisibility(View.GONE);
+        txt_total_header.setVisibility((View.GONE));
+        sum_value = 0.00;
     }
 
 
