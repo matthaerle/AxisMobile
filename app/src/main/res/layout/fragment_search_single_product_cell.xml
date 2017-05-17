@@ -9,211 +9,209 @@
         android:id="@+id/txt_manufacture_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:textSize="16dp"
         android:layout_marginLeft="8dp"
         android:text="@string/txt_manufacture_header"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_description_data"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_description_data" />
 
     <TextView
         android:id="@+id/txt_qty_committed_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginLeft="12dp"
         android:text="999"
         app:layout_constraintLeft_toRightOf="@+id/txt_qty_committed_header"
-        app:layout_constraintTop_toBottomOf="@+id/txt_max" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_on_order_data" />
 
     <TextView
         android:id="@+id/txt_qty_on_order_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginLeft="12dp"
+        android:textSize="16dp"
         android:text="999"
         app:layout_constraintLeft_toRightOf="@+id/txt_qty_on_order_header"
-        app:layout_constraintTop_toBottomOf="@+id/txt_min_header" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_manufacture_data" />
 
     <TextView
         android:id="@+id/txt_qty_committed_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="6dp"
         android:text="@string/txt_qty_committed_header"
-        app:layout_constraintLeft_toRightOf="@+id/txt_qty_on_order_data"
-        app:layout_constraintTop_toBottomOf="@+id/txt_max" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_on_order_header" />
 
     <TextView
         android:id="@+id/txt_qty_on_order_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="6dp"
         android:text="@string/txt_qty_on_order_header"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_qoh_header" />
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_manufacture_header"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/txt_description_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:text="@string/txt_department_header"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="7dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_qty_on_order_header" />
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qoh_header"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/txt_manufacture_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginLeft="11dp"
+        android:textSize="16dp"
         android:text="TextView"
         app:layout_constraintLeft_toRightOf="@+id/txt_manufacture_header"
-        app:layout_constraintTop_toBottomOf="@+id/txt_department_data"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_department_data" />
 
     <TextView
         android:id="@+id/txt_department_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:text="TextView"
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qoh"
         app:layout_constraintLeft_toRightOf="@+id/txt_description_data"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_qty_on_order_data" />
+        android:layout_marginLeft="12dp" />
 
     <TextView
         android:id="@+id/txt_Product_UPC_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/upc_title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="8dp"
+        android:textSize="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/txt_upc_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
         android:textColor="@color/colorPrimary"
         android:text="TextView"
-        app:layout_constraintLeft_toRightOf="@+id/txt_Product_UPC_header"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txt_description_"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:text="@string/txt_desc_header"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Product_UPC_header" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
+        app:layout_constraintLeft_toRightOf="@+id/txt_Product_UPC_header"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/txt_price_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="@string/txt_prod_price_header"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/txt_prod_price"
-        android:layout_marginRight="8dp" />
+        android:textSize="18dp"
+        android:layout_marginTop="7dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_min_header"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/txt_prod_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="999.99"
+        android:textSize="18dp"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_min"
+        app:layout_constraintLeft_toRightOf="@+id/txt_price_title"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/txt_prod_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="8dp"
         android:gravity="start"
         android:text="TextView"
         android:textAlignment="textStart"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toRightOf="@+id/txt_description_"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="24dp"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_upc_data" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/txt_qoh_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
+        android:textSize="16dp"
         android:text="@string/txt_qoh_header"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_description_" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Product_UPC_header" />
 
     <TextView
         android:id="@+id/txt_qoh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="17dp"
+        android:layout_marginLeft="12dp"
         android:text="999"
+        android:textSize="16dp"
         app:layout_constraintLeft_toRightOf="@+id/txt_qoh_header"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_description_" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_upc_data" />
 
     <TextView
         android:id="@+id/txt_min_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
         android:text="@string/txt_min_header"
-        app:layout_constraintLeft_toRightOf="@+id/txt_qoh"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_description_" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_header" />
 
     <TextView
         android:id="@+id/txt_min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="11dp"
+        android:layout_marginLeft="12dp"
         android:text="999"
         app:layout_constraintLeft_toRightOf="@+id/txt_min_header"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_header" />
 
     <TextView
         android:id="@+id/txt_max_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="19dp"
+        android:layout_marginLeft="8dp"
         android:text="@string/txt_max_header"
         app:layout_constraintLeft_toRightOf="@+id/txt_min"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_data" />
 
     <TextView
         android:id="@+id/txt_max"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="7dp"
+        android:layout_marginLeft="12dp"
         android:text="999"
         app:layout_constraintLeft_toRightOf="@+id/txt_max_header"
-        android:layout_marginTop="6dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_data" />
 </android.support.constraint.ConstraintLayout>
