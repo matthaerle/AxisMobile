@@ -32,7 +32,7 @@ public class Product_List_Adapter extends ArrayAdapter<SendProductView> {
     public View getView(int position, View convertView, ViewGroup parent) {
         SendProductView prod = getItem(position);
         if(convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_search_product_cell, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_search_multi_product_cell, parent, false);
         }
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
         String pattern = "###,###,###";

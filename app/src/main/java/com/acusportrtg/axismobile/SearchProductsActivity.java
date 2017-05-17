@@ -75,15 +75,15 @@ public class SearchProductsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_products);
         getSupportActionBar().setTitle("Product Search");
         constraintLayout = (ConstraintLayout) findViewById(R.id.SearchProductLayout);
-       btn_search_UPC = (Button)findViewById(R.id.btn_search);
-       upc_Field = (ClearableEditText)findViewById(R.id.edt_upc_field);
-       productListView = (ListView)findViewById(R.id.list_product_search);
-       horiz_rule = (ImageView) findViewById(R.id.horizontal_rule);
-       btn_clear_results_list = (Button) findViewById(R.id.btn_clear_list);
-       txt_sum_value = (TextView) findViewById(R.id.txt_sum_value);
-       txt_total_header = (TextView) findViewById(R.id.txt_total_header);
-       chk_include_subtotal = (CheckBox) findViewById(R.id.chk_include_subtotal);
-       swtch_multi_mode = (Switch) findViewById(R.id.swtch_multi_mode);
+        btn_search_UPC = (Button)findViewById(R.id.btn_search);
+        upc_Field = (ClearableEditText)findViewById(R.id.edt_upc_field);
+        productListView = (ListView)findViewById(R.id.list_product_search);
+        horiz_rule = (ImageView) findViewById(R.id.horizontal_rule);
+        btn_clear_results_list = (Button) findViewById(R.id.btn_clear_list);
+        txt_sum_value = (TextView) findViewById(R.id.txt_sum_value);
+        txt_total_header = (TextView) findViewById(R.id.txt_total_header);
+        chk_include_subtotal = (CheckBox) findViewById(R.id.chk_include_subtotal);
+        swtch_multi_mode = (Switch) findViewById(R.id.swtch_multi_mode);
 
         productListView.setVisibility(View.GONE);
         horiz_rule.setVisibility(View.GONE);
@@ -92,8 +92,6 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_total_header.setVisibility(View.GONE);
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
-
-
 
 
         btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
@@ -139,17 +137,17 @@ public class SearchProductsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 ConstraintSet set = new ConstraintSet();
-                set.clone(constraintLayout);
                 if(isChecked && (productListView.getVisibility() == View.VISIBLE)){
                     txt_sum_value.setVisibility(View.VISIBLE);
                     txt_total_header.setVisibility(View.VISIBLE);
-
+                    set.clone(constraintLayout);
                     set.setGuidelinePercent(R.id.guideline36, 0.95f);
                     set.applyTo(constraintLayout);
                 }
                 else if(!isChecked) {
                     txt_sum_value.setVisibility(View.GONE);
                     txt_total_header.setVisibility(View.GONE);
+                    set.clone(constraintLayout);
                     set.setGuidelinePercent(R.id.guideline36, 1f);
                     set.applyTo(constraintLayout);
                 }
