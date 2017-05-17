@@ -194,17 +194,20 @@ public class SearchProductsActivity extends AppCompatActivity {
                 public void receiveData(Object object) {
                     JSONReturnData = (String) object;
                     Log.v(TAG, "GetProductInfoJSONString JSONReturnData:\n");
-                    GetProductA(JSONReturnData);
-                    prodAdapter = new Product_List_Adapter(SearchProductsActivity.this, productList);
-                    productListView.setVisibility(View.VISIBLE);
-                    horiz_rule.setVisibility(View.VISIBLE);
-                    btn_clear_results_list.setVisibility(View.VISIBLE);
+                    if(swtch_multi_mode.isChecked()){
+                        GetProductA(JSONReturnData);
+                        prodAdapter = new Product_List_Adapter(SearchProductsActivity.this, productList);
+                        productListView.setVisibility(View.VISIBLE);
+                        horiz_rule.setVisibility(View.VISIBLE);
+                        btn_clear_results_list.setVisibility(View.VISIBLE);
+                        productListView.setAdapter(prodAdapter);
+                        if(chk_include_subtotal.isChecked()){
+                            txt_sum_value.setVisibility(View.VISIBLE);
+                            txt_total_header.setVisibility((View.VISIBLE));
+                        }
+                    }
+                    else{
 
-
-                    productListView.setAdapter(prodAdapter);
-                    if(chk_include_subtotal.isChecked()){
-                        txt_sum_value.setVisibility(View.VISIBLE);
-                        txt_total_header.setVisibility((View.VISIBLE));
                     }
                 }
             };
