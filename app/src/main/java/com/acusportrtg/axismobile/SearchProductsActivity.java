@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -65,6 +66,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     private Switch swtch_multi_mode;
     private CheckBox chk_include_subtotal;
     private double sum_value = 0.00;
+    private ConstraintLayout constraintLayout;
 
 
     @Override
@@ -72,7 +74,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_products);
         getSupportActionBar().setTitle("Product Search");
-
+        constraintLayout = (ConstraintLayout) findViewById(R.id.SearchProductLayout);
        btn_search_UPC = (Button)findViewById(R.id.btn_search);
        upc_Field = (ClearableEditText)findViewById(R.id.edt_upc_field);
        productListView = (ListView)findViewById(R.id.list_product_search);
@@ -90,6 +92,8 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_total_header.setVisibility(View.GONE);
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
+
+
 
 
         btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
@@ -134,13 +138,20 @@ public class SearchProductsActivity extends AppCompatActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                ConstraintSet set = new ConstraintSet();
+                set.clone(constraintLayout);
                 if(isChecked && (productListView.getVisibility() == View.VISIBLE)){
                     txt_sum_value.setVisibility(View.VISIBLE);
                     txt_total_header.setVisibility(View.VISIBLE);
+
+                    set.setGuidelinePercent(R.id.guideline36, 0.95f);
+                    set.applyTo(constraintLayout);
                 }
                 else if(!isChecked) {
                     txt_sum_value.setVisibility(View.GONE);
                     txt_total_header.setVisibility(View.GONE);
+                    set.setGuidelinePercent(R.id.guideline36, 1f);
+                    set.applyTo(constraintLayout);
                 }
             }
         });
