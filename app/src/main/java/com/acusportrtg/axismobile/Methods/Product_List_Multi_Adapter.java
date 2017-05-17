@@ -19,11 +19,11 @@ import java.util.Locale;
  * Created by mhaerle on 4/19/2017.
  */
 
-public class Product_List_Adapter extends ArrayAdapter<SendProductView> {
+public class Product_List_Multi_Adapter extends ArrayAdapter<SendProductView> {
     private Context context;
     private ArrayList<SendProductView> products;
 
-    public Product_List_Adapter(Context context, ArrayList<SendProductView> products) {
+    public Product_List_Multi_Adapter(Context context, ArrayList<SendProductView> products) {
         super(context, 0, products);
         this.context = context;
         this.products = products;
@@ -32,7 +32,10 @@ public class Product_List_Adapter extends ArrayAdapter<SendProductView> {
     public View getView(int position, View convertView, ViewGroup parent) {
         SendProductView prod = getItem(position);
         if(convertView == null) {
+            if (products.size()>1)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_search_multi_product_cell, parent, false);
+            else if (products.size() == 1)
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_search_single_product_cell, parent, false);
         }
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
         String pattern = "###,###,###";
