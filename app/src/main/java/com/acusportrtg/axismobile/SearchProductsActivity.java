@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -14,12 +15,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -32,6 +35,7 @@ import com.acusportrtg.axismobile.Methods.SharedPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -115,7 +119,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         swtch_multi_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    chk_include_subtotal.setVisibility(View.VISIBLE);
+                    ClearMultiProducts();
                 }
                 else{
                     ClearMultiProducts();
@@ -194,30 +198,52 @@ public class SearchProductsActivity extends AppCompatActivity {
                 public void receiveData(Object object) {
                     JSONReturnData = (String) object;
                     Log.v(TAG, "GetProductInfoJSONString JSONReturnData:\n");
-                    if(swtch_multi_mode.isChecked()){
-                        GetProductA(JSONReturnData);
-                        prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList);
-                        productListView.setVisibility(View.VISIBLE);
-                        horiz_rule.setVisibility(View.VISIBLE);
-                        btn_clear_results_list.setVisibility(View.VISIBLE);
-                        productListView.setAdapter(prodAdapter);
-                        if(chk_include_subtotal.isChecked()){
-                            txt_sum_value.setVisibility(View.VISIBLE);
-                            txt_total_header.setVisibility((View.VISIBLE));
+                    try {
+                        JSONArray productJson = new JSONArray(JSONReturnData);
+                        if(productJson.length() > 1){
+                            swtch_multi_mode.setChecked(true);
+                            GetProductA(productJson);
+                            prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList,swtch_multi_mode.isChecked());
+                            productListView.setVisibility(View.VISIBLE);
+                            horiz_rule.setVisibility(View.VISIBLE);
+                            productListView.setAdapter(prodAdapter);
+                            if(chk_include_subtotal.isChecked()){
+                                txt_sum_value.setVisibility(View.VISIBLE);
+                                txt_total_header.setVisibility((View.VISIBLE));
+                            }
                         }
-                    }
-                    else{
-                        GetProductA(JSONReturnData);
-                        prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList);
-                        productListView.setVisibility(View.VISIBLE);
-                        horiz_rule.setVisibility(View.VISIBLE);
-                        btn_clear_results_list.setVisibility(View.VISIBLE);
-                        productListView.setAdapter(prodAdapter);
-                        if(chk_include_subtotal.isChecked()){
-                            txt_sum_value.setVisibility(View.VISIBLE);
-                            txt_total_header.setVisibility((View.VISIBLE));
+                        if(swtch_multi_mode.isChecked()){
+                            GetProductA(productJson);
+                            prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList, swtch_multi_mode.isChecked());
+                            productListView.setVisibility(View.VISIBLE);
+                            horiz_rule.setVisibility(View.VISIBLE);
+                            btn_clear_results_list.setVisibility(View.VISIBLE);
+                            productListView.setAdapter(prodAdapter);
+                            if(chk_include_subtotal.isChecked()){
+                                txt_sum_value.setVisibility(View.VISIBLE);
+                                txt_total_header.setVisibility((View.VISIBLE));
+                            }
                         }
+                        else{
+                            GetProductA(productJson);
+                            prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList,swtch_multi_mode.isChecked());
+                            productListView.setVisibility(View.VISIBLE);
+                            horiz_rule.setVisibility(View.VISIBLE);
+                            productListView.setAdapter(prodAdapter);
+                            if(chk_include_subtotal.isChecked()){
+                                txt_sum_value.setVisibility(View.VISIBLE);
+                                txt_total_header.setVisibility((View.VISIBLE));
+                            }
+                        }
+                    } catch (final JSONException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e(TAG, "JSON parsing error: " + e.getMessage());
+                            }
+                        });
                     }
+
                 }
             };
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
@@ -230,9 +256,9 @@ public class SearchProductsActivity extends AppCompatActivity {
         return null;
     }
 
-    private void GetProductA(String jsonStr) {
+    private void GetProductA(JSONArray productJson) {
         try{
-            JSONArray productJson = new JSONArray(jsonStr);
+            //JSONArray productJson = new JSONArray(jsonStr);
             if(productJson.length() == 0){
                 upc_Field.negativeFeedback();
             }
@@ -253,6 +279,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                     productView.setQtyCommitted(p.getInt("QtyCommitted"));
                     productView.setDepartment(p.getString("Department"));
                     productView.setManufacture(p.getString("Manufacturer"));
+                    productView.setIsActive(true);
                     sum_value += productView.getPrice();
 
                     if(productList.size() > 0){

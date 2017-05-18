@@ -17,6 +17,10 @@ public class SendProductView {
     private int PhysicalQoH;
     private int QtyOnOrder;
     private int QtyCommitted;
+    private boolean isActive;
+    private boolean isFirearm;
+    private boolean isSerialized;
+    private boolean isStockItem;
 
     public String getDepartment() {
         return Department;
@@ -57,6 +61,22 @@ public class SendProductView {
     public void setShortDescription(String shortDescription) {
         ShortDescription = shortDescription;
     }
+
+    public Boolean getIsActive() { return isActive;}
+
+    public void setIsActive(boolean active) {isActive = active;}
+
+    public Boolean getIsFirearm() { return isFirearm;}
+
+    public void setIsFirearm(boolean firearm) {isFirearm = firearm;}
+
+    public Boolean getIsSerialized() { return isSerialized;}
+
+    public void setIsSerialized(boolean serialized) {isSerialized = serialized;}
+
+    public Boolean getIsStockItem() { return isStockItem;}
+
+    public void setIsStockItem(boolean stock) {isStockItem = stock;}
 
     public int getMinLevel() {
         return MinLevel;

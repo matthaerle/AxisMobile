@@ -29,7 +29,7 @@
     <string name="upc_title">UPC:</string>
     <string name="txt_prod_price_header">Price:</string>
     <string name="txt_desc_header">Description:</string>
-    <string name="txt_qoh_header">Qoh:</string>
+    <string name="txt_qoh_header">QoH:</string>
     <string name="txt_min_header">Min:</string>
     <string name="txt_max_header">Max:</string>
     <string name="txt_inventory_scan_head">Scan Item</string>
@@ -50,4 +50,12 @@
     <string name="txt_manufacture_header">Manufacturer:</string>
     <string name="txt_qty_on_order_header">Qty On Order:</string>
     <string name="txt_qty_committed_header">Qty Committed:</string>
+
+    <string name="product_cell_placeholder">Placeholder</string>
+    <string name="product_cell_max_value">9999</string>
+    <string name="product_cell_max_amount">9999.99</string>
+    <string name="product_cell_active">Active</string>
+    <string name="product_cell_is_firearm">Is Firearm</string>
+    <string name="product_cell_serialized">Serialized\nNon-Firearm</string>
+    <string name="product_cell_stock_item">Is Stock Item</string>
 </resources>

@@ -3,38 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:focusable="false"
+    android:clickable="false"
+    android:focusableInTouchMode="false" >
 
     <TextView
         android:id="@+id/txt_manufacture_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:layout_marginLeft="8dp"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
         android:text="@string/txt_manufacture_header"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_description_data" />
 
     <TextView
         android:id="@+id/txt_qty_committed_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:text="999"
+        android:layout_marginStart="12dp"
+        android:textSize="16sp"
+        android:text="@string/product_cell_max_value"
         app:layout_constraintLeft_toRightOf="@+id/txt_qty_committed_header"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qty_on_order_data" />
 
     <TextView
         android:id="@+id/txt_qty_on_order_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:textSize="16dp"
+        android:layout_marginStart="12dp"
+        android:textSize="16sp"
         android:text="999"
         app:layout_constraintLeft_toRightOf="@+id/txt_qty_on_order_header"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_manufacture_data" />
 
     <TextView
@@ -42,9 +46,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txt_qty_committed_header"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qty_on_order_header" />
 
     <TextView
@@ -52,10 +57,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txt_qty_on_order_header"
-        android:textSize="16dp"
-        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_manufacture_header"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
@@ -63,43 +68,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txt_department_header"
-        android:textSize="16dp"
-        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qoh_header"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/txt_manufacture_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="11dp"
-        android:textSize="16dp"
-        android:text="TextView"
+        android:layout_marginStart="11dp"
+        android:textSize="16sp"
+        android:text="@string/product_cell_placeholder"
         app:layout_constraintLeft_toRightOf="@+id/txt_manufacture_header"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_department_data" />
 
     <TextView
         android:id="@+id/txt_department_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="16dp"
-        android:layout_marginTop="8dp"
+        android:text="@string/product_cell_placeholder"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qoh"
         app:layout_constraintLeft_toRightOf="@+id/txt_description_data"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginStart="12dp" />
 
     <TextView
         android:id="@+id/txt_Product_UPC_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/upc_title"
-        android:textSize="16dp"
-        android:layout_marginLeft="8dp"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/chk_active" />
 
     <TextView
@@ -107,11 +112,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
-        android:text="TextView"
-        android:textSize="16dp"
+        android:text="@string/product_cell_placeholder"
+        android:textSize="16sp"
         app:layout_constraintLeft_toRightOf="@+id/txt_Product_UPC_header"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/chk_is_firearm" />
 
     <TextView
@@ -119,32 +124,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txt_prod_price_header"
-        android:textSize="18dp"
-        android:layout_marginTop="7dp"
+        android:textSize="20sp"
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_min_header"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginStart="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/txt_prod_price"
+        android:layout_marginEnd="12dp" />
 
     <TextView
         android:id="@+id/txt_prod_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="999.99"
-        android:textSize="18dp"
+        android:text="@string/product_cell_max_amount"
+        android:textSize="20sp"
         android:textColor="@color/colorPrimary"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_min"
-        app:layout_constraintLeft_toRightOf="@+id/txt_price_title"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/txt_prod_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="TextView"
+        android:text="@string/product_cell_placeholder"
         android:textAlignment="textStart"
-        android:textSize="24dp"
+        android:textSize="22sp"
         android:textColor="@color/colorAccent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
@@ -157,22 +164,22 @@
         android:id="@+id/txt_qoh_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:textSize="16dp"
+        android:layout_marginStart="8dp"
+        android:textSize="16sp"
         android:text="@string/txt_qoh_header"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_Product_UPC_header" />
 
     <TextView
         android:id="@+id/txt_qoh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:text="999"
-        android:textSize="16dp"
+        android:layout_marginStart="12dp"
+        android:text="@string/product_cell_max_value"
+        android:textSize="16sp"
         app:layout_constraintLeft_toRightOf="@+id/txt_qoh_header"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_upc_data" />
 
     <TextView
@@ -180,87 +187,144 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txt_min_header"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_header" />
 
     <TextView
         android:id="@+id/txt_min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:text="999"
+        android:layout_marginStart="12dp"
+        android:text="@string/product_cell_max_value"
+        android:textSize="16sp"
         app:layout_constraintLeft_toRightOf="@+id/txt_min_header"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_header" />
 
     <TextView
         android:id="@+id/txt_max_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:textSize="16sp"
         android:text="@string/txt_max_header"
         app:layout_constraintLeft_toRightOf="@+id/txt_min"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_data" />
 
     <TextView
         android:id="@+id/txt_max"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:text="999"
+        android:layout_marginStart="12dp"
+        android:textSize="16sp"
+        android:text="@string/product_cell_max_value"
         app:layout_constraintLeft_toRightOf="@+id/txt_max_header"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_data" />
 
     <CheckBox
         android:id="@+id/chk_active"
-        android:layout_width="75dp"
-        android:layout_height="33dp"
-        android:text="Active"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="13dp"
         android:scaleX="0.60"
         android:scaleY="0.60"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:focusable="false"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc" />
+
+    <TextView
+        android:id="@+id/txt_active_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/product_cell_active"
+        app:layout_constraintLeft_toRightOf="@+id/chk_active"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc" />
 
     <CheckBox
         android:id="@+id/chk_is_firearm"
-        android:layout_width="95dp"
-        android:layout_height="33dp"
-        android:text="Is Firearm"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="13dp"
         android:scaleX="0.60"
         android:scaleY="0.60"
-        android:layout_marginTop="8dp"
+        android:focusable="false"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
         app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
-        app:layout_constraintLeft_toRightOf="@+id/chk_active"
-        android:layout_marginLeft="0dp" />
+        app:layout_constraintLeft_toRightOf="@+id/txt_active_box"
+        android:layout_marginStart="8dp" />
 
-    <CheckBox
-        android:id="@+id/chk_seralized"
-        android:layout_width="133dp"
-        android:layout_height="34dp"
-        android:text="Serialized Non-Firearm"
-        android:scaleX="0.60"
-        android:scaleY="0.60"
-        android:layout_marginTop="8dp"
+    <TextView
+        android:id="@+id/txt_is_firearm_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/product_cell_is_firearm"
+        android:layout_marginTop="18dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
         app:layout_constraintLeft_toRightOf="@+id/chk_is_firearm"
-        android:layout_marginLeft="0dp" />
+        android:layout_marginStart="0dp" />
+
+    <CheckBox
+        android:id="@+id/chk_is_serialized"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="13dp"
+        android:scaleX="0.60"
+        android:scaleY="0.60"
+        android:focusable="false"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
+        app:layout_constraintLeft_toRightOf="@+id/txt_is_firearm_box"
+        android:layout_marginStart="8dp" />
+
+    <TextView
+        android:id="@+id/txt_is_serialized_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/product_cell_serialized"
+        android:layout_marginTop="12dp"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
+        app:layout_constraintLeft_toRightOf="@+id/chk_is_serialized"
+        android:layout_marginStart="0dp" />
 
     <CheckBox
         android:id="@+id/chk_is_stock"
-        android:layout_width="86dp"
-        android:layout_height="33dp"
-        android:text="Is Stock"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
         android:scaleX="0.60"
         android:scaleY="0.60"
-        android:layout_marginTop="8dp"
+        android:focusable="false"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintLeft_toRightOf="@+id/txt_is_serialized_box"
+        android:layout_marginTop="13dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc" />
+
+    <TextView
+        android:id="@+id/txt_is_stock_box"
+        android:layout_width="95dp"
+        android:layout_height="25dp"
+        android:text="@string/product_cell_stock_item"
+        android:layout_marginTop="20dp"
+        android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc"
-        app:layout_constraintLeft_toRightOf="@+id/chk_seralized"
-        android:layout_marginLeft="0dp"
-        tools:layout_editor_absoluteX="301dp" />
+        app:layout_constraintLeft_toRightOf="@+id/chk_is_stock"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp" />
+
+
+
 </android.support.constraint.ConstraintLayout>
