@@ -226,6 +226,10 @@ public class SearchProductsActivity extends AppCompatActivity {
                             }
                         }
                         else{
+                            if(prodAdapter != null){
+                                prodAdapter.clear();
+                                prodAdapter.notifyDataSetChanged();
+                            }
                             GetProductA(productJson);
                             prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList,swtch_multi_mode.isChecked());
                             productListView.setVisibility(View.VISIBLE);
