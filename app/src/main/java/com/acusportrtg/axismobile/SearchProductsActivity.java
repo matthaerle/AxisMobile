@@ -120,6 +120,7 @@ public class SearchProductsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     ClearMultiProducts();
+                    chk_include_subtotal.setVisibility(View.VISIBLE);
                 }
                 else{
                     ClearMultiProducts();
@@ -311,8 +312,10 @@ public class SearchProductsActivity extends AppCompatActivity {
     }
 
     private void ClearMultiProducts(){
-        prodAdapter.clear();
-        prodAdapter.notifyDataSetChanged();
+        if(prodAdapter != null){
+            prodAdapter.clear();
+            prodAdapter.notifyDataSetChanged();
+        }
         productListView.setVisibility(View.GONE);
         horiz_rule.setVisibility(View.GONE);
         btn_clear_results_list.setVisibility(View.GONE);
@@ -323,19 +326,6 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_total_header.setVisibility((View.GONE));
         sum_value = 0.00;
     }
-
-
-
-
-
-    /*private void searchByUPC(String upc){
-        try {
-            //String jsonReturn = GetProductInfoJsonString(upc, this);
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage());
-        }
-    }*/
-
 
 
 }

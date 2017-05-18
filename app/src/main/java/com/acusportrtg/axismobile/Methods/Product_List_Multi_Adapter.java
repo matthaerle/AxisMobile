@@ -57,10 +57,18 @@ public class Product_List_Multi_Adapter extends ArrayAdapter<SendProductView> {
         TextView txt_qty_committed_data = (TextView)convertView.findViewById(R.id.txt_qty_committed_data);
         TextView txt_department_data = (TextView)convertView.findViewById(R.id.txt_department_data);
         TextView txt_manufacture_data = (TextView)convertView.findViewById(R.id.txt_manufacture_data);
-        CheckBox chk_is_active = (CheckBox)convertView.findViewById(R.id.chk_active);
-        CheckBox chk_is_firearm = (CheckBox)convertView.findViewById(R.id.chk_is_firearm);
-        CheckBox chk_is_serialized = (CheckBox)convertView.findViewById(R.id.chk_is_serialized);
-        CheckBox chk_is_stock = (CheckBox)convertView.findViewById(R.id.chk_is_stock);
+        if(!multiProduct){
+            CheckBox chk_is_active = (CheckBox)convertView.findViewById(R.id.chk_active);
+            CheckBox chk_is_firearm = (CheckBox)convertView.findViewById(R.id.chk_is_firearm);
+            CheckBox chk_is_serialized = (CheckBox)convertView.findViewById(R.id.chk_is_serialized);
+            CheckBox chk_is_stock = (CheckBox)convertView.findViewById(R.id.chk_is_stock);
+
+            chk_is_active.setChecked(prod.getIsActive());
+            chk_is_firearm.setChecked(prod.getIsFirearm());
+            chk_is_serialized.setChecked(prod.getIsSerialized());
+            chk_is_stock.setChecked(prod.getIsStockItem());
+        }
+
 
         tv_product_upc.setText(prod.getProductUPC());
         tv_product_qoh.setText(String.valueOf(prod.getPhysicalQoH()));
@@ -75,10 +83,7 @@ public class Product_List_Multi_Adapter extends ArrayAdapter<SendProductView> {
         txt_qty_committed_data.setText(df.format(prod.getQtyCommitted()));
         txt_department_data.setText(prod.getDepartment());
         txt_manufacture_data.setText(prod.getManufacture());
-        chk_is_active.setChecked(prod.getIsActive());
-        chk_is_firearm.setChecked(prod.getIsFirearm());
-        chk_is_serialized.setChecked(prod.getIsSerialized());
-        chk_is_stock.setChecked(prod.getIsStockItem());
+
 
 
         return convertView;
