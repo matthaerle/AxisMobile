@@ -7,7 +7,6 @@
         android:id="@+id/clearable_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="UPC"
         android:inputType="textNoSuggestions"
         android:backgroundTint="#95a5a6"
         android:textCursorDrawable="@drawable/cursor_grey"

@@ -80,6 +80,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal = (CheckBox) findViewById(R.id.chk_include_subtotal);
         swtch_multi_mode = (Switch) findViewById(R.id.swtch_multi_mode);
 
+        upc_Field.SetHint("UPC");
         productListView.setVisibility(View.GONE);
         horiz_rule.setVisibility(View.GONE);
         btn_clear_results_list.setVisibility(View.GONE);

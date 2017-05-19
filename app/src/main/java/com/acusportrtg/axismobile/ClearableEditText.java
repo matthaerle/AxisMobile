@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -146,5 +147,21 @@ public class ClearableEditText extends RelativeLayout
     {
         Editable text = edit_text.getText();
         return text;
+    }
+
+    public void SetInputTypeDecimal(){
+        edit_text.setInputType(InputType.TYPE_CLASS_NUMBER);
+    }
+
+    public void SetInputTypeText(){
+        edit_text.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+    }
+
+    public void setText(String s){
+        edit_text.setText(s);
+    }
+
+    public void SetHint(String s){
+        edit_text.setHint(s);
     }
 }

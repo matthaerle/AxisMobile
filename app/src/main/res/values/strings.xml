@@ -38,12 +38,14 @@
     <string name="btn_count">Count</string>
     <string name="btn_firearm_scan_search">Search</string>
     <string name="txt_manufacturer_header">Manufacturer:</string>
+    <string name="txt_upc_header">UPC:</string>
     <string name="txt_firearm_description">Description:</string>
+    <string name="txt_serial_number_header">Serial Number:</string>
     <string name="txt_log_header">Log Number:</string>
     <string name="txt_status_header">Status:</string>
     <string name="txt_importer_header">Importer:</string>
     <string name="txt_model_header">Model:</string>
-    <string name="txt_new_or_used_header">New/Used:</string>
+    <string name="txt_new_or_used_header">New / Used:</string>
     <string name="txt_type_of_action_header">Type Of Action:</string>
     <string name="txt_gauge_header">Gauge / Caliber:</string>
     <string name="txt_department_header">Department:</string>
@@ -57,5 +59,19 @@
     <string name="product_cell_active">Active</string>
     <string name="product_cell_is_firearm">Is Firearm</string>
     <string name="product_cell_serialized">Serialized\nNon-Firearm</string>
-    <string name="product_cell_stock_item">Is Stock Item</string>
+    <string name="product_cell_stock_item">Is Stock\nItem</string>
+
+    <string name="txt_serial_number_radio">Serial Number</string>
+    <string name="firearm_info_placeholder">placeholder</string>
+
+
+
+
+
+    <string name="firearm_info_importer">Importer:</string>
+    <string name="firearm_info_model">Model;</string>
+    <string name="firearm_info_new_userd">New / Used:</string>
+    <string name="firearm_info_action_type">Type Of Action:</string>
+
+
 </resources>

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -42,8 +45,12 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         final RadioButton radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
-        final EditText edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
+        final ClearableEditText edt_input_scanned = (ClearableEditText) findViewById(R.id.edt_firearm_scan);
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
+
+        radio_log.setChecked(true);
+        edt_input_scanned.SetHint("Log Number");
+        edt_input_scanned.SetInputTypeDecimal();
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +62,8 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 fss = new FirearmStockScan();
                 String str_input_scanned = edt_input_scanned.getText().toString().trim();
                 edt_input_scanned.setText("");
@@ -89,6 +98,10 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         });
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
+                if(radio_serial.isChecked()){
+                    edt_input_scanned.SetInputTypeText();
+                    edt_input_scanned.SetHint("Serial Number");
+                }
                 if(radio_log.isChecked()){
                     radio_log.setChecked(false);
                 }
@@ -96,6 +109,10 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         };
         View.OnClickListener radio_log_listener = new View.OnClickListener(){
             public void onClick(View v) {
+                if(radio_log.isChecked()){
+                    edt_input_scanned.SetInputTypeDecimal();
+                    edt_input_scanned.SetHint("Log Number");
+                }
                 if(radio_serial.isChecked()){
                     radio_serial.setChecked(false);
                 }
@@ -103,6 +120,8 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         };
         radio_serial.setOnClickListener(radio_serial_listener);
         radio_log.setOnClickListener(radio_log_listener);
+
+
     }
 
     public void GetFirearmInfo (FirearmStockScan fss, Context context) {
@@ -145,8 +164,9 @@ public class SearchFirearmsActivity extends AppCompatActivity {
                 txt_new_or_used_data = (TextView) findViewById(R.id.txt_new_or_used_data),
                 txt_model_data = (TextView) findViewById(R.id.txt_model_data),
                 txt_importer_data = (TextView) findViewById(R.id.txt_importer_data),
-                txt_status_data = (TextView) findViewById(R.id.txt_status_data),
                 txt_gauge_data = (TextView) findViewById(R.id.txt_gauge_data);
+        CheckBox chk_sold = (CheckBox) findViewById(R.id.chk_sold),
+                chk_committed = (CheckBox) findViewById(R.id.chk_committed);
 
         ConstraintLayout firearm_view = (ConstraintLayout) findViewById(R.id.constraint_firearminfo);
         txt_manufacture_data.setText(fi.getManufacturer());
@@ -158,8 +178,13 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         txt_new_or_used_data.setText(fi.getNewUsed());
         txt_model_data.setText(fi.getModel());
         txt_importer_data.setText(fi.getImporter());
-        txt_status_data.setText(fi.getImporter());
         txt_gauge_data.setText(fi.getGaugeCaliber());
+        if(fi.getStatus().equals("O")){
+            chk_sold.setChecked(true);
+        }
+        else{
+            chk_sold.setChecked(false);
+        }
         firearm_view.setVisibility(View.VISIBLE);
     }
 
