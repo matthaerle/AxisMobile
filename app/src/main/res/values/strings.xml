@@ -54,8 +54,8 @@
     <string name="txt_qty_committed_header">Qty Committed:</string>
 
     <string name="product_cell_placeholder">Placeholder</string>
-    <string name="product_cell_max_value">9999</string>
-    <string name="product_cell_max_amount">9999.99</string>
+    <string name="txt_max_value">9999</string>
+    <string name="txt_max_amount">9999.99</string>
     <string name="product_cell_active">Active</string>
     <string name="product_cell_is_firearm">Is Firearm</string>
     <string name="product_cell_serialized">Serialized\nNon-Firearm</string>
