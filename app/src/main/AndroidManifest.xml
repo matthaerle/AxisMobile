@@ -36,17 +36,11 @@
             android:name=".TaskChooserActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Employee_Select_Activity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".SearchProductsActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name=".InventoryProductsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Firearm_Inventory_Activity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UpdateMinMaxActivity"

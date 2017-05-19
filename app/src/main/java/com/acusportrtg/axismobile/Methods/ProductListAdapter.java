@@ -23,12 +23,12 @@ import static com.acusportrtg.axismobile.R.id.chk_active;
  * Created by mhaerle on 4/19/2017.
  */
 
-public class Product_List_Multi_Adapter extends ArrayAdapter<SendProductView> {
+public class ProductListAdapter extends ArrayAdapter<SendProductView> {
     private Context context;
     private ArrayList<SendProductView> products;
     private Boolean multiProduct;
 
-    public Product_List_Multi_Adapter(Context context, ArrayList<SendProductView> products,Boolean multiProduct) {
+    public ProductListAdapter(Context context, ArrayList<SendProductView> products, Boolean multiProduct) {
         super(context, 0, products);
         this.context = context;
         this.products = products;

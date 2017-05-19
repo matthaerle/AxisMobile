@@ -3,7 +3,6 @@ package com.acusportrtg.axismobile;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -15,27 +14,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
-import com.acusportrtg.axismobile.Methods.Product_List_Multi_Adapter;
-import com.acusportrtg.axismobile.Methods.Product_List_Single_Adapter;
+import com.acusportrtg.axismobile.Methods.ProductListAdapter;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,7 +52,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private ListView productListView;
     private String JSONReturnData = "";
-    private Product_List_Multi_Adapter prodAdapter;
+    private ProductListAdapter prodAdapter;
     private Switch swtch_multi_mode;
     private CheckBox chk_include_subtotal;
     private double sum_value = 0.00;
@@ -205,7 +200,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                         if(productJson.length() > 1){
                             swtch_multi_mode.setChecked(true);
                             GetProductA(productJson);
-                            prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList,swtch_multi_mode.isChecked());
+                            prodAdapter = new ProductListAdapter(SearchProductsActivity.this, productList,swtch_multi_mode.isChecked());
                             productListView.setVisibility(View.VISIBLE);
                             horiz_rule.setVisibility(View.VISIBLE);
                             productListView.setAdapter(prodAdapter);
@@ -216,7 +211,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                         }
                         if(swtch_multi_mode.isChecked()){
                             GetProductA(productJson);
-                            prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList, swtch_multi_mode.isChecked());
+                            prodAdapter = new ProductListAdapter(SearchProductsActivity.this, productList, swtch_multi_mode.isChecked());
                             productListView.setVisibility(View.VISIBLE);
                             horiz_rule.setVisibility(View.VISIBLE);
                             btn_clear_results_list.setVisibility(View.VISIBLE);
@@ -232,7 +227,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                                 prodAdapter.notifyDataSetChanged();
                             }
                             GetProductA(productJson);
-                            prodAdapter = new Product_List_Multi_Adapter(SearchProductsActivity.this, productList,swtch_multi_mode.isChecked());
+                            prodAdapter = new ProductListAdapter(SearchProductsActivity.this, productList,swtch_multi_mode.isChecked());
                             productListView.setVisibility(View.VISIBLE);
                             horiz_rule.setVisibility(View.VISIBLE);
                             productListView.setAdapter(prodAdapter);
