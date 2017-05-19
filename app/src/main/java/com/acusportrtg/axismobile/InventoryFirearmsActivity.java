@@ -51,9 +51,13 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         final RadioButton radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
-        final EditText edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
+        final ClearableEditText edt_input_scanned = (ClearableEditText) findViewById(R.id.edt_firearm_scan);
         final Switch switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
+
         radio_log.setChecked(true);
+        edt_input_scanned.SetHint("Log Number");
+        edt_input_scanned.SetInputTypeDecimal();
+
         switch_continuous_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -130,8 +134,13 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                 }
             }
         });
+
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
+                if(radio_serial.isChecked()){
+                    edt_input_scanned.SetInputTypeText();
+                    edt_input_scanned.SetHint("Serial Number");
+                }
                 if(radio_log.isChecked()){
                     radio_log.setChecked(false);
                 }
@@ -139,6 +148,10 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         };
         View.OnClickListener radio_log_listener = new View.OnClickListener(){
             public void onClick(View v) {
+                if(radio_log.isChecked()){
+                    edt_input_scanned.SetInputTypeDecimal();
+                    edt_input_scanned.SetHint("Log Number");
+                }
                 if(radio_serial.isChecked()){
                     radio_serial.setChecked(false);
                 }
