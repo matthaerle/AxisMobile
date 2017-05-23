@@ -71,8 +71,10 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:digits="3"
             android:ems="10"
             android:inputType="number"
+            android:maxLength="6"
             app:layout_constraintBaseline_toBaselineOf="@+id/txt_max_header"
             app:layout_constraintLeft_toRightOf="@+id/txt_max_header" />
 
