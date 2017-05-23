@@ -14,7 +14,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/InnerRelativeLayout"
-        android:layout_width="296dp"
+        android:layout_width="0dp"
         android:layout_height="94dp"
         android:layout_alignParentBottom="true"
         app:layout_constraintTop_toTopOf="@+id/guideline27"
