@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -102,13 +103,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         btn_search_UPC.setOnClickListener(new View.OnClickListener (){
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                upc_Field.hideClearButton();
-                upc_Field.clearFocus();
-                SearchByUPC upc = new SearchByUPC();
-                upc.setProductUPC(upc_Field.getText().toString());
-                GetProductInfoJsonString(upc, SearchProductsActivity.this);
+            SearchProduct();
             }
         });
 
@@ -122,6 +117,25 @@ public class SearchProductsActivity extends AppCompatActivity {
                     ClearMultiProducts();
                 }
             }
+        });
+
+        upc_Field.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                        // do nothing yet
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        SearchProduct();
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
         });
 
         chk_include_subtotal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -146,6 +160,16 @@ public class SearchProductsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void SearchProduct(){
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        upc_Field.hideClearButton();
+        upc_Field.clearFocus();
+        SearchByUPC upc = new SearchByUPC();
+        upc.setProductUPC(upc_Field.getText().toString());
+        GetProductInfoJsonString(upc, SearchProductsActivity.this);
     }
 
     @Override

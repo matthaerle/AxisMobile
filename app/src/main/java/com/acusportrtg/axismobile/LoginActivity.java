@@ -116,17 +116,12 @@ public class LoginActivity extends AppCompatActivity {
             {
                 if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
                         || keyCode ==  KeyEvent.KEYCODE_ENTER) {
-
                     if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        // do nothing yet
                     } else if (event.getAction() == KeyEvent.ACTION_UP) {
                         Login();
-                    } // is there any other option here?...
-
+                    }
                     return true;
-
                 } else {
-                    // it is not an Enter key - let others handle the event
                     return false;
                 }
             }

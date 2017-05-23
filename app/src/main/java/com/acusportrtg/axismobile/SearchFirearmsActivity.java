@@ -6,6 +6,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -34,6 +35,8 @@ public class SearchFirearmsActivity extends AppCompatActivity {
     private String JSONReturnData = "";
     private FirearmInfo fi = new FirearmInfo();
     private FirearmStockScan fss;
+    private ClearableEditText edt_input_scanned;
+    private RadioButton radio_serial, radio_log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +44,11 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_firearms);
         getSupportActionBar().setTitle("Firearm Search");
 
-        final RadioButton radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
-        final RadioButton radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
+        radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
+        radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
-        final ClearableEditText edt_input_scanned = (ClearableEditText) findViewById(R.id.edt_firearm_scan);
+        edt_input_scanned = (ClearableEditText) findViewById(R.id.edt_firearm_scan);
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
 
         radio_log.setChecked(true);
@@ -59,43 +62,32 @@ public class SearchFirearmsActivity extends AppCompatActivity {
                 firearm_view.setVisibility(View.INVISIBLE);
             }
         });
+
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                fss = new FirearmStockScan();
-                String str_input_scanned = edt_input_scanned.getText().toString().trim();
-                edt_input_scanned.setText("");
-                if(radio_log.isChecked()){
-                    //Do Log number stuff
-                    try {
-                        Long inv_nbr = Long.parseLong(str_input_scanned);
-                        fss.setLog(inv_nbr);
-                        fss.setLogScanned(true);
-                        fss.setSerialScanned(false);
-                        fss.setSerialNumber("");
-                        GetFirearmInfo(fss,SearchFirearmsActivity.this);
-
-                    }  catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
-                    }
-                } else if (radio_serial.isChecked()) {
-                    //Do Serialnumber stuff
-                    try {
-                        fss.setSerialNumber(str_input_scanned);
-                        fss.setLogScanned(false);
-                        fss.setSerialScanned(true);
-                        fss.setLog((long) 1);
-                        GetFirearmInfo(fss,SearchFirearmsActivity.this);
-                    }  catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
-                    }
-                } else {
-                    Toast.makeText(SearchFirearmsActivity.this,"Please Select a scanning mode.",Toast.LENGTH_LONG).show();
-                }
+            SearchFirearm();
             }
         });
+
+        edt_input_scanned.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        SearchFirearm();
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        });
+
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
                 if(radio_serial.isChecked()){
@@ -127,6 +119,42 @@ public class SearchFirearmsActivity extends AppCompatActivity {
         radio_serial.setOnClickListener(radio_serial_listener);
         radio_log.setOnClickListener(radio_log_listener);
 
+
+    }
+
+    private void SearchFirearm() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        fss = new FirearmStockScan();
+        String str_input_scanned = edt_input_scanned.getText().toString().trim();
+        edt_input_scanned.setText("");
+        if(radio_log.isChecked()){
+            //Do Log number stuff
+            try {
+                Long inv_nbr = Long.parseLong(str_input_scanned);
+                fss.setLog(inv_nbr);
+                fss.setLogScanned(true);
+                fss.setSerialScanned(false);
+                fss.setSerialNumber("");
+                GetFirearmInfo(fss,SearchFirearmsActivity.this);
+
+            }  catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (radio_serial.isChecked()) {
+            //Do Serialnumber stuff
+            try {
+                fss.setSerialNumber(str_input_scanned);
+                fss.setLogScanned(false);
+                fss.setSerialScanned(true);
+                fss.setLog((long) 1);
+                GetFirearmInfo(fss,SearchFirearmsActivity.this);
+            }  catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else {
+            Toast.makeText(SearchFirearmsActivity.this,"Please Select a scanning mode.",Toast.LENGTH_LONG).show();
+        }
 
     }
 
