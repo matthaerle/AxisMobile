@@ -184,22 +184,27 @@ public class InventoryProductsActivity extends AppCompatActivity {
                 @Override
                 public void receiveData(Object object) {
                     JSONReturnData = (String)object;
-                    Log.v(TAG, "VerifyProductInGroup JSONReturnData\n"+JSONReturnData);
-                    SendProductView prodInfo = VerifyProductInGroupA(JSONReturnData);
-                    edt_count_qty.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(InventoryProductsActivity.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(edt_count_qty, InputMethodManager.SHOW_IMPLICIT);
-                    txt_desc_data = (TextView) findViewById(R.id.txt_desc_data);
-                    txt_price_data = (TextView) findViewById(R.id.txt_price_data);
-                    txt_qoh_data = (TextView) findViewById(R.id.txt_qoh_data);
-                    txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
+                    if (!JSONReturnData.equals("")) {
+                        Log.v(TAG, "VerifyProductInGroup JSONReturnData\n"+JSONReturnData);
+                        SendProductView prodInfo = VerifyProductInGroupA(JSONReturnData);
+                        edt_count_qty.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(InventoryProductsActivity.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(edt_count_qty, InputMethodManager.SHOW_IMPLICIT);
+                        txt_desc_data = (TextView) findViewById(R.id.txt_desc_data);
+                        txt_price_data = (TextView) findViewById(R.id.txt_price_data);
+                        txt_qoh_data = (TextView) findViewById(R.id.txt_qoh_data);
+                        txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
 
-                    txt_upc_data.setText(prodInfo.getProductUPC());
-                    txt_price_data.setText(String.valueOf(prodInfo.getPrice()));
-                    txt_desc_data.setText(prodInfo.getShortDescription());
-                    txt_qoh_data.setText(String.valueOf(prodInfo.getPhysicalQoH()));
+                        txt_upc_data.setText(prodInfo.getProductUPC());
+                        txt_price_data.setText(String.valueOf(prodInfo.getPrice()));
+                        txt_desc_data.setText(prodInfo.getShortDescription());
+                        txt_qoh_data.setText(String.valueOf(prodInfo.getPhysicalQoH()));
 
-                    product_info.setVisibility(View.VISIBLE);
+                        product_info.setVisibility(View.VISIBLE);
+                    } else {
+                        Toast.makeText(InventoryProductsActivity.this,"Invalid Product Scanned", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             };
             getJSONDataBack.execute(reqUrl.toString(), postData.toString());
