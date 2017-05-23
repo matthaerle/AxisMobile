@@ -101,6 +101,9 @@ public class SearchFirearmsActivity extends AppCompatActivity {
                 if(radio_serial.isChecked()){
                     edt_input_scanned.SetInputTypeText();
                     edt_input_scanned.SetHint("Serial Number");
+                    edt_input_scanned.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
                 }
                 if(radio_log.isChecked()){
                     radio_log.setChecked(false);
@@ -112,6 +115,9 @@ public class SearchFirearmsActivity extends AppCompatActivity {
                 if(radio_log.isChecked()){
                     edt_input_scanned.SetInputTypeDecimal();
                     edt_input_scanned.SetHint("Log Number");
+                    edt_input_scanned.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
                 }
                 if(radio_serial.isChecked()){
                     radio_serial.setChecked(false);

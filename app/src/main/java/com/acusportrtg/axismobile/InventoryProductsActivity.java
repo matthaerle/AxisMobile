@@ -39,7 +39,8 @@ public class InventoryProductsActivity extends AppCompatActivity {
     private Button btn_search,btn_clear,btn_submit;
     private SubmitItemCount sub = new SubmitItemCount();
     private String JSONReturnData = "";
-    private EditText edt_product_upc,edt_count_qty;
+    private ClearableEditText edt_product_upc;
+    private EditText edt_count_qty;
     private ConstraintLayout product_info;
     private int invGroupID;
     private GetEmployees emp;
@@ -56,7 +57,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_clear = (Button) findViewById(R.id.btn_clear);
         btn_submit = (Button) findViewById(R.id.btn_submit_count);
-        edt_product_upc = (EditText) findViewById(R.id.edt_upc_field);
+        edt_product_upc = (ClearableEditText) findViewById(R.id.edt_upc_field);
         edt_count_qty = (EditText) findViewById(R.id.edt_count_qty);
         product_info = (ConstraintLayout) findViewById(R.id.product_info);
 
@@ -64,6 +65,9 @@ public class InventoryProductsActivity extends AppCompatActivity {
         txt_price_data = (TextView) findViewById(R.id.txt_price_data);
         txt_qoh_data = (TextView) findViewById(R.id.txt_qoh_data);
         txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
+
+        edt_product_upc.SetHint("UPC");
+
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override

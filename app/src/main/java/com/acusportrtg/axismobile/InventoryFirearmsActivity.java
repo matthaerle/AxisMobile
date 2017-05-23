@@ -7,6 +7,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -39,6 +41,8 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
     private GetEmployees emp;
     private boolean displayedHint = false;
     private FirearmStockScan fss;
+    private RadioButton radio_serial, radio_log;
+    private ClearableEditText edt_input_scanned;
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +51,17 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Firearm Count");
         emp = glob.getEmployee();
         setContentView(R.layout.activity_inventory_firearms);
-        final RadioButton radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
-        final RadioButton radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
+        radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
+        radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
-        final EditText edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
+        edt_input_scanned = (ClearableEditText) findViewById(R.id.edt_firearm_scan);
         final Switch switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
+
         radio_log.setChecked(true);
+        edt_input_scanned.SetHint("Log Number");
+        edt_input_scanned.SetInputTypeDecimal();
+
         switch_continuous_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -97,6 +105,10 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!switch_continuous_mode.isChecked()){
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                }
                 fss = new FirearmStockScan();
                 String str_input_scanned = edt_input_scanned.getText().toString().trim();
                 edt_input_scanned.setText("");
@@ -130,8 +142,16 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                 }
             }
         });
+
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
+                if(radio_serial.isChecked()){
+                    edt_input_scanned.SetInputTypeText();
+                    edt_input_scanned.SetHint("Serial Number");
+                    edt_input_scanned.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                }
                 if(radio_log.isChecked()){
                     radio_log.setChecked(false);
                 }
@@ -139,6 +159,13 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         };
         View.OnClickListener radio_log_listener = new View.OnClickListener(){
             public void onClick(View v) {
+                if(radio_log.isChecked()){
+                    edt_input_scanned.SetInputTypeDecimal();
+                    edt_input_scanned.SetHint("Log Number");
+                    edt_input_scanned.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                }
                 if(radio_serial.isChecked()){
                     radio_serial.setChecked(false);
                 }
@@ -230,7 +257,12 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                     UpdateStatus us = FirearmCounted(JSONReturnData);
                     if (us != null) {
                         if (us.isSuccesfull()){
-                            Toast.makeText(InventoryFirearmsActivity.this,"Count succesfull.",Toast.LENGTH_LONG).show();
+                            if(radio_log.isChecked()){
+                                Toast.makeText(InventoryFirearmsActivity.this,"Log " + Long.toString(fi.getInvNbr()) + " counted!",Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(InventoryFirearmsActivity.this,"Serial " + fi.getSerialNumber() + " counted!",Toast.LENGTH_LONG).show();
+                            }
                             hideFirearmInfo();
                         }
                         else
@@ -287,7 +319,6 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                 txt_new_or_used_data = (TextView) findViewById(R.id.txt_new_or_used_data),
                 txt_model_data = (TextView) findViewById(R.id.txt_model_data),
                 txt_importer_data = (TextView) findViewById(R.id.txt_importer_data),
-                txt_status_data = (TextView) findViewById(R.id.txt_status_data),
                 txt_gauge_data = (TextView) findViewById(R.id.txt_gauge_data);
 
         ConstraintLayout firearm_view = (ConstraintLayout) findViewById(R.id.constraint_firearminfo);
@@ -300,9 +331,9 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         txt_new_or_used_data.setText(fi.getNewUsed());
         txt_model_data.setText(fi.getModel());
         txt_importer_data.setText(fi.getImporter());
-        txt_status_data.setText(fi.getImporter());
         txt_gauge_data.setText(fi.getGaugeCaliber());
         firearm_view.setVisibility(View.VISIBLE);
+
     }
     private void hideFirearmInfo() {
         ConstraintLayout firearm_view = (ConstraintLayout) findViewById(R.id.constraint_firearminfo);
