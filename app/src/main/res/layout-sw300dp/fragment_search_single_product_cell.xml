@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/constraintLayout"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_prod_desc">
+
+        <TextView
+            android:id="@+id/txt_is_stock_box"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:text="@string/txt_is_stock_short"
+            app:layout_constraintLeft_toRightOf="@+id/chk_is_stock"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chk_is_stock" />
+
+        <CheckBox
+            android:id="@+id/chk_is_stock"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scaleX="0.60"
+            android:scaleY="0.60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/txt_is_serialized_box"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.327" />
+
+        <TextView
+            android:id="@+id/txt_is_serialized_box"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/txt_serialized"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/chk_is_serialized"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.428" />
+
+        <CheckBox
+            android:id="@+id/chk_is_serialized"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:height="1dp"
+            android:clickable="false"
+            android:elevation="1dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:paddingEnd="-5dp"
+            android:paddingStart="-5dp"
+            android:scaleX="0.60"
+            android:scaleY="0.60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/txt_is_firearm_box"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txt_is_firearm_box"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:text="@string/txt_is_firearm"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chk_is_firearm"
+            app:layout_constraintLeft_toRightOf="@+id/chk_is_firearm" />
+
+        <CheckBox
+            android:id="@+id/chk_is_firearm"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scaleX="0.60"
+            android:scaleY="0.60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/txt_active_box"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txt_active_box"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:text="@string/product_cell_active"
+            app:layout_constraintBaseline_toBaselineOf="@+id/chk_active"
+            app:layout_constraintLeft_toRightOf="@+id/chk_active" />
+
+        <CheckBox
+            android:id="@+id/chk_active"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scaleX="0.60"
+            android:scaleY="0.60"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txt_manufacture_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/txt_manufacture_header"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_description_data" />
+
+    <TextView
+        android:id="@+id/txt_qty_committed_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="@string/txt_max_value"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_qty_committed_header"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_qty_committed_header" />
+
+    <TextView
+        android:id="@+id/txt_qty_on_order_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="999"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_qty_on_order_header"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_qty_on_order_header" />
+
+    <TextView
+        android:id="@+id/txt_qty_committed_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/txt_qty_committed_header"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_on_order_header" />
+
+    <TextView
+        android:id="@+id/txt_qty_on_order_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/txt_qty_on_order_header"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_manufacture_header" />
+
+    <TextView
+        android:id="@+id/txt_description_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/txt_department_header"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qoh_header"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/txt_manufacture_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/product_cell_placeholder"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_manufacture_header"
+        app:layout_constraintTop_toBottomOf="@+id/txt_department_data" />
+
+    <TextView
+        android:id="@+id/txt_department_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="@string/product_cell_placeholder"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_description_data"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_description_data" />
+
+    <TextView
+        android:id="@+id/txt_Product_UPC_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/upc_title"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <TextView
+        android:id="@+id/txt_upc_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/product_cell_placeholder"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_Product_UPC_header"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <TextView
+        android:id="@+id/txt_price_title"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="0dp"
+        android:text="@string/txt_prod_price_header"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/txt_prod_price"
+        app:layout_constraintTop_toBottomOf="@+id/txt_max_header" />
+
+    <TextView
+        android:id="@+id/txt_prod_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
+        android:text="@string/txt_max_amount"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_max" />
+
+    <TextView
+        android:id="@+id/txt_prod_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="start"
+        android:text="@string/product_cell_placeholder"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_qoh_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/txt_qoh_header"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Product_UPC_header" />
+
+    <TextView
+        android:id="@+id/txt_qoh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="@string/txt_max_value"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_qoh_header"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_qoh_header" />
+
+    <TextView
+        android:id="@+id/txt_min_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/txt_min_header"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_header" />
+
+    <TextView
+        android:id="@+id/txt_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="@string/txt_max_value"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_min_header"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_min_header" />
+
+    <TextView
+        android:id="@+id/txt_max_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/txt_max_header"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_min"
+        app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_data"
+        android:layout_marginLeft="9dp" />
+
+    <TextView
+        android:id="@+id/txt_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="@string/txt_max_value"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@+id/txt_max_header"
+        android:layout_marginLeft="11dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/txt_max_header" />
+
+
+</android.support.constraint.ConstraintLayout>
