@@ -280,7 +280,10 @@ public class SearchProductsActivity extends AppCompatActivity {
                     productView.setQtyCommitted(p.getInt("QtyCommitted"));
                     productView.setDepartment(p.getString("Department"));
                     productView.setManufacture(p.getString("Manufacturer"));
-                    productView.setIsActive(true);
+                    productView.setIsActive(p.getBoolean("Active"));
+                    productView.setIsFirearm(p.getBoolean("IsFirearm"));
+                    productView.setIsStockItem(p.getBoolean("IsStock"));
+                    productView.setIsSerialized(p.getBoolean("IsSerialNonFirearm"));
                     sum_value += productView.getPrice();
 
                     if(productList.size() > 0){

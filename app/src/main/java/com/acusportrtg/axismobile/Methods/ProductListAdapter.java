@@ -57,6 +57,7 @@ public class ProductListAdapter extends ArrayAdapter<SendProductView> {
         TextView txt_qty_committed_data = (TextView)convertView.findViewById(R.id.txt_qty_committed_data);
         TextView txt_department_data = (TextView)convertView.findViewById(R.id.txt_department_data);
         TextView txt_manufacture_data = (TextView)convertView.findViewById(R.id.txt_manufacture_data);
+
         if(!multiProduct){
             CheckBox chk_is_active = (CheckBox)convertView.findViewById(R.id.chk_active);
             CheckBox chk_is_firearm = (CheckBox)convertView.findViewById(R.id.chk_is_firearm);
