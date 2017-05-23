@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private IsConnected verified = new IsConnected();
     private ArrayList<String> employeeNameList = new ArrayList<String>();
     private HashMap<String,GetEmployees> employeeMap = new HashMap<>();
-
+    private EditText username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,8 @@ public class LoginActivity extends AppCompatActivity {
 
         final Button setupButton = (Button) findViewById(R.id.btn_Setup);
         final Button loginButton = (Button) findViewById(R.id.btn_Login);
-        final EditText username = (EditText) findViewById(R.id.username_textbox);
-        final EditText password = (EditText) findViewById(R.id.pass_textbox);
+        username = (EditText) findViewById(R.id.username_textbox);
+        password = (EditText) findViewById(R.id.pass_textbox);
 
         loginButton.setEnabled(false);
         username.clearFocus();
@@ -107,6 +108,29 @@ public class LoginActivity extends AppCompatActivity {
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
+        });
+
+        password.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                        // do nothing yet
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        Login();
+                    } // is there any other option here?...
+
+                    return true;
+
+                } else {
+                    // it is not an Enter key - let others handle the event
+                    return false;
+                }
+            }
+
         });
 
 
@@ -161,36 +185,40 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Check if server can connect and then move on
-                if(verified.getConnectionVerified()){
-                    boolean activeUser = employeeNameList.contains(username.getText().toString());
 
-                    String resultHash = generateMD5Hash(password.getText().toString());
-                    //Toast.makeText(LoginActivity.this, resultHash, Toast.LENGTH_LONG).show();
-
-                    if(activeUser){
-                        Toast.makeText(LoginActivity.this, "Employee Verified", Toast.LENGTH_LONG).show();
-                        Globals glob = ((Globals)getApplicationContext());
-                        GetEmployees emp = employeeMap.get(username.getText().toString());
-                        glob.setEmployee(emp);
-                        Intent taskChooser = new Intent(LoginActivity.this,TaskChooserActivity.class);
-                        startActivity(taskChooser);
-                        username.setText("");
-                        password.setText("");
-                        username.setTextColor(Color.parseColor("#2980b9"));
-                        username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
-                    }
-                    else {
-                        Toast.makeText(LoginActivity.this, "Employee Not Found", Toast.LENGTH_LONG).show();
-                        username.setTextColor(Color.parseColor("#ff0000"));
-                        username.getBackground().setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP);
-                    }
-                }
-                else {
-                    Toast.makeText(LoginActivity.this, "Error Connecting", Toast.LENGTH_LONG).show();
-                }
             }
         });
+    }
+
+    private void Login(){
+        //Check if server can connect and then move on
+        if(verified.getConnectionVerified()){
+            boolean activeUser = employeeNameList.contains(username.getText().toString());
+
+            String resultHash = generateMD5Hash(password.getText().toString());
+            //Toast.makeText(LoginActivity.this, resultHash, Toast.LENGTH_LONG).show();
+
+            if(activeUser){
+                Toast.makeText(LoginActivity.this, "Employee Verified", Toast.LENGTH_LONG).show();
+                Globals glob = ((Globals)getApplicationContext());
+                GetEmployees emp = employeeMap.get(username.getText().toString());
+                glob.setEmployee(emp);
+                Intent taskChooser = new Intent(LoginActivity.this,TaskChooserActivity.class);
+                startActivity(taskChooser);
+                username.setText("");
+                password.setText("");
+                username.setTextColor(Color.parseColor("#2980b9"));
+                username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+            }
+            else {
+                Toast.makeText(LoginActivity.this, "Employee Not Found", Toast.LENGTH_LONG).show();
+                username.setTextColor(Color.parseColor("#ff0000"));
+                username.getBackground().setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP);
+            }
+        }
+        else {
+            Toast.makeText(LoginActivity.this, "Error Connecting", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void CheckServerConnected() {
