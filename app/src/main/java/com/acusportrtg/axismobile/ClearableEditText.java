@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -164,4 +165,5 @@ public class ClearableEditText extends RelativeLayout
     public void SetHint(String s){
         edit_text.setHint(s);
     }
+
 }

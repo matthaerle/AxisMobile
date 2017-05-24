@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -119,24 +120,6 @@ public class SearchProductsActivity extends AppCompatActivity {
             }
         });
 
-        upc_Field.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
-                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        // do nothing yet
-                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        SearchProduct();
-                    }
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-        });
 
         chk_include_subtotal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -159,6 +142,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                 }
             }
         });
+
 
     }
 

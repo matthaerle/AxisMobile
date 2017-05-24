@@ -1,6 +1,7 @@
 package com.acusportrtg.axismobile;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -118,7 +119,17 @@ public class LoginActivity extends AppCompatActivity {
                         || keyCode ==  KeyEvent.KEYCODE_ENTER) {
                     if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        Login();
+                        if(username.getText().toString().trim().length() == 0){
+                            username.setTextColor(Color.parseColor("#ff0000"));
+                            username.getBackground().setColorFilter(Color.parseColor("#ff0000"), PorterDuff.Mode.SRC_ATOP);
+                            Toast.makeText(LoginActivity.this, "Username cannot be blank", Toast.LENGTH_LONG).show();
+                            username.requestFocus();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                        }
+                        else{
+                            Login();
+                        }
                     }
                     return true;
                 } else {
