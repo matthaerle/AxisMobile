@@ -120,7 +120,6 @@ public class SearchProductsActivity extends AppCompatActivity {
             }
         });
 
-
         chk_include_subtotal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
