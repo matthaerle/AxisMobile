@@ -72,10 +72,15 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
             public void onClick(View v) {
                 UpdateMinMax upd = new UpdateMinMax();
                 upd.setEmployeeID(emp.getEmployeeID());
-                upd.setMaxLevel(Integer.parseInt(edt_max_value.getText().toString()));
-                upd.setMinLevel(Integer.parseInt(edt_min_value.getText().toString()));
-                upd.setProductID(productView.getProductID());
-                Update_Product_Min_Max(upd,UpdateMinMaxActivity.this);
+                if (!edt_min_value.getText().toString().trim().equals("")
+                        && !edt_max_value.getText().toString().trim().equals("") ) {
+                    upd.setMinLevel(Integer.parseInt(edt_min_value.getText().toString()));
+                    upd.setMaxLevel(Integer.parseInt(edt_max_value.getText().toString()));
+                    upd.setProductID(productView.getProductID());
+                    Update_Product_Min_Max(upd,UpdateMinMaxActivity.this);
+                } else {
+                    Toast.makeText(UpdateMinMaxActivity.this,"Invalid Min or Max",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         
