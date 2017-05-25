@@ -91,18 +91,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/guideline38"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.2"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="72dp" />
+        app:layout_constraintGuide_percent="0.0" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline39"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.8"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="288dp" />
+        app:layout_constraintGuide_percent="1.0" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/product_info"
