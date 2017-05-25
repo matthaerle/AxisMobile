@@ -90,7 +90,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
 
-        upc_Field.setOnKeyListener(new View.OnKeyListener() {
+        constraintLayout.setOnKeyListener(new ConstraintLayout.OnKeyListener() {
             BarcodeReader barcodeReader = new BarcodeReader(SearchProductsActivity.this);
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -106,6 +106,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                 return false;
             }
         });
+
 
 
         btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
