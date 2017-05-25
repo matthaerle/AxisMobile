@@ -89,12 +89,13 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_total_header.setVisibility(View.GONE);
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
-
+        final BarcodeReader barcodeReader = new BarcodeReader(SearchProductsActivity.this);
         constraintLayout.setOnKeyListener(new ConstraintLayout.OnKeyListener() {
-            BarcodeReader barcodeReader = new BarcodeReader(SearchProductsActivity.this);
+
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyCode.ALR_H450.SCAN) {
+                    Toast.makeText(SearchProductsActivity.this,"Scan Button Clicked",Toast.LENGTH_SHORT).show();
                     barcodeReader.start(new BarcodeCallback() {
                         @Override
                         public void onBarcodeRead(String s) {
