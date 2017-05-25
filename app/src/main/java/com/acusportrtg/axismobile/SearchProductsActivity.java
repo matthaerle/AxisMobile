@@ -162,6 +162,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                 @Override
                 public void onBarcodeRead(String s) {
                     upc_Field.setText(s);
+                    SearchProduct();
                 }
             });
         }
