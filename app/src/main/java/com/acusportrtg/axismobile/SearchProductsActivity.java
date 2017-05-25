@@ -23,6 +23,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alien.barcode.BarcodeCallback;
+import com.alien.barcode.BarcodeReader;
+import com.alien.common.KeyCode;
+
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 
@@ -86,6 +90,23 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
 
+        upc_Field.setOnKeyListener(new View.OnKeyListener() {
+            BarcodeReader barcodeReader = new BarcodeReader(SearchProductsActivity.this);
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyCode.ALR_H450.SCAN) {
+                    barcodeReader.start(new BarcodeCallback() {
+                        @Override
+                        public void onBarcodeRead(String s) {
+                            String detectedBarcode = s;
+                            upc_Field.setText(s);
+                        }
+                    });
+                }
+                return false;
+            }
+        });
+
 
         btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +163,10 @@ public class SearchProductsActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void FillEditText(String s) {
 
     }
 

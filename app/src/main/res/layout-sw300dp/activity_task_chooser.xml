@@ -92,7 +92,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="@string/btn_Update_MinMax"
-        android:drawableLeft="@drawable/selector_minmax_icon"
+        android:drawableStart="@drawable/selector_minmax_icon"
         android:layout_gravity="start"
         android:drawablePadding="2dip"
         android:paddingStart="30dip"
