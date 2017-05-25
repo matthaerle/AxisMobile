@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.R.attr.tag;
 import static android.content.ContentValues.TAG;
@@ -92,27 +93,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal.setVisibility(View.GONE);
 
         barcodeReader = new BarcodeReader(this);
-        constraintLayout.setOnKeyListener(new ConstraintLayout.OnKeyListener() {
 
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyCode.ALR_H450.SCAN) {
-                    Log.v(TAG, "SCAN key press detected");
-                    barcodeReader.start(new BarcodeCallback() {
-
-                        @Override
-                        public void onBarcodeRead(String s) {
-                            barcodeReader.stop();
-                            Log.v(TAG, "Barcode was read successfully");
-                            String detectedBarcode = s;
-                            upc_Field.setText(s);
-                            }
-                        }
-                    );
-                }
-                return false;
-            }
-        });
 
 
 
@@ -172,6 +153,40 @@ public class SearchProductsActivity extends AppCompatActivity {
         });
 
 
+    }
+
+
+    private void startScan() {
+        if (!this.barcodeReader.isRunning()) {
+            this.barcodeReader.start(new BarcodeCallback() {
+                @Override
+                public void onBarcodeRead(String s) {
+                    upc_Field.setText(s);
+                }
+            });
+        }
+    }
+
+    public synchronized void stopScan() {
+        if (this.barcodeReader.isRunning()) {
+            this.barcodeReader.stop();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
+            return super.onKeyDown(keyCode, event);
+        }
+        startScan();
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN) {
+            return super.onKeyUp(keyCode, event);
+        }
+        stopScan();
+        return true;
     }
 
     private void FillEditText(String s) {
