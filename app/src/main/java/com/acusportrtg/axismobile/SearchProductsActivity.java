@@ -42,6 +42,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static android.R.attr.tag;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -63,7 +64,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     private CheckBox chk_include_subtotal;
     private double sum_value = 0.00;
     private ConstraintLayout constraintLayout;
-
+    private BarcodeReader barcodeReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,20 +90,25 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_total_header.setVisibility(View.GONE);
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
-        final BarcodeReader barcodeReader = new BarcodeReader(SearchProductsActivity.this);
+
+        barcodeReader = new BarcodeReader(this);
         constraintLayout.setOnKeyListener(new ConstraintLayout.OnKeyListener() {
 
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyCode.ALR_H450.SCAN) {
-                    Toast.makeText(SearchProductsActivity.this,"Scan Button Clicked",Toast.LENGTH_SHORT).show();
+                    Log.v(TAG, "SCAN key press detected");
                     barcodeReader.start(new BarcodeCallback() {
+
                         @Override
                         public void onBarcodeRead(String s) {
+                            barcodeReader.stop();
+                            Log.v(TAG, "Barcode was read successfully");
                             String detectedBarcode = s;
                             upc_Field.setText(s);
+                            }
                         }
-                    });
+                    );
                 }
                 return false;
             }
@@ -127,7 +133,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         btn_search_UPC.setOnClickListener(new View.OnClickListener (){
             @Override
             public void onClick(View v) {
-            SearchProduct();
+                SearchProduct();
             }
         });
 
@@ -171,6 +177,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     private void FillEditText(String s) {
 
     }
+
 
     private void SearchProduct(){
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
