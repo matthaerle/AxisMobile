@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.PorterDuff;
 import android.text.TextWatcher;
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> employeeNameList = new ArrayList<String>();
     private HashMap<String,GetEmployees> employeeMap = new HashMap<>();
     private EditText username, password;
+    private TextView phoneModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +60,15 @@ public class LoginActivity extends AppCompatActivity {
 
         final Button setupButton = (Button) findViewById(R.id.btn_Setup);
         final Button loginButton = (Button) findViewById(R.id.btn_Login);
+        phoneModel = (TextView) findViewById(R.id.txt_phone_model);
+
         username = (EditText) findViewById(R.id.username_textbox);
         password = (EditText) findViewById(R.id.pass_textbox);
 
         loginButton.setEnabled(false);
         username.clearFocus();
+
+        getDeviceName();
 
         username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -355,6 +362,28 @@ public class LoginActivity extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             Log.e("MD5", e.getLocalizedMessage());
             return null;
+        }
+    }
+
+    public void getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            phoneModel.setText(capitalize(model));
+        } else {
+            phoneModel.setText(capitalize(manufacturer) + " " + model);
+        }
+    }
+
+    private String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
         }
     }
 

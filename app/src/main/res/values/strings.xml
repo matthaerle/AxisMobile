@@ -75,4 +75,7 @@
     <string name="txt_is_stock_short">Stock</string>
 
 
+    <string name="txt_phone_model">PhoneModel</string>
+
+
 </resources>
