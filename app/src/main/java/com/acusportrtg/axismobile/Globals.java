@@ -37,4 +37,5 @@ public class Globals extends Application {
     public void setEmployee(GetEmployees employee) {
         Employee = employee;
     }
+
 }

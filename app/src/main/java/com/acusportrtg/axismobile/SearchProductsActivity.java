@@ -92,6 +92,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
 
+
         barcodeReader = new BarcodeReader(this);
 
 

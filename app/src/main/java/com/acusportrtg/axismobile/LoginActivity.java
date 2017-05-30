@@ -198,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Login();
             }
         });
     }
@@ -366,13 +366,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void getDeviceName() {
-        String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
-        if (model.startsWith(manufacturer)) {
-            phoneModel.setText(capitalize(model));
-        } else {
-            phoneModel.setText(capitalize(manufacturer) + " " + model);
-        }
+        phoneModel.setText(capitalize(model));
     }
 
     private String capitalize(String s) {
