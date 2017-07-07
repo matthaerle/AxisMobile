@@ -68,19 +68,21 @@
 
         <EditText
             android:id="@+id/edt_max_value"
-            android:layout_width="50dp"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:ems="10"
+            android:maxLength="6"
             android:inputType="number"
             app:layout_constraintBaseline_toBaselineOf="@+id/txt_max_header"
             app:layout_constraintLeft_toRightOf="@+id/txt_max_header" />
 
         <EditText
             android:id="@+id/edt_min_value"
-            android:layout_width="50dp"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:maxLength="6"
             android:ems="10"
             android:inputType="number"
             app:layout_constraintBaseline_toBaselineOf="@+id/txt_min_header"
