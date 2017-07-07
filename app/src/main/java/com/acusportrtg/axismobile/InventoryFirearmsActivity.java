@@ -1,11 +1,13 @@
 package com.acusportrtg.axismobile;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -173,6 +175,34 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         };
         radio_serial.setOnClickListener(radio_serial_listener);
         radio_log.setOnClickListener(radio_log_listener);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+           // case
+               // showDialog();
+               // break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+
+    void showDialog() {
+        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("Input_Type_Dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        Input_Type_Dialog newFragment = new Input_Type_Dialog();
+        newFragment.show(ft, "dialog");
     }
 
     private UpdateStatus FirearmCounted(String jsonStr) {
