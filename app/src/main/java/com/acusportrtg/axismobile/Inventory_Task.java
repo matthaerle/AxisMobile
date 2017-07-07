@@ -71,9 +71,10 @@ public class Inventory_Task extends AppCompatActivity {
                         SendInventoryGroup invGroup = new SendInventoryGroup();
                         invGroup.setInventoryGroupID(c.getInt("InventoryGroupID"));
                         invGroup.setGroupName(c.getString("GroupName"));
+                        inventoryGroupList.add(invGroup);
 
-                        if(inventoryGroupList.size() > 0){
-                            for(int j = 0; i < inventoryGroupList.size() - 1; j++){
+                        /*if(inventoryGroupList.size() > 0){
+                            for(int j = 0; j < inventoryGroupList.size() - 1; j++){
                                 if(!(inventoryGroupList.get(j).getInventoryGroupID() == invGroup.getInventoryGroupID())){
                                     inventoryGroupList.add(invGroup);
                                 }
@@ -81,7 +82,7 @@ public class Inventory_Task extends AppCompatActivity {
                         }
                         else{
                             inventoryGroupList.add(invGroup);
-                        }
+                        }*/
                     }
                 } catch (final JSONException e) {
                     runOnUiThread(new Runnable() {

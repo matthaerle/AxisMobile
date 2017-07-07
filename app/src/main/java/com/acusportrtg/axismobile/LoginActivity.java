@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> employeeNameList = new ArrayList<String>();
     private HashMap<String,GetEmployees> employeeMap = new HashMap<>();
     private EditText username, password;
-    private TextView phoneModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
 
         final Button setupButton = (Button) findViewById(R.id.btn_Setup);
         final Button loginButton = (Button) findViewById(R.id.btn_Login);
-        phoneModel = (TextView) findViewById(R.id.txt_phone_model);
 
         username = (EditText) findViewById(R.id.username_textbox);
         password = (EditText) findViewById(R.id.pass_textbox);
@@ -68,7 +66,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setEnabled(false);
         username.clearFocus();
 
-        getDeviceName();
+        final String phoneName = getDeviceName();
+        Log.v("Phone Model: ", phoneName);
 
         username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -365,9 +364,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void getDeviceName() {
+    public String getDeviceName() {
         String model = Build.MODEL;
-        phoneModel.setText(capitalize(model));
+        //phoneModel.setText(capitalize(model));
+        return model;
     }
 
     private String capitalize(String s) {

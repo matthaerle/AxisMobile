@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -93,7 +94,8 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal.setVisibility(View.GONE);
 
 
-        barcodeReader = new BarcodeReader(this);
+        if ( Build.MODEL == "Alien")
+            barcodeReader = new BarcodeReader(this);
 
 
 

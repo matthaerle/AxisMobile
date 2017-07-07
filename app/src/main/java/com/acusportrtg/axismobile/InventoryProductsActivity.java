@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.alien.barcode.BarcodeReader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +47,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
     private int invGroupID;
     private GetEmployees emp;
     private TextView txt_qoh_data,txt_upc_data,txt_price_data,txt_desc_data;
+    private BarcodeReader barcodeReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class InventoryProductsActivity extends AppCompatActivity {
         txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
 
         edt_product_upc.SetHint("UPC");
+
+        if ( Build.MODEL == "Alien")
+            barcodeReader = new BarcodeReader(this);
 
 
         btn_search.setOnClickListener(new View.OnClickListener() {
