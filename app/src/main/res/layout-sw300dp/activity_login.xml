@@ -63,7 +63,7 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/btn_login"
         android:background="@drawable/btn_border_square"
         android:textColor="@drawable/txt_border_button"
         android:layout_marginLeft="0dp"
@@ -79,15 +79,15 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Setup"
+        android:text="@string/btn_setup"
         android:background="@drawable/btn_border_round"
         android:textColor="@drawable/txt_border_button"
         app:layout_constraintBottom_toTopOf="@+id/guideline19"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline20"
-        app:layout_constraintRight_toLeftOf="@+id/guideline21"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline4"
+        app:layout_constraintRight_toLeftOf="@+id/guideline5"
+        android:layout_marginRight="8dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"

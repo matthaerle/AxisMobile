@@ -13,6 +13,7 @@ public class Globals extends Application {
     private GetEmployees Employee;
     private int Inventory_Group_Id;
     private SendInventoryGroup invGroup;
+    private Boolean ShowKeybaord;
 
     public SendInventoryGroup getInvGroup() {
         return invGroup;
@@ -37,5 +38,9 @@ public class Globals extends Application {
     public void setEmployee(GetEmployees employee) {
         Employee = employee;
     }
+
+    public void setKeyboardStatus(boolean status){ShowKeybaord = status;}
+
+    public Boolean getKeyboardStatus() {return ShowKeybaord;}
 
 }

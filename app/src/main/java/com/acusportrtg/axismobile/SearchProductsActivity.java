@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -164,6 +165,7 @@ public class SearchProductsActivity extends AppCompatActivity {
             this.barcodeReader.start(new BarcodeCallback() {
                 @Override
                 public void onBarcodeRead(String s) {
+                    playSuccess();
                     upc_Field.setText(s);
                     SearchProduct();
                 }
@@ -388,6 +390,16 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal.setVisibility(View.GONE);
         txt_total_header.setVisibility((View.GONE));
         sum_value = 0.00;
+    }
+
+    public void playSuccess() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(SearchProductsActivity.this, R.raw.snd_scan_success);
+            mp.start();
+        } catch (Exception e) {
+            Log.e(TAG, "Error play sound: " + e);
+            e.printStackTrace();
+        }
     }
 
 
