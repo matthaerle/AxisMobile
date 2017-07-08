@@ -5,7 +5,7 @@ package com.acusportrtg.axismobile.JSON_Classes;
  */
 
 public class SendInventoryGroup {
-    private int InventoryGroupID;
+    private int InventoryGroupID,ProductCount;
     private String GroupName;
 
     public int getInventoryGroupID() {
@@ -22,5 +22,13 @@ public class SendInventoryGroup {
 
     public void setGroupName(String groupName) {
         GroupName = groupName;
+    }
+
+    public int getProductCount() {
+        return ProductCount;
+    }
+
+    public void setProductCount(int productCount) {
+        ProductCount = productCount;
     }
 }

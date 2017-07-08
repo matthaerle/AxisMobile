@@ -32,8 +32,10 @@ public class Inventory_List_Adapter extends ArrayAdapter<SendInventoryGroup> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_inventory_group, parent, false);
         }
         TextView tv_Group_Name = (TextView)convertView.findViewById(R.id.txt_Group_Name);
+        TextView tv_prod_count = (TextView)convertView.findViewById(R.id.txt_group_count);
 
         tv_Group_Name.setText(inv.getGroupName());
+        tv_prod_count.setText(String.valueOf(inv.getProductCount()));
 
         return convertView;
     }

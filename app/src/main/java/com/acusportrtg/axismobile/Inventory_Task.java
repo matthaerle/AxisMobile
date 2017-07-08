@@ -71,6 +71,7 @@ public class Inventory_Task extends AppCompatActivity {
                         SendInventoryGroup invGroup = new SendInventoryGroup();
                         invGroup.setInventoryGroupID(c.getInt("InventoryGroupID"));
                         invGroup.setGroupName(c.getString("GroupName"));
+                        invGroup.setProductCount(c.getInt("ProductCount"));
                         inventoryGroupList.add(invGroup);
 
                         /*if(inventoryGroupList.size() > 0){
