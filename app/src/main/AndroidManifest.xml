@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".Globals"
@@ -51,6 +53,17 @@
             android:screenOrientation="portrait" />
         <activity android:name=".InventoryFirearmsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".AppSettingsActivity"
+            android:screenOrientation="portrait" />
+        <provider
+            android:name=".GenricFileProvider"
+            android:authorities="${applicationId}.com.acusportrtg.axismobile"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

@@ -42,8 +42,11 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import static android.R.attr.tag;
 import static android.content.ContentValues.TAG;
@@ -68,6 +71,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     private double sum_value = 0.00;
     private ConstraintLayout constraintLayout;
     private BarcodeReader barcodeReader;
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -353,7 +357,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                             if(!(productList.get(j).getProductID().equals(productView.getProductID()))){
                                 productList.add(productView);
                                 Double sum_rounded = (double) Math.round(sum_value * 100) / 100;
-                                txt_sum_value.setText("$" + Double.toString(sum_rounded));
+                                txt_sum_value.setText(nf.format(sum_rounded));
                                 break;
                             }
                         }
@@ -361,7 +365,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                     else{
                         productList.add(productView);
                         Double sum_rounded = (double) Math.round(sum_value * 100) / 100;
-                        txt_sum_value.setText("$" + Double.toString(sum_rounded));
+                        txt_sum_value.setText(nf.format(sum_rounded));
                     }
                 }
                 upc_Field.positiveFeedback();

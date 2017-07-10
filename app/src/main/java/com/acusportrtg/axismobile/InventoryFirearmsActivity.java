@@ -3,10 +3,17 @@ package com.acusportrtg.axismobile;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,6 +38,14 @@ import com.acusportrtg.axismobile.Methods.SharedPrefs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -38,18 +53,20 @@ import java.net.URL;
  * Created by mhaerle on 4/21/2017.
  */
 
-public class InventoryFirearmsActivity extends AppCompatActivity {
+public class InventoryFirearmsActivity extends AppCompatActivity  implements Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
     private FirearmInfo fi = new FirearmInfo();
     private GetEmployees emp;
     private boolean displayedHint = false;
     private FirearmStockScan fss;
     private RadioButton radio_serial, radio_log;
     private ClearableEditText edt_input_scanned;
+    private String currentFirearmType;
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
+        showDialog();
         getSupportActionBar().setTitle("Firearm Count");
         emp = glob.getEmployee();
         setContentView(R.layout.activity_inventory_firearms);
@@ -97,6 +114,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                 fsu.setInventoryNumber(fi.getInventoryNumber());
                 fsu.setEmployeeID(emp.getEmployeeID());
                 fsu.setMachineName("Axis Mobile");
+                fsu.setBoundBookType(currentFirearmType);
                 try {
                     UpdateFirearmScan(fsu,InventoryFirearmsActivity.this);
                 } catch (Exception e) {
@@ -122,6 +140,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                         fss.setLogScanned(true);
                         fss.setSerialScanned(false);
                         fss.setSerialNumber("");
+                        fss.setBoundBookType(currentFirearmType);
                         GetFirearmDisposed(fss, InventoryFirearmsActivity.this);
 
                     }  catch (Exception e) {
@@ -134,6 +153,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                         fss.setLogScanned(false);
                         fss.setSerialScanned(true);
                         fss.setLog((long) 1);
+                        fss.setBoundBookType(currentFirearmType);
                         GetFirearmDisposed(fss, InventoryFirearmsActivity.this);
 
                     }  catch (Exception e) {
@@ -181,9 +201,42 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-           // case
-               // showDialog();
-               // break;
+            case R.id.app_settings:
+                try {
+                    Intent appSettings = new Intent(InventoryFirearmsActivity.this,AppSettingsActivity.class);
+                    startActivity(appSettings);
+                } catch (Exception e) {
+                    Log.e(TAG,e.getLocalizedMessage());
+                    try {
+
+                        Process process = Runtime.getRuntime().exec("logcat -d -t 50");
+                        BufferedReader bufferedReader = new BufferedReader(
+                                new InputStreamReader(process.getInputStream()));
+                        String line;
+                        String output = "";
+                        while ((line = bufferedReader.readLine()) != null) {
+                            output = output + line +" \n";
+                        }
+
+                        Log.v(TAG,InventoryFirearmsActivity.this.getApplicationContext().getPackageName());
+
+                        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        emailIntent.putExtra(Intent.EXTRA_EMAIL, "rtgsupport@acusport.com");
+                        emailIntent.setType("plain/text");
+                        emailIntent.putExtra(Intent.EXTRA_TEXT,output +  "\n" +e.getLocalizedMessage());
+                        emailIntent.putExtra(Intent.EXTRA_EMAIL, "rtgsupport@acusport.com");
+                        startActivity(emailIntent);
+                    } catch (IOException ex) {
+                        Log.e(TAG,ex.getMessage());
+                    }
+
+
+                }
+
+               break;
+            case R.id.firearm_type:
+                showDialog();
+                break;
             default:
                 break;
         }
@@ -194,15 +247,15 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
 
     void showDialog() {
         android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("Input_Type_Dialog");
+        Fragment prev = getFragmentManager().findFragmentByTag("firearm_inv_type_dialog");
         if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        Input_Type_Dialog newFragment = new Input_Type_Dialog();
-        newFragment.show(ft, "dialog");
+        Firearm_Inv_Type_Dialog newFragment = new Firearm_Inv_Type_Dialog();
+        newFragment.show(ft,"dialog");
     }
 
     private UpdateStatus FirearmCounted(String jsonStr) {
@@ -254,6 +307,15 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         return null;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.firearm_options, menu);
+        return true;
+    }
+
+
+
     private IsFirearmDisposed VerifyFirearmDisposedA(String jsonStr) {
         if(!jsonStr.equals("")) {
             try {
@@ -278,6 +340,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
             postData.put("InventoryNumber", fsu.getInventoryNumber());
             postData.put("EmployeeID", fsu.getEmployeeID());
             postData.put("MachineName", fsu.getMachineName());
+            postData.put("BoundBookType", fsu.getBoundBookType());
             Log.v("PostData to Send", postData.toString());
             GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context){
                 @Override
@@ -315,6 +378,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());
             postData.put("LogScanned", fss.isLogScanned());
+            postData.put("BoundBookType",fss.getBoundBookType());
             GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
                 @Override
                 public void receiveData(Object object) {
@@ -370,6 +434,8 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         firearm_view.setVisibility(View.INVISIBLE);
     }
 
+
+
     public void GetFirearmInfo (FirearmStockScan fss,Context context) {
         JSONObject postData = new JSONObject();
         try {
@@ -378,6 +444,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
             postData.put("SerialNumber", fss.getSerialNumber());
             postData.put("SerialScanned", fss.isSerialScanned());
             postData.put("LogScanned", fss.isLogScanned());
+            postData.put("BoundBookType",fss.getBoundBookType());
             GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
                 @Override
                 public void receiveData(Object object) {
@@ -390,6 +457,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
                         fsu.setInventoryNumber(fi.getInventoryNumber());
                         fsu.setEmployeeID(emp.getEmployeeID());
                         fsu.setMachineName("Axis Mobile");
+                        fsu.setBoundBookType(currentFirearmType);
                         try {
                             UpdateFirearmScan(fsu,InventoryFirearmsActivity.this);
                         } catch (Exception e) {
@@ -410,5 +478,12 @@ public class InventoryFirearmsActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(String firearmType) {
+        Toast.makeText(InventoryFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
+        currentFirearmType = firearmType;
+        getSupportActionBar().setTitle("Firearm Inventory"+ ": " + firearmType);
     }
 }

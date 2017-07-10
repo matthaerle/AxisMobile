@@ -7,7 +7,7 @@ package com.acusportrtg.axismobile.JSON_Classes;
 public class FirearmStockUpdate {
     private int InventoryNumber;
     private int EmployeeID;
-    private String MachineName;
+    private String MachineName,BoundBookType;
 
     public int getInventoryNumber() {
         return InventoryNumber;
@@ -31,5 +31,13 @@ public class FirearmStockUpdate {
 
     public void setMachineName(String machineName) {
         MachineName = machineName;
+    }
+
+    public String getBoundBookType() {
+        return BoundBookType;
+    }
+
+    public void setBoundBookType(String boundBookType) {
+        BoundBookType = boundBookType;
     }
 }

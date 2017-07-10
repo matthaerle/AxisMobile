@@ -78,6 +78,9 @@
 
 
     <string name="txt_phone_model">PhoneModel</string>
+    <string name="txt_bb_type_header">Select Firearm Type</string>
+    <string name="txt_firearm_type">Firearm Type</string>
+    <string name="menu_settings">Settings</string>
 
 
 </resources>

@@ -6,7 +6,7 @@ package com.acusportrtg.axismobile.JSON_Classes;
 
 public class FirearmStockScan {
     private Long Log;
-    private String SerialNumber;
+    private String SerialNumber,BoundBookType;
     private boolean SerialScanned;
     private boolean LogScanned;
 
@@ -40,5 +40,13 @@ public class FirearmStockScan {
 
     public void setLogScanned(boolean logScanned) {
         LogScanned = logScanned;
+    }
+
+    public String getBoundBookType() {
+        return BoundBookType;
+    }
+
+    public void setBoundBookType(String boundBookType) {
+        BoundBookType = boundBookType;
     }
 }
