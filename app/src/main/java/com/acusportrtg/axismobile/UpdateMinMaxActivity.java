@@ -8,7 +8,9 @@ import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,6 +45,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
     private String JSONReturnData = "";
     private GetEmployees emp;
     private SendProductView productView;
+    private EditText edt_min_value, edt_max_value;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,37 +59,28 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final EditText edt_upc_field = (EditText) findViewById(R.id.edt_upc_field);
         final Button btn_update = (Button) findViewById(R.id.btn_submit_change);
-        final EditText edt_min_value = (EditText) findViewById(R.id.edt_min_value),
-                edt_max_value = (EditText) findViewById(R.id.edt_max_value);
+        edt_min_value = (EditText) findViewById(R.id.edt_min_value);
+        edt_max_value = (EditText) findViewById(R.id.edt_max_value);
         
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConstraintLayout product_view = (ConstraintLayout)findViewById(R.id.const_item_info);
-                product_view.setVisibility(View.INVISIBLE);
+                clearResults();
             }
         });
 
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateMinMax upd = new UpdateMinMax();
-                upd.setEmployeeID(emp.getEmployeeID());
-                if (!edt_min_value.getText().toString().trim().equals("")
-                        && !edt_max_value.getText().toString().trim().equals("") ) {
-                    upd.setMinLevel(Integer.parseInt(edt_min_value.getText().toString()));
-                    upd.setMaxLevel(Integer.parseInt(edt_max_value.getText().toString()));
-                    upd.setProductID(productView.getProductID());
-                    Update_Product_Min_Max(upd,UpdateMinMaxActivity.this);
-                } else {
-                    Toast.makeText(UpdateMinMaxActivity.this,"Invalid Min or Max",Toast.LENGTH_SHORT).show();
-                }
+                submitMinMaxValues();
             }
         });
         
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 upc = new SearchByUPC();
                 String upc_scanned = edt_upc_field.getText().toString().trim();
                 edt_upc_field.setText("");
@@ -97,7 +91,45 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
                     Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
             }
         });
-        
+
+        edt_min_value.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!edt_min_value.hasFocus() && !edt_max_value.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
+        edt_max_value.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!edt_max_value.hasFocus() & !edt_min_value.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
+        edt_max_value.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        submitMinMaxValues();
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        });
+
     }
 
     private void Update_Product_Min_Max(UpdateMinMax upd, Context context) {
@@ -273,6 +305,27 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
                 edt_upc_field.setText("");
             }
         }, 1000);
+    }
+
+    private void clearResults(){
+        ConstraintLayout product_view = (ConstraintLayout)findViewById(R.id.const_item_info);
+        product_view.setVisibility(View.INVISIBLE);
+    }
+
+
+    private void submitMinMaxValues(){
+        UpdateMinMax upd = new UpdateMinMax();
+        upd.setEmployeeID(emp.getEmployeeID());
+        if (!edt_min_value.getText().toString().trim().equals("")
+                && !edt_max_value.getText().toString().trim().equals("") ) {
+            upd.setMinLevel(Integer.parseInt(edt_min_value.getText().toString()));
+            upd.setMaxLevel(Integer.parseInt(edt_max_value.getText().toString()));
+            upd.setProductID(productView.getProductID());
+            Update_Product_Min_Max(upd,UpdateMinMaxActivity.this);
+            clearResults();
+        } else {
+            Toast.makeText(UpdateMinMaxActivity.this,"Invalid Min or Max",Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
 
 
     <android.support.constraint.ConstraintLayout
@@ -28,6 +30,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/btn_submit_count"
+            android:background="@drawable/btn_solid_square"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
