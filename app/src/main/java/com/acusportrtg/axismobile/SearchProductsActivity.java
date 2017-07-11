@@ -3,6 +3,8 @@ package com.acusportrtg.axismobile;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,8 +105,6 @@ public class SearchProductsActivity extends AppCompatActivity {
             barcodeReader = new BarcodeReader(this);
 
 
-
-
         btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +158,32 @@ public class SearchProductsActivity extends AppCompatActivity {
                     set.applyTo(constraintLayout);
                 }
             }
+        });
+
+        upc_Field.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        if(upc_Field.getText().toString().trim().length() == 0){
+                            Toast.makeText(SearchProductsActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
+                            upc_Field.requestFocus();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                        }
+                        else{
+                            SearchProduct();
+                        }
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
         });
 
 
