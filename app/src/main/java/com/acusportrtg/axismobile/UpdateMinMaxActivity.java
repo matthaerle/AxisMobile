@@ -310,6 +310,8 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
     private void clearResults(){
         ConstraintLayout product_view = (ConstraintLayout)findViewById(R.id.const_item_info);
         product_view.setVisibility(View.INVISIBLE);
+        edt_min_value.setText("");
+        edt_max_value.setText("");
     }
 
 
