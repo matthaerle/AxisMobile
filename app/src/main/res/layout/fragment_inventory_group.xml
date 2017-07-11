@@ -35,7 +35,7 @@
         android:gravity="right|center_horizontal"
         android:paddingRight="20dp"
         android:paddingTop="5dp"
-        android:text="9999"
+        android:text="Count: 999"
         android:textAlignment="gravity"
         android:textSize="24sp"
         app:layout_constraintHorizontal_bias="0.0"
@@ -48,5 +48,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/guideline10"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.72749394" />
+        app:layout_constraintGuide_percent="0.57" />
 </android.support.constraint.ConstraintLayout>
