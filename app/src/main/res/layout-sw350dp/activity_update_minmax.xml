@@ -33,6 +33,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/colorWhite"
             android:background="@drawable/btn_solid_square"
             app:layout_constraintTop_toBottomOf="@+id/txt_qty_committed_data" />
 
