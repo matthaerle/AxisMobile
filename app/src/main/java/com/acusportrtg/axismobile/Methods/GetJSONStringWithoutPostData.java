@@ -27,6 +27,7 @@ public class GetJSONStringWithoutPostData {
         try {
             HttpURLConnection conn = (HttpURLConnection) reqUrl.openConnection();
             conn.setRequestMethod("POST");
+            conn.setConnectTimeout(5000);
 
             InputStream in = new BufferedInputStream(conn.getInputStream());
             result = convertStreamToString(in);

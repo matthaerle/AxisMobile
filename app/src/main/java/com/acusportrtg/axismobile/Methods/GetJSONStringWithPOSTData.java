@@ -88,6 +88,7 @@ public interface CallbackReceiver {
             try {
                 httpURLConnection = (HttpURLConnection) new URL(params[0]).openConnection();
                 httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setConnectTimeout(7000);
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
