@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -41,7 +42,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
     private Button btn_search,btn_clear,btn_submit;
     private SubmitItemCount sub = new SubmitItemCount();
     private String JSONReturnData = "";
-    private ClearableEditText edt_product_upc;
+    private EditText edt_product_upc;
     private EditText edt_count_qty;
     private ConstraintLayout product_info;
     private int invGroupID;
@@ -60,7 +61,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_clear = (Button) findViewById(R.id.btn_clear);
         btn_submit = (Button) findViewById(R.id.btn_submit_count);
-        edt_product_upc = (ClearableEditText) findViewById(R.id.edt_upc_field);
+        edt_product_upc = (EditText) findViewById(R.id.edt_upc_field);
         edt_count_qty = (EditText) findViewById(R.id.edt_count_qty);
         product_info = (ConstraintLayout) findViewById(R.id.product_info);
 
@@ -69,7 +70,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
         txt_qoh_data = (TextView) findViewById(R.id.txt_qoh_data);
         txt_upc_data = (TextView) findViewById(R.id.txt_upc_data);
 
-        edt_product_upc.SetHint("UPC");
+        edt_product_upc.setHint("UPC");
 
         if ( Build.MODEL == "Alien")
             barcodeReader = new BarcodeReader(this);
@@ -78,24 +79,75 @@ public class InventoryProductsActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_submit.setEnabled(false);
-                if(!edt_product_upc.getText().toString().isEmpty()) {
-                    try {
-                        String productUPC = edt_product_upc.getText().toString().trim();
-                        GetInventoryGroupProductID prod = new GetInventoryGroupProductID();
-                        prod.setGroupID(invGroupID);
-                        prod.setProductUPC(productUPC);
-
-
-                        VerifyProductInGroup(prod, InventoryProductsActivity.this);
-
-
-                    }  catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
+                Search();
+            }
+        });
+        edt_product_upc.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 0) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    edt_product_upc.setTextColor(Color.parseColor("#2980b9"));
+                    edt_product_upc.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                    if(!imm.isAcceptingText()) {
+                        imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
                     }
+                }
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                if(edt_product_upc.getText().toString().trim().length() == 0){
+                    edt_product_upc.setTextColor(Color.parseColor("#95a5a6"));
+                    edt_product_upc.getBackground().setColorFilter(Color.parseColor("#95a5a6"), PorterDuff.Mode.SRC_ATOP);
                 }
             }
         });
+
+        edt_product_upc.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        if(edt_product_upc.getText().toString().trim().length() == 0){
+                            Toast.makeText(InventoryProductsActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
+                            edt_product_upc.requestFocus();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                        }
+                        else{
+                            Search();
+                        }
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        });
+
+        edt_product_upc.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!edt_product_upc.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
         btn_submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -148,6 +200,24 @@ public class InventoryProductsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Group: " + glob.getInvGroup().getGroupName());
     }
 
+    public void Search() {
+        btn_submit.setEnabled(false);
+        if(!edt_product_upc.getText().toString().isEmpty()) {
+            try {
+                String productUPC = edt_product_upc.getText().toString().trim();
+                GetInventoryGroupProductID prod = new GetInventoryGroupProductID();
+                prod.setGroupID(invGroupID);
+                prod.setProductUPC(productUPC);
+
+
+                VerifyProductInGroup(prod, InventoryProductsActivity.this);
+
+
+            }  catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+    }
 
     public String UpdateInventoryCount (SubmitItemCount count, Context context) {
         JSONObject postData = new JSONObject();

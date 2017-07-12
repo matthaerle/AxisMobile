@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.acusportrtg.axismobile.ClearableEditText
+    <EditText
         android:id="@+id/edt_firearm_scan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

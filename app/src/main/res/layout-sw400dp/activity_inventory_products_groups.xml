@@ -10,18 +10,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/guideline15"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="36dp" />
+        app:layout_constraintGuide_percent="0.04" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/guideline16"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="324dp" />
+        app:layout_constraintGuide_percent="0.96" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"

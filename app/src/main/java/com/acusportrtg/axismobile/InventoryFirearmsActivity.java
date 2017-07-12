@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,7 +13,11 @@ import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -59,8 +65,9 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     private boolean displayedHint = false;
     private FirearmStockScan fss;
     private RadioButton radio_serial, radio_log;
-    private ClearableEditText edt_input_scanned;
+    private EditText edt_input_scanned;
     private String currentFirearmType;
+    private Switch switch_continuous_mode;
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +81,12 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
         radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
-        edt_input_scanned = (ClearableEditText) findViewById(R.id.edt_firearm_scan);
-        final Switch switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
+        edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
+        switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
 
         radio_log.setChecked(true);
-        edt_input_scanned.SetHint("Log Number");
-        edt_input_scanned.SetInputTypeDecimal();
+        edt_input_scanned.setHint("Log Number");
+        edt_input_scanned.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         switch_continuous_mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -122,54 +129,84 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
                 }    }
         });
 
+        edt_input_scanned.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 0) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    edt_input_scanned.setTextColor(Color.parseColor("#2980b9"));
+                    edt_input_scanned.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                    if(!imm.isAcceptingText()) {
+                        imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                if(edt_input_scanned.getText().toString().trim().length() == 0){
+                    edt_input_scanned.setTextColor(Color.parseColor("#95a5a6"));
+                    edt_input_scanned.getBackground().setColorFilter(Color.parseColor("#95a5a6"), PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+        });
+
+        edt_input_scanned.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        if(edt_input_scanned.getText().toString().trim().length() == 0){
+                            Toast.makeText(InventoryFirearmsActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
+                            edt_input_scanned.requestFocus();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                        }
+                        else{
+                            Search();
+                        }
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        });
+
+        edt_input_scanned.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!edt_input_scanned.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!switch_continuous_mode.isChecked()){
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                }
-                fss = new FirearmStockScan();
-                String str_input_scanned = edt_input_scanned.getText().toString().trim();
-                edt_input_scanned.setText("");
-                if(radio_log.isChecked()){
-                    //Do Log number stuff
-                    try {
-                        Long inv_nbr = Long.parseLong(str_input_scanned);
-                        fss.setLog(inv_nbr);
-                        fss.setLogScanned(true);
-                        fss.setSerialScanned(false);
-                        fss.setSerialNumber("");
-                        fss.setBoundBookType(currentFirearmType);
-                        GetFirearmDisposed(fss, InventoryFirearmsActivity.this);
 
-                    }  catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
-                    }
-                } else if (radio_serial.isChecked()) {
-                    //Do Serialnumber stuff
-                    try {
-                        fss.setSerialNumber(str_input_scanned);
-                        fss.setLogScanned(false);
-                        fss.setSerialScanned(true);
-                        fss.setLog((long) 1);
-                        fss.setBoundBookType(currentFirearmType);
-                        GetFirearmDisposed(fss, InventoryFirearmsActivity.this);
-
-                    }  catch (Exception e) {
-                        Log.e(TAG, e.getMessage());
-                    }
-                } else {
-                    Toast.makeText(InventoryFirearmsActivity.this,"Please Select a scanning mode.",Toast.LENGTH_LONG).show();
-                }
             }
         });
 
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
                 if(radio_serial.isChecked()){
-                    edt_input_scanned.SetInputTypeText();
-                    edt_input_scanned.SetHint("Serial Number");
+                    edt_input_scanned.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                    edt_input_scanned.setHint("Serial Number");
                     edt_input_scanned.requestFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
@@ -182,8 +219,8 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
         View.OnClickListener radio_log_listener = new View.OnClickListener(){
             public void onClick(View v) {
                 if(radio_log.isChecked()){
-                    edt_input_scanned.SetInputTypeDecimal();
-                    edt_input_scanned.SetHint("Log Number");
+                    edt_input_scanned.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                    edt_input_scanned.setHint("Log Number");
                     edt_input_scanned.requestFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
@@ -195,6 +232,46 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
         };
         radio_serial.setOnClickListener(radio_serial_listener);
         radio_log.setOnClickListener(radio_log_listener);
+    }
+
+    private void Search() {
+        if(!switch_continuous_mode.isChecked()){
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
+        fss = new FirearmStockScan();
+        String str_input_scanned = edt_input_scanned.getText().toString().trim();
+        edt_input_scanned.setText("");
+        if(radio_log.isChecked()){
+            //Do Log number stuff
+            try {
+                Long inv_nbr = Long.parseLong(str_input_scanned);
+                fss.setLog(inv_nbr);
+                fss.setLogScanned(true);
+                fss.setSerialScanned(false);
+                fss.setSerialNumber("");
+                fss.setBoundBookType(currentFirearmType);
+                GetFirearmDisposed(fss, InventoryFirearmsActivity.this);
+
+            }  catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (radio_serial.isChecked()) {
+            //Do Serialnumber stuff
+            try {
+                fss.setSerialNumber(str_input_scanned);
+                fss.setLogScanned(false);
+                fss.setSerialScanned(true);
+                fss.setLog((long) 1);
+                fss.setBoundBookType(currentFirearmType);
+                GetFirearmDisposed(fss, InventoryFirearmsActivity.this);
+
+            }  catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else {
+            Toast.makeText(InventoryFirearmsActivity.this,"Please Select a scanning mode.",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -386,7 +463,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
                     Log.v(TAG,"GetFirearm Disposed, JSONReturnData"+JSONReturnData);
                     IsFirearmDisposed ifd = VerifyFirearmDisposedA(JSONReturnData);
                     if (ifd ==null) {
-                        Toast.makeText(InventoryFirearmsActivity.this,"Invalid Log Number Scanned",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(InventoryFirearmsActivity.this,"Invalid Scan",Toast.LENGTH_SHORT).show();
                     } else {
                         if (ifd.isDisposed()) {
                             Toast.makeText(InventoryFirearmsActivity.this,"Firearm Is Disposed",Toast.LENGTH_SHORT).show();
