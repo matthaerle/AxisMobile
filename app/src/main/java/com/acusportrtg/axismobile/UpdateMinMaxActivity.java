@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -89,6 +91,81 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
                     GetProductInfo(upc,UpdateMinMaxActivity.this);
                 } else 
                     Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        edt_upc_field.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
+                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                        if(btn_search.getText().toString().trim().length() == 0){
+                            Toast.makeText(UpdateMinMaxActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
+                            btn_search.requestFocus();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                        }
+                        else{
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                            upc = new SearchByUPC();
+                            String upc_scanned = edt_upc_field.getText().toString().trim();
+                            edt_upc_field.setText("");
+                            if (!upc_scanned.equals("")) {
+                                upc.setProductUPC(upc_scanned);
+                                GetProductInfo(upc,UpdateMinMaxActivity.this);
+                            } else
+                                Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+        });
+
+        edt_upc_field.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 0) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    edt_upc_field.setTextColor(Color.parseColor("#2980b9"));
+                    edt_upc_field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                    if(!imm.isAcceptingText()) {
+                        imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                if(edt_upc_field.getText().toString().trim().length() == 0){
+                    edt_upc_field.setTextColor(Color.parseColor("#95a5a6"));
+                    edt_upc_field.getBackground().setColorFilter(Color.parseColor("#95a5a6"), PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+        });
+
+        edt_upc_field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!edt_upc_field.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
             }
         });
 

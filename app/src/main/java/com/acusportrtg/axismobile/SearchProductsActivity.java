@@ -8,9 +8,12 @@ import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,10 +22,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +64,7 @@ import static android.content.ContentValues.TAG;
 
 public class SearchProductsActivity extends AppCompatActivity {
 
-    private ClearableEditText upc_Field;
+    private EditText upc_Field;
     private TextView txt_sum_value, txt_total_header;
     private Button btn_clear_UPC_Field, btn_search_UPC, btn_clear_results_list;
     private ImageView horiz_rule;
@@ -82,7 +87,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Product Search");
         constraintLayout = (ConstraintLayout) findViewById(R.id.SearchProductLayout);
         btn_search_UPC = (Button)findViewById(R.id.btn_search);
-        upc_Field = (ClearableEditText)findViewById(R.id.edt_upc_field);
+        upc_Field = (EditText)findViewById(R.id.edt_upc_field);
         productListView = (ListView)findViewById(R.id.list_product_search);
         horiz_rule = (ImageView) findViewById(R.id.horizontal_rule);
         btn_clear_results_list = (Button) findViewById(R.id.btn_clear_list);
@@ -91,7 +96,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal = (CheckBox) findViewById(R.id.chk_include_subtotal);
         swtch_multi_mode = (Switch) findViewById(R.id.swtch_multi_mode);
 
-        upc_Field.SetHint("UPC");
+        upc_Field.setHint("UPC");
         productListView.setVisibility(View.GONE);
         horiz_rule.setVisibility(View.GONE);
         btn_clear_results_list.setVisibility(View.GONE);
@@ -186,6 +191,45 @@ public class SearchProductsActivity extends AppCompatActivity {
 
         });
 
+        upc_Field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!upc_Field.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
+        upc_Field.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (s.length() > 0) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    upc_Field.setTextColor(Color.parseColor("#2980b9"));
+                    upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                    if(!imm.isAcceptingText()) {
+                        imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                if(upc_Field.getText().toString().trim().length() == 0){
+                    upc_Field.setTextColor(Color.parseColor("#95a5a6"));
+                    upc_Field.getBackground().setColorFilter(Color.parseColor("#95a5a6"), PorterDuff.Mode.SRC_ATOP);
+                }
+            }
+        });
 
     }
 
@@ -233,7 +277,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     private void SearchProduct(){
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-        upc_Field.hideClearButton();
+        //upc_Field.hideClearButton();
         upc_Field.clearFocus();
         SearchByUPC upc = new SearchByUPC();
         upc.setProductUPC(upc_Field.getText().toString());
@@ -353,7 +397,16 @@ public class SearchProductsActivity extends AppCompatActivity {
         try{
             //JSONArray productJson = new JSONArray(jsonStr);
             if(productJson.length() == 0){
-                upc_Field.negativeFeedback();
+                upc_Field.getBackground().setColorFilter(Color.parseColor("#c0392b"), PorterDuff.Mode.SRC_ATOP);
+                upc_Field.setTextColor(Color.parseColor("#c0392b"));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                        upc_Field.setTextColor(Color.parseColor("#2980b9"));
+                    }
+                }, 1000);
             }
             else{
                 for (int i=0; i <productJson.length(); i++) {
@@ -394,7 +447,17 @@ public class SearchProductsActivity extends AppCompatActivity {
                         txt_sum_value.setText(nf.format(sum_rounded));
                     }
                 }
-                upc_Field.positiveFeedback();
+                upc_Field.getBackground().setColorFilter(Color.parseColor("#27ae60"), PorterDuff.Mode.SRC_ATOP);
+                upc_Field.setTextColor(Color.parseColor("#27ae60"));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                        upc_Field.setTextColor(Color.parseColor("#2980b9"));
+                        upc_Field.setText("");
+                    }
+                }, 1000);
             }
         } catch (final JSONException e) {
             runOnUiThread(new Runnable() {

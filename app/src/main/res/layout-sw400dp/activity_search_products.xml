@@ -34,7 +34,7 @@
         android:layout_marginRight="8dp"
         app:layout_constraintHorizontal_bias="0.0">
 
-        <com.acusportrtg.axismobile.ClearableEditText
+        <EditText
             android:id="@+id/edt_upc_field"
             android:layout_width="180dp"
             android:layout_height="45dp"
@@ -43,7 +43,6 @@
             android:inputType="textNoSuggestions"
             android:backgroundTint="#95a5a6"
             android:textCursorDrawable="@drawable/cursor_grey"
-            android:drawableRight="@drawable/icon_clear"
             android:textColor="#2980b9"
             android:textColorHint="#95a5a6"
             tools:layout_constraintRight_creator="1"

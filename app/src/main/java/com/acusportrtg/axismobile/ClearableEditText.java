@@ -24,6 +24,7 @@ public class ClearableEditText extends RelativeLayout
     LayoutInflater inflater = null;
     EditText edit_text;
     Button btn_clear;
+
     public ClearableEditText(Context context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
