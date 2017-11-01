@@ -67,9 +67,6 @@
     <string name="firearm_info_placeholder">placeholder</string>
 
 
-
-
-
     <string name="firearm_info_importer">Importer:</string>
     <string name="firearm_info_model">Model;</string>
     <string name="firearm_info_new_userd">New / Used:</string>
@@ -81,6 +78,10 @@
     <string name="txt_bb_type_header">Select Firearm Type</string>
     <string name="txt_firearm_type">Firearm Type</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_test__drawer">Test_Drawer</string>
+    <string name="inv_stocktaking">Inventory Stocktaking</string>
+
+    <string name="action_settings">Settings</string>
 
 
 </resources>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,8 +24,12 @@ import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateMinMax;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,13 +53,26 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
     private GetEmployees emp;
     private SendProductView productView;
     private EditText edt_min_value, edt_max_value;
+    private Drawer result = null;
+    private AccountHeader headerResult = null;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_minmax);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withHeaderBackground(R.drawable.header)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,headerResult,toolbar,result,savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
-        getSupportActionBar().setTitle("Update Min/Max");
         emp = glob.getEmployee();
         
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);

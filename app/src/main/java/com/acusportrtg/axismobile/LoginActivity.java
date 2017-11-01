@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,12 +22,24 @@ import android.widget.Toast;
 import android.graphics.PorterDuff;
 import android.text.TextWatcher;
 import android.text.Editable;
+import android.support.v7.widget.Toolbar;
+
 
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
 import com.acusportrtg.axismobile.Methods.VerifyServerConnection;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +56,8 @@ import java.util.HashMap;
 import static android.content.ContentValues.TAG;
 
 public class LoginActivity extends AppCompatActivity {
+    private Drawer result = null;
+    private AccountHeader headerResult = null;
 
     private ProgressDialog pDialog;
     private IsConnected verified = new IsConnected();
@@ -52,7 +69,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().setTitle("Axis Mobile");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withHeaderBackground(R.drawable.header)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(LoginActivity.this,LoginActivity.this,headerResult,toolbar,result,savedInstanceState);
 
         verified.setConnectionVerified(false);
         CheckServerConnected();
@@ -379,6 +408,15 @@ public class LoginActivity extends AppCompatActivity {
             return s;
         } else {
             return Character.toUpperCase(first) + s.substring(1);
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        //handle the back press :D close the drawer first and if the drawer is closed close the activity
+        if (result != null && result.isDrawerOpen()) {
+            result.closeDrawer();
+        } else {
+            super.onBackPressed();
         }
     }
 

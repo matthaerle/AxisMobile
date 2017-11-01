@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Globals"
@@ -16,11 +16,12 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:windowSoftInputMode="adjustNothing"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:windowSoftInputMode="adjustNothing">
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:label="Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,29 +33,39 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Inventory_Task"
+            android:label="Group Selection"
             android:screenOrientation="portrait" />
-        <activity android:name=".SearchFirearmsActivity"
-            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchFirearmsActivity"
+            android:screenOrientation="portrait"
+            android:label="Firearm Search"/>
         <activity
             android:name=".TaskChooserActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SearchProductsActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait" />
+            android:label="Product Search"/>
         <activity
             android:name=".InventoryProductsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UpdateMinMaxActivity"
+            android:label="Update Min/Max"
             android:screenOrientation="portrait" />
         <activity
             android:name=".InventoryTasksActivity"
+            android:label="Inventory Type"
             android:screenOrientation="portrait" />
-        <activity android:name=".InventoryFirearmsActivity"
+        <activity
+            android:name=".InventoryFirearmsActivity"
+            android:screenOrientation="portrait"
+            android:label="Firearm Count"/>
+        <activity
+            android:name=".AppSettingsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".AppSettingsActivity"
-            android:screenOrientation="portrait" />
+
         <provider
             android:name=".GenricFileProvider"
             android:authorities="${applicationId}.com.acusportrtg.axismobile"
@@ -62,8 +73,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
+
+        <!--<activity
+            android:name=".Test_Drawer"
+            android:label="@string/title_activity_test__drawer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>-->
     </application>
 
 </manifest>

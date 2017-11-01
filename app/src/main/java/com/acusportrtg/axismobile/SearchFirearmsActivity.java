@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -23,8 +25,19 @@ import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,12 +61,28 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
     private RadioButton radio_serial, radio_log;
     private String currentFirearmType;
 
+    private Drawer result = null;
+    private AccountHeader headerResult = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showDialog();
         setContentView(R.layout.activity_search_firearms);
-        getSupportActionBar().setTitle("Firearm Search");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withHeaderBackground(R.drawable.header)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(SearchFirearmsActivity.this,SearchFirearmsActivity.this,headerResult,toolbar,result,savedInstanceState);
+
 
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
         radio_log = (RadioButton) findViewById(R.id.rdl_log_number);

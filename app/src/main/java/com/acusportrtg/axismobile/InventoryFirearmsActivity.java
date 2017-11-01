@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -39,8 +40,18 @@ import com.acusportrtg.axismobile.JSON_Classes.FirearmStockUpdate;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsFirearmDisposed;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,15 +79,31 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     private EditText edt_input_scanned;
     private String currentFirearmType;
     private Switch switch_continuous_mode;
+    private Drawer result = null;
+    private AccountHeader headerResult = null;
+    private Toolbar toolbar;
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
         showDialog();
-        getSupportActionBar().setTitle("Firearm Count");
+
         emp = glob.getEmployee();
         setContentView(R.layout.activity_inventory_firearms);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withHeaderBackground(R.drawable.header)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(InventoryFirearmsActivity.this,InventoryFirearmsActivity.this,headerResult,toolbar,result,savedInstanceState);
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
         radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
@@ -559,8 +586,8 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
 
     @Override
     public void onFragmentInteraction(String firearmType) {
-        Toast.makeText(InventoryFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(InventoryFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
         currentFirearmType = firearmType;
-        getSupportActionBar().setTitle("Firearm Inventory"+ ": " + firearmType);
+        toolbar.setTitle("Firearm Inventory"+ ": " + firearmType);
     }
 }

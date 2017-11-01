@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,9 +24,13 @@ import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 import com.acusportrtg.axismobile.JSON_Classes.SubmitItemCount;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
 import com.alien.barcode.BarcodeReader;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,14 +54,30 @@ public class InventoryProductsActivity extends AppCompatActivity {
     private GetEmployees emp;
     private TextView txt_qoh_data,txt_upc_data,txt_price_data,txt_desc_data;
     private BarcodeReader barcodeReader;
+    private Drawer result = null;
+    private AccountHeader headerResult = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_products);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withTranslucentStatusBar(false)
+                .withHeaderBackground(R.drawable.header)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,headerResult,toolbar,result,savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
         invGroupID = glob.getInvGroup().getInventoryGroupID();
         emp = glob.getEmployee();
+
 
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_clear = (Button) findViewById(R.id.btn_clear);
