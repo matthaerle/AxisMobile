@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
@@ -62,26 +63,23 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
     private String currentFirearmType;
 
     private Drawer result = null;
-    private AccountHeader headerResult = null;
+    private GetEmployees emp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         showDialog();
         setContentView(R.layout.activity_search_firearms);
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withHeaderBackground(R.drawable.header)
-                .withSavedInstance(savedInstanceState)
-                .build();
+
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(SearchFirearmsActivity.this,SearchFirearmsActivity.this,headerResult,toolbar,result,savedInstanceState);
+        customDrawerBuilder.CustomDrawer(SearchFirearmsActivity.this,SearchFirearmsActivity.this,toolbar,result,savedInstanceState,emp);
 
 
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
@@ -306,15 +304,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.app_settings:
-                try {
-                    Intent appSettings = new Intent(SearchFirearmsActivity.this,AppSettingsActivity.class);
-                    startActivity(appSettings);
-                } catch (Exception e) {
-                    Log.e(TAG,e.getLocalizedMessage());
-                }
 
-                break;
             case R.id.firearm_type:
                 showDialog();
                 break;
@@ -341,7 +331,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
 
     @Override
     public void onFragmentInteraction(String firearmType) {
-        Toast.makeText(SearchFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(SearchFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
         currentFirearmType = firearmType;
         getSupportActionBar().setTitle("Firearm Search"+ ": " + firearmType);
     }

@@ -54,26 +54,21 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
     private SendProductView productView;
     private EditText edt_min_value, edt_max_value;
     private Drawer result = null;
-    private AccountHeader headerResult = null;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_minmax);
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withHeaderBackground(R.drawable.header)
-                .withSavedInstance(savedInstanceState)
-                .build();
+
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,headerResult,toolbar,result,savedInstanceState);
-        Globals glob = ((Globals)getApplicationContext());
-        emp = glob.getEmployee();
+        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp);
+
         
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
         final Button btn_search = (Button) findViewById(R.id.btn_search);

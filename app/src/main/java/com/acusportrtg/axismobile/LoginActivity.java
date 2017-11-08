@@ -64,11 +64,14 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> employeeNameList = new ArrayList<String>();
     private HashMap<String,GetEmployees> employeeMap = new HashMap<>();
     private EditText username, password;
+    private GetEmployees emp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,8 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                 .withSavedInstance(savedInstanceState)
                 .build();
 
-        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(LoginActivity.this,LoginActivity.this,headerResult,toolbar,result,savedInstanceState);
 
         verified.setConnectionVerified(false);
         CheckServerConnected();

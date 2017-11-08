@@ -6,9 +6,4 @@
         android:orderInCategory="100"
         android:title="@string/action_clear_results"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_input_method"
-        android:orderInCategory="100"
-        android:title="@string/action_input_method"
-        app:showAsAction="never" />
 </menu>

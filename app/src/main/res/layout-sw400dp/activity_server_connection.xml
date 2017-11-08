@@ -4,6 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <ImageView
         android:id="@+id/serverIcon"
@@ -36,17 +44,17 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
-        android:ems="10"
         android:backgroundTint="#95a5a6"
-        android:textCursorDrawable="@drawable/cursor_grey"
+        android:ems="10"
+        android:inputType="text"
+        android:textAlignment="center"
         android:textColor="#2980b9"
         android:textColorHint="#95a5a6"
-        android:inputType="textUri|number"
-        android:textAlignment="center"
+        android:textCursorDrawable="@drawable/cursor_grey"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"
         app:layout_constraintRight_toLeftOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/server_address_title"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/server_address_title" />
 
 
 

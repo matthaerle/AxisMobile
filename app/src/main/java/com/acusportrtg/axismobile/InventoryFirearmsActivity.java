@@ -80,30 +80,25 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     private String currentFirearmType;
     private Switch switch_continuous_mode;
     private Drawer result = null;
-    private AccountHeader headerResult = null;
     private Toolbar toolbar;
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
         showDialog();
 
-        emp = glob.getEmployee();
+
         setContentView(R.layout.activity_inventory_firearms);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withHeaderBackground(R.drawable.header)
-                .withSavedInstance(savedInstanceState)
-                .build();
+
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(InventoryFirearmsActivity.this,InventoryFirearmsActivity.this,headerResult,toolbar,result,savedInstanceState);
+        customDrawerBuilder.CustomDrawer(InventoryFirearmsActivity.this,InventoryFirearmsActivity.this,toolbar,result,savedInstanceState,emp);
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
         radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
@@ -304,40 +299,6 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            case R.id.app_settings:
-                try {
-                    Intent appSettings = new Intent(InventoryFirearmsActivity.this,AppSettingsActivity.class);
-                    startActivity(appSettings);
-                } catch (Exception e) {
-                    Log.e(TAG,e.getLocalizedMessage());
-                    try {
-
-                        Process process = Runtime.getRuntime().exec("logcat -d -t 50");
-                        BufferedReader bufferedReader = new BufferedReader(
-                                new InputStreamReader(process.getInputStream()));
-                        String line;
-                        String output = "";
-                        while ((line = bufferedReader.readLine()) != null) {
-                            output = output + line +" \n";
-                        }
-
-                        Log.v(TAG,InventoryFirearmsActivity.this.getApplicationContext().getPackageName());
-
-                        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-                        emailIntent.putExtra(Intent.EXTRA_EMAIL, "rtgsupport@acusport.com");
-                        emailIntent.setType("plain/text");
-                        emailIntent.putExtra(Intent.EXTRA_TEXT,output +  "\n" +e.getLocalizedMessage());
-                        emailIntent.putExtra(Intent.EXTRA_EMAIL, "rtgsupport@acusport.com");
-                        startActivity(emailIntent);
-                    } catch (IOException ex) {
-                        Log.e(TAG,ex.getMessage());
-                    }
-
-
-                }
-
-               break;
             case R.id.firearm_type:
                 showDialog();
                 break;

@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/app_settings"
-        android:orderInCategory="100"
-        android:title="@string/menu_settings" />
-    <item
         android:id="@+id/firearm_type"
         android:title="@string/txt_firearm_type" />
 </menu>

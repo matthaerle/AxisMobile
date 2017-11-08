@@ -55,28 +55,23 @@ public class InventoryProductsActivity extends AppCompatActivity {
     private TextView txt_qoh_data,txt_upc_data,txt_price_data,txt_desc_data;
     private BarcodeReader barcodeReader;
     private Drawer result = null;
-    private AccountHeader headerResult = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_products);
+        Globals glob = ((Globals)getApplicationContext());
+        invGroupID = glob.getInvGroup().getInventoryGroupID();
+        emp = glob.getEmployee();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withHeaderBackground(R.drawable.header)
-                .withSavedInstance(savedInstanceState)
-                .build();
+
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,headerResult,toolbar,result,savedInstanceState);
-        Globals glob = ((Globals)getApplicationContext());
-        invGroupID = glob.getInvGroup().getInventoryGroupID();
-        emp = glob.getEmployee();
+        customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,toolbar,result,savedInstanceState, emp);
+
 
 
         btn_search = (Button) findViewById(R.id.btn_search);

@@ -51,16 +51,10 @@ public class ServerConnectActivity extends AppCompatActivity {
         LoadImage loadImg = new LoadImage(this);
         loadImg.execute();
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Enter Server Address");
 
         setContentView(R.layout.activity_server_connection);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withTranslucentStatusBar(false)
-                .build();
 
         verified.setConnectionVerified(false);
 

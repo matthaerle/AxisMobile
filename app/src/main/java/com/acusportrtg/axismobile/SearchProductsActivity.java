@@ -34,6 +34,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.alien.barcode.BarcodeCallback;
 import com.alien.barcode.BarcodeReader;
@@ -92,25 +93,21 @@ public class SearchProductsActivity extends AppCompatActivity {
     private BarcodeReader barcodeReader;
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
     private Drawer result = null;
-    private AccountHeader headerResult = null;
+    private GetEmployees emp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_products);
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withHeaderBackground(R.drawable.header)
-                .withSavedInstance(savedInstanceState)
-                .build();
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(SearchProductsActivity.this,SearchProductsActivity.this,headerResult,toolbar,result,savedInstanceState);
+        customDrawerBuilder.CustomDrawer(SearchProductsActivity.this,SearchProductsActivity.this,toolbar,result,savedInstanceState,emp);
         constraintLayout = (ConstraintLayout) findViewById(R.id.SearchProductLayout);
         btn_search_UPC = (Button)findViewById(R.id.btn_search);
         upc_Field = (EditText)findViewById(R.id.edt_upc_field);
@@ -323,9 +320,6 @@ public class SearchProductsActivity extends AppCompatActivity {
 
             case R.id.action_clear_results:
                 ClearMultiProducts();
-                break;
-            case R.id.action_input_method:
-                showDialog();
                 break;
             default:
                 break;

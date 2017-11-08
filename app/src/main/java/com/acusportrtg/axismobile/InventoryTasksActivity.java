@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -32,6 +33,7 @@ public class InventoryTasksActivity extends AppCompatActivity {
     private String myActivityTitle;
     private Drawer result = null;
     private AccountHeader headerResult = null;
+    private GetEmployees emp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +41,15 @@ public class InventoryTasksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inventory_tasks);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setHomeButtonEnabled(true);
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTranslucentStatusBar(false)
-                .withHeaderBackground(R.drawable.header)
-                .withSavedInstance(savedInstanceState)
-                .build();
+
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(InventoryTasksActivity.this,InventoryTasksActivity.this,headerResult,toolbar,result,savedInstanceState);
+        customDrawerBuilder.CustomDrawer(InventoryTasksActivity.this,InventoryTasksActivity.this,toolbar,result,savedInstanceState,emp);
         //getSupportActionBar().setTitle("Inventory Type");
 
         myActivityTitle = getSupportActionBar().getTitle().toString();
@@ -58,8 +57,6 @@ public class InventoryTasksActivity extends AppCompatActivity {
 
 
         TextView txt_Emp = (TextView)findViewById(R.id.txtEmpId);
-
-        Globals glob = ((Globals)getApplicationContext());
         txt_Emp.setText(String.valueOf(glob.getEmployee().getEmployeeNumber()));
         btn_Non_Firearm_Inventory = (Button)findViewById(R.id.btn_non_firearm_inventory);
         btn_Firearm_Inventory = (Button)findViewById(R.id.btn_firearm_inventory);

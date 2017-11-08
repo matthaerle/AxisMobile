@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +21,9 @@ public class TaskChooserActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_chooser);
         txt_Emp = (TextView)findViewById(R.id.txtEmpId);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         //getSupportActionBar().setTitle("Main Menu");
 
         Globals glob = ((Globals)getApplicationContext());
