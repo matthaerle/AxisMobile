@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/colorAccent"
-    tools:background="@drawable/btn_solid_round">
+    >
 
     <TextView
         android:id="@+id/textView6"
@@ -25,7 +25,7 @@
 
     <Button
         android:id="@+id/btn_nfa"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/btn_gunsmithing"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView6"
         android:layout_below="@+id/btn_nfa"
@@ -61,7 +61,7 @@
 
     <Button
         android:id="@+id/btn_non_nfa"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView6"
         android:layout_below="@+id/btn_nfa"
