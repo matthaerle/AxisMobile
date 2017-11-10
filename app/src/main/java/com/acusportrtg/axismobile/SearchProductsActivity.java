@@ -129,7 +129,8 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal.setVisibility(View.GONE);
 
 
-        if ( Build.MODEL == "Alien")
+        Log.d("Device", Build.MODEL);
+        if ( Build.MODEL.equals("ALR-H450"))
             barcodeReader = new BarcodeReader(this);
 
 

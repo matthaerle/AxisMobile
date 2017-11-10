@@ -46,7 +46,7 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="#95a5a6"
         android:ems="10"
-        android:inputType="text|textUri|number"
+        android:inputType="text|textUri"
         android:textAlignment="center"
         android:textColor="#2980b9"
         android:textColorHint="#95a5a6"
