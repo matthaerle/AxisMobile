@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -32,6 +34,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.alien.barcode.BarcodeCallback;
 import com.alien.barcode.BarcodeReader;
 import com.alien.common.KeyCode;
@@ -42,6 +46,15 @@ import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.ProductListAdapter;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,12 +92,22 @@ public class SearchProductsActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
     private BarcodeReader barcodeReader;
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
+    private Drawer result = null;
+    private GetEmployees emp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_products);
-        getSupportActionBar().setTitle("Product Search");
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(SearchProductsActivity.this,SearchProductsActivity.this,toolbar,result,savedInstanceState,emp);
         constraintLayout = (ConstraintLayout) findViewById(R.id.SearchProductLayout);
         btn_search_UPC = (Button)findViewById(R.id.btn_search);
         upc_Field = (EditText)findViewById(R.id.edt_upc_field);
@@ -106,7 +129,8 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal.setVisibility(View.GONE);
 
 
-        if ( Build.MODEL == "Alien")
+        Log.d("Device", Build.MODEL);
+        if ( Build.MODEL.equals("ALR-H450"))
             barcodeReader = new BarcodeReader(this);
 
 
@@ -297,9 +321,6 @@ public class SearchProductsActivity extends AppCompatActivity {
 
             case R.id.action_clear_results:
                 ClearMultiProducts();
-                break;
-            case R.id.action_input_method:
-                showDialog();
                 break;
             default:
                 break;

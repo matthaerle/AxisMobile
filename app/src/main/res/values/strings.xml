@@ -11,8 +11,8 @@
     <string name="btn_product_search">Product Search</string>
     <string name="txt_product_search_header">Product Search By UPC</string>
     <string name="update_min_max_header">Update Min Max</string>
-    <string name="btn_non_firearm_inventory">Non-Firearm\r\nInventory</string>
-    <string name="btn_firearm_inventory">Firearm\r\nInventory</string>
+    <string name="btn_non_firearm_inventory">Non-Firearm\nInventory</string>
+    <string name="btn_firearm_inventory">Firearm\nInventory</string>
     <string name="firearm_inventory_title">Firearm Inventory</string>
     <string name="text_group_name">Group Name</string>
     <string name="non_firearm_inventory_title">Inventory Groups</string>
@@ -67,9 +67,6 @@
     <string name="firearm_info_placeholder">placeholder</string>
 
 
-
-
-
     <string name="firearm_info_importer">Importer:</string>
     <string name="firearm_info_model">Model;</string>
     <string name="firearm_info_new_userd">New / Used:</string>
@@ -81,6 +78,11 @@
     <string name="txt_bb_type_header">Select Firearm Type</string>
     <string name="txt_firearm_type">Firearm Type</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_test__drawer">Test_Drawer</string>
+    <string name="inv_stocktaking">Inventory Stocktaking</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="logout">Logout</string>
 
 
 </resources>

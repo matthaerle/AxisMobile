@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +43,7 @@ public class ServerConnectActivity extends AppCompatActivity {
     private EditText server_address_txtbox;
     private Button server_Connect_btn;
     private IsConnected verified = new IsConnected();
+    private Drawer result = null;
 
 
     @Override
@@ -47,9 +51,10 @@ public class ServerConnectActivity extends AppCompatActivity {
         LoadImage loadImg = new LoadImage(this);
         loadImg.execute();
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Enter Server Address");
 
         setContentView(R.layout.activity_server_connection);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         verified.setConnectionVerified(false);
 

@@ -10,6 +10,14 @@
     android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
     <android.support.constraint.ConstraintLayout
@@ -133,11 +141,11 @@
         tools:layout_editor_absoluteX="307dp" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/guideline27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline27"
-        app:layout_constraintGuide_percent="0.03"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
