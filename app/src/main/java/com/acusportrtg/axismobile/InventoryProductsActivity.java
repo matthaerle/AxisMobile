@@ -3,6 +3,7 @@ package com.acusportrtg.axismobile;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -27,7 +28,9 @@ import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.alien.barcode.BarcodeCallback;
 import com.alien.barcode.BarcodeReader;
+import com.alien.common.KeyCode;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -67,7 +70,9 @@ public class InventoryProductsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        Log.d("Device", Build.MODEL);
+        if ( Build.MODEL.equals("ALR-H450"))
+            barcodeReader = new BarcodeReader(this);
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
         customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,toolbar,result,savedInstanceState, emp);
@@ -88,8 +93,6 @@ public class InventoryProductsActivity extends AppCompatActivity {
 
         edt_product_upc.setHint("UPC");
 
-        if ( Build.MODEL == "Alien")
-            barcodeReader = new BarcodeReader(this);
 
 
         btn_search.setOnClickListener(new View.OnClickListener() {
@@ -365,7 +368,51 @@ public class InventoryProductsActivity extends AppCompatActivity {
         }
         return null;
     }
+    private void startScan() {
+        if (!this.barcodeReader.isRunning()) {
+            this.barcodeReader.start(new BarcodeCallback() {
+                @Override
+                public void onBarcodeRead(String s) {
+                    playSuccess();
+                    Log.v("Scanned", s);
+                    edt_product_upc.setText(s);
+                    Search();
+                }
+            });
+        }
+    }
 
+    public synchronized void stopScan() {
+        if (this.barcodeReader.isRunning()) {
+            this.barcodeReader.stop();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
+            return super.onKeyDown(keyCode, event);
+        }
+        startScan();
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN) {
+            return super.onKeyUp(keyCode, event);
+        }
+        stopScan();
+        return true;
+    }
+
+    public void playSuccess() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(InventoryProductsActivity.this, R.raw.snd_scan_success);
+            mp.start();
+        } catch (Exception e) {
+            Log.e(TAG, "Error play sound: " + e);
+            e.printStackTrace();
+        }
+    }
 
 
 }

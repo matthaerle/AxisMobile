@@ -51,4 +51,7 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:3.0.1.1.original@aar'
     implementation 'com.mikepenz:fontawesome-typeface:4.7.0.1@aar'
     implementation 'com.mikepenz:octicons-typeface:3.0.0.1@aar'
+
+    provided fileTree(include: ['com.symbol.emdk.jar'], dir: 'C:\\Program Files (x86)\\Symbol EMDK for Android\\v6.6\\Integrator\\add-ons\\addon-symbol_emdk-symbol-23\\libs')
+    compile fileTree(exclude: ['com.symbol.emdk.jar'], dir: 'libs')
 }
