@@ -38,8 +38,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.symbol.emdk.*;
-import com.symbol.emdk.EMDKManager.EMDKListener;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,13 +48,8 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 5/2/2017.
  */
 
-public class SearchFirearmsActivity extends AppCompatActivity implements EMDKListener, Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
-    //Assign the profile name listed in EMDKConfig.xml
-    private final String profileName = "Barcode_Symbol";
-    //Declare a variable to store ProfileManager object
-    private ProfileManager mProfileManager = null;
-    //Declare a variable to store the emdkManager Object
-    private EMDKManager emdkManager = null;
+public class SearchFirearmsActivity extends AppCompatActivity implements Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
+
 
     private String JSONReturnData = "";
     private FirearmInfo fi = new FirearmInfo();
@@ -85,12 +78,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //The EMDKManager Object will be created and returned in the callback
-        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
-        //Check the return status of getEMDKManager
-        if (results.statusCode == EMDKResults.STATUS_CODE.FAILURE) {
-            //Failed to create EMDKManager object
-        }
+
 
         Log.d("Device", Build.MODEL);
         if ( Build.MODEL.equals("ALR-H450"))
@@ -410,41 +398,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
         }
     }
 
-    @Override
-    public void onOpened(EMDKManager emdkManager) {
-        this.emdkManager = emdkManager;
-        //Get the ProfileManager object to process the profiles
-        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
-        if(mProfileManager != null)
-        {
-            try{
-
-                String[] modifyData = new String[1];
-                //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
-
-                EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
-                if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
-                {
-                    //Failed to set profile
-                }
-            }catch (Exception ex){
-                // Handle any exception
-            }
 
 
-        }
-    }
 
-    @Override
-    public void onClosed() {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy();
-        //Clean up the objects created by EMDK manager
-        emdkManager.release();
-    }
 }

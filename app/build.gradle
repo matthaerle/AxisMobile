@@ -26,9 +26,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:design:25.4.0'
     testCompile 'junit:junit:4.12'
     compile project(':alienapi')
     implementation("com.mikepenz:materialdrawer:6.0.0@aar") {
@@ -51,7 +51,4 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:3.0.1.1.original@aar'
     implementation 'com.mikepenz:fontawesome-typeface:4.7.0.1@aar'
     implementation 'com.mikepenz:octicons-typeface:3.0.0.1@aar'
-
-    provided fileTree(include: ['com.symbol.emdk.jar'], dir: 'C:\\Program Files (x86)\\Symbol EMDK for Android\\v6.6\\Integrator\\add-ons\\addon-symbol_emdk-symbol-23\\libs')
-    compile fileTree(exclude: ['com.symbol.emdk.jar'], dir: 'libs')
 }
