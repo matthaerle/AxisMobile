@@ -60,32 +60,9 @@ public class CustomDrawerBuilder {
         final Context context1 = context;
         final Globals globals = new Globals();
 
-        JSONObject postData = new JSONObject();
-        try {
-            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetEmployeeRoles");
-            postData.put("EmployeeID",employee.getEmployeeID());
-            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
-                @Override
-                public void receiveData(Object object) {
-                    JSONReturnData = (String)object;
-                    try {
-                        JSONArray productJson = new JSONArray(JSONReturnData);
-                        empRoles = GetEmployeeRoles(productJson);
 
-                    } catch (final JSONException e) {
-                        Log.e(TAG, "JSON parsing error: " + e.getMessage());
-                    }
 
-                }};
-            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
-            Log.v(TAG,JSONReturnData);
-
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
-        }
-
+        Log.e(TAG, "EMPLOYEE ROLE CHECK 3:"+empRoles.getFirearmsPermission().toString());
 
         profile = new ProfileDrawerItem().withName(employee.getFirstName() + ' ' + employee.getLastName());
         buildHeader(false, savedInstanceState, activity);
@@ -134,45 +111,27 @@ public class CustomDrawerBuilder {
                 )
                 .withSavedInstance(savedInstanceState)
                 .build();
-        if(!empRoles.getInventoryManagementPermission()){
-            result.removeItem(1);
-        }
-        if(!empRoles.getFirearmsPermission()){
-            Log.v(TAG,empRoles.getFirearmsPermission().toString());
-            result.removeItem(2);
-        }
-        if(!empRoles.getFirearmPhysicalInventory() && !empRoles.getIMProdMaintAdjQoHPermission()){
-            result.removeItem(3);
+        if (empRoles != null) {
+            if(!empRoles.getFirearmsPermission()){
+                Log.v(TAG,"REMOVING FIREARM SEARCH OPTION");
+                result.removeItem(2);
+            }
+            if(!empRoles.getFirearmPhysicalInventory()){
+                Log.v(TAG,"REMOVING FIREARM INVENTORY OPTION");
+                result.removeItem(2001);
+            }
+            if(!empRoles.getInventoryManagementPermission()){
+                Log.v(TAG,"REMOVING PRODUCT SEARCH OPTION");
+                result.removeItem(1);
+            }
+            if(!empRoles.getFirearmPhysicalInventory() && !empRoles.getIMProdMaintAdjQoHPermission()){
+                result.removeItem(3);
+            }
         }
 
         return result;
     }
 
-    private EmployeeRoles GetEmployeeRoles(JSONArray employeeRolesJson){
-        EmployeeRoles empR = new EmployeeRoles();
-        try{
-            //JSONArray productJson = new JSONArray(jsonStr);
-            if(employeeRolesJson.length() == 1){
-                for (int i=0; i <employeeRolesJson.length(); i++) {
-                    JSONObject p = employeeRolesJson.getJSONObject(i);
-
-                    empR.setFirearmBoundBookPermission(p.has("FirearmBoundBook"));
-                    empR.setFirearmsPermission(p.has("Firearms"));
-                    empR.setFirearmPhysicalInventoryPermission(p.has("FirearmPhysicalInventory"));
-                    empR.setFirearmViewCostPermission(p.has("FirearmViewCost"));
-                    empR.setPricingPermission(p.has("Pricing"));
-                    empR.setProductCostPermission(p.has("ProductCost"));
-                    empR.setIMProdMaintAdjQoHPermission(p.has("IMProdMaintAdjQoH"));
-                    empR.setIMUpdatePermission(p.has("IMUpdate"));
-                    empR.setInventoryManagementPermission(p.has("InventoryManagement"));
-                }
-            }
-
-        } catch (final JSONException e) {
-            Log.e(TAG, "JSON parsing error: " + e.getMessage());
-        }
-        return empR;
-    }
 
     private void buildHeader(boolean b, Bundle savedInstanceState,Activity activity) {
         headerResult = new AccountHeaderBuilder()

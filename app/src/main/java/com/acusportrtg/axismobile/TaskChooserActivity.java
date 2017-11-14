@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 
 /**
  * Created by mhaerle on 4/7/2017.
@@ -15,6 +19,7 @@ import android.widget.TextView;
 public class TaskChooserActivity extends AppCompatActivity{
     private TextView txt_Emp;
     private Button btn_Product_Search,btn_Inventory,btn_Update_MinMax,btn_Firearm_Search;
+    private EmployeeRoles empRoles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,18 @@ public class TaskChooserActivity extends AppCompatActivity{
         btn_Inventory = (Button)findViewById(R.id.btn_inventory);
         btn_Update_MinMax = (Button)findViewById(R.id.btn_update_minmax);
 
+        empRoles = glob.getEmpRoles();
+
+        if(empRoles == null){
+            Log.e("Employee Roles:", "NULL");
+        }
+
+        if(empRoles != null){
+            if(!empRoles.getFirearmsPermission()){
+                ViewGroup layout = (ViewGroup) btn_Firearm_Search.getParent();
+                layout.removeView(btn_Firearm_Search);
+            }
+        }
         btn_Product_Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

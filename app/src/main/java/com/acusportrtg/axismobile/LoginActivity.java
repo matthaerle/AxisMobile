@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,9 +26,11 @@ import android.text.Editable;
 import android.support.v7.widget.Toolbar;
 
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsConnected;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
+import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
 import com.acusportrtg.axismobile.Methods.VerifyServerConnection;
@@ -65,6 +68,9 @@ public class LoginActivity extends AppCompatActivity {
     private HashMap<String,GetEmployees> employeeMap = new HashMap<>();
     private EditText username, password;
     private GetEmployees emp;
+    private EmployeeRoles employeeRoles = new EmployeeRoles();
+    private String JSONReturnData = "";
+    private boolean globalSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,23 +240,36 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login(){
         //Check if server can connect and then move on
-        if(verified.getConnectionVerified()){
+        if(verified.getConnectionVerified()) {
             boolean activeUser = employeeNameList.contains(username.getText().toString());
 
             String resultHash = generateMD5Hash(password.getText().toString());
             //Toast.makeText(LoginActivity.this, resultHash, Toast.LENGTH_LONG).show();
 
-            if(activeUser){
+            if (activeUser) {
                 Toast.makeText(LoginActivity.this, "Employee Verified", Toast.LENGTH_LONG).show();
-                Globals glob = ((Globals)getApplicationContext());
+                final Globals glob = ((Globals) getApplicationContext());
                 GetEmployees emp = employeeMap.get(username.getText().toString());
                 glob.setEmployee(emp);
-                Intent taskChooser = new Intent(LoginActivity.this,TaskChooserActivity.class);
-                startActivity(taskChooser);
-                username.setText("");
-                password.setText("");
-                username.setTextColor(Color.parseColor("#2980b9"));
-                username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+
+                Log.e(TAG, "Employee User ID Test: " + emp.getEmployeeNumber());
+                GetEmployeeRoles(emp, employeeRoles, LoginActivity.this);
+
+                new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (glob.getEmpRoles() != null) {
+                                Intent taskChooser = new Intent(LoginActivity.this, TaskChooserActivity.class);
+                                startActivity(taskChooser);
+                                username.setText("");
+                                password.setText("");
+                                username.setTextColor(Color.parseColor("#2980b9"));
+                                username.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Loading...", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, 1000);
             }
             else {
                 Toast.makeText(LoginActivity.this, "Employee Not Found", Toast.LENGTH_LONG).show();
@@ -341,6 +360,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
     private class GetEmployeesFromServer extends AsyncTask<URL, Void, Void> {
 
         @Override
@@ -418,6 +438,76 @@ public class LoginActivity extends AppCompatActivity {
             result.closeDrawer();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void setGlobalEmployeeRoles(){
+        Globals glob = ((Globals)getApplicationContext());
+        Log.e(TAG, "Employee Role Test: "+employeeRoles.getFirearmsPermission().toString());
+        glob.setEmpRoles(employeeRoles);
+        Log.e(TAG, "Employee Role GLOBAL test: "+glob.getEmpRoles().getFirearmsPermission().toString());
+        globalSet = true;
+    }
+
+    private void GetEmployeeRoles(GetEmployees emp, EmployeeRoles empR, Context context){
+        JSONObject postData = new JSONObject();
+        Globals glob = ((Globals)getApplicationContext());
+        try {
+            EmployeeRoles returnRoles;
+            URL reqUrl = new URL("http://" + SharedPrefs.GetSavedServerAddress(context) + ":8899/RestWCFServiceLibrary/GetEmployeeRoles");
+            postData.put("EmployeeID",emp.getEmployeeID());
+            GetJSONStringWithPOSTData.GetJSONDataBack getJSONDataBack = new GetJSONStringWithPOSTData.GetJSONDataBack(context) {
+                @Override
+                public void receiveData(Object object) {
+                    JSONReturnData = (String)object;
+                    try {
+                        JSONArray productJson = new JSONArray(JSONReturnData);
+                        ProcessEmployeeRoles(productJson);
+
+                    } catch (final JSONException e) {
+                        Log.e(TAG, "JSON parsing error: " + e.getMessage());
+                    }
+
+                }};
+            getJSONDataBack.execute(reqUrl.toString(), postData.toString());
+            Log.v(TAG,JSONReturnData);
+
+
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception: " + e.getMessage() + "\n" + e.getLocalizedMessage());
+        }
+
+    }
+
+    private void ProcessEmployeeRoles(JSONArray employeeRolesJson){
+        try{
+            //JSONArray productJson = new JSONArray(jsonStr);
+            if(employeeRolesJson.length() != 0){
+                for (int i=0; i <employeeRolesJson.length(); i++) {
+                    JSONObject p = employeeRolesJson.getJSONObject(i);
+
+                    String permission = p.get("RoleDiscription").toString();
+                    if(permission.equalsIgnoreCase("FirearmBoundBook")){employeeRoles.setFirearmBoundBookPermission(true);}
+                    Log.e("FirearmBoundBook Role:", employeeRoles.getFirearmBoundBookPermission().toString());
+                    if(permission.equalsIgnoreCase("Firearms")){employeeRoles.setFirearmsPermission(true);}
+                    Log.e("Firearms Role:", employeeRoles.getFirearmsPermission().toString());
+                    if(permission.equalsIgnoreCase("FirearmPhysicalInventory")){employeeRoles.setFirearmPhysicalInventoryPermission(true);}
+                    if(permission.equalsIgnoreCase("FirearmViewCost")){employeeRoles.setFirearmViewCostPermission(true);}
+                    if(permission.equalsIgnoreCase("Pricing")){employeeRoles.setPricingPermission(true);}
+                    if(permission.equalsIgnoreCase("ProductCost")){employeeRoles.setProductCostPermission(true);}
+                    if(permission.equalsIgnoreCase("ProductCost")){employeeRoles.setProductCostPermission(true);}
+                    if(permission.equalsIgnoreCase("IMProdMaintAdjQoH")){employeeRoles.setIMProdMaintAdjQoHPermission(true);}
+                    if(permission.equalsIgnoreCase("IMUpdate")){employeeRoles.setIMUpdatePermission(true);}
+                    if(permission.equalsIgnoreCase("InventoryManagement")){employeeRoles.setInventoryManagementPermission(true);}
+                }
+            }
+
+            setGlobalEmployeeRoles();
+
+        } catch (final JSONException e) {
+            Log.e(TAG, "JSON parsing error: " + e.getMessage());
         }
     }
 
