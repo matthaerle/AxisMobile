@@ -2,10 +2,11 @@ package com.acusportrtg.axismobile;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -29,22 +30,15 @@ import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.alien.barcode.BarcodeCallback;
+import com.alien.barcode.BarcodeReader;
+import com.alien.common.KeyCode;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.ExpandableDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -55,27 +49,40 @@ import static android.content.ContentValues.TAG;
  */
 
 public class SearchFirearmsActivity extends AppCompatActivity implements Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
+
+
     private String JSONReturnData = "";
     private FirearmInfo fi = new FirearmInfo();
     private FirearmStockScan fss;
-    private ClearableEditText edt_input_scanned;
+    private EditText edt_input_scanned;
     private RadioButton radio_serial, radio_log;
     private String currentFirearmType;
 
     private Drawer result = null;
     private GetEmployees emp;
+    private BarcodeReader barcodeReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showDialog();
+
+
         setContentView(R.layout.activity_search_firearms);
+
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
 
+        if (currentFirearmType == null) {
+            showDialog();
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+        Log.d("Device", Build.MODEL);
+        if ( Build.MODEL.equals("ALR-H450"))
+            barcodeReader = new BarcodeReader(this);
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
@@ -86,12 +93,12 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
         radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
-        edt_input_scanned = (ClearableEditText) findViewById(R.id.edt_firearm_scan);
+        edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
 
         radio_log.setChecked(true);
-        edt_input_scanned.SetHint("Log Number");
-        edt_input_scanned.SetInputTypeDecimal();
+        edt_input_scanned.setHint("Log Number");
+        edt_input_scanned.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +115,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
             }
         });
 
-        edt_input_scanned.setOnKeyListener(new View.OnKeyListener()
+        /*edt_input_scanned.setOnKeyListener(new View.OnKeyListener()
         {
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
@@ -116,7 +123,13 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
                         || keyCode ==  KeyEvent.KEYCODE_ENTER) {
                     if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        SearchFirearm();
+                        if (edt_input_scanned.getText().toString().trim().length() == 0) {
+                            edt_input_scanned.requestFocus();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(getCurrentFocus(),InputMethodManager.SHOW_IMPLICIT);
+                        }
+                        else
+                            SearchFirearm();
                     }
                     return true;
                 } else {
@@ -124,13 +137,13 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
                 }
             }
 
-        });
+        });*/
 
         View.OnClickListener radio_serial_listener = new View.OnClickListener(){
             public void onClick(View v) {
                 if(radio_serial.isChecked()){
-                    edt_input_scanned.SetInputTypeText();
-                    edt_input_scanned.SetHint("Serial Number");
+                    edt_input_scanned.setInputType(InputType.TYPE_CLASS_TEXT);
+                    edt_input_scanned.setHint("Serial Number");
                     edt_input_scanned.requestFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
@@ -143,8 +156,8 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
         View.OnClickListener radio_log_listener = new View.OnClickListener(){
             public void onClick(View v) {
                 if(radio_log.isChecked()){
-                    edt_input_scanned.SetInputTypeDecimal();
-                    edt_input_scanned.SetHint("Log Number");
+                    edt_input_scanned.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    edt_input_scanned.setHint("Log Number");
                     edt_input_scanned.requestFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
@@ -326,6 +339,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
 
         // Create and show the dialog.
         Firearm_Inv_Type_Dialog newFragment = new Firearm_Inv_Type_Dialog();
+        newFragment.setCancelable(false);
         newFragment.show(ft,"dialog");
     }
 
@@ -334,5 +348,57 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
         //Toast.makeText(SearchFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
         currentFirearmType = firearmType;
         getSupportActionBar().setTitle("Firearm Search"+ ": " + firearmType);
+        if (currentFirearmType == null)
+            showDialog();
     }
+
+    private void startScan() {
+        if (!this.barcodeReader.isRunning()) {
+            this.barcodeReader.start(new BarcodeCallback() {
+                @Override
+                public void onBarcodeRead(String s) {
+                    playSuccess();
+                    Log.v("Scanned", s);
+                    edt_input_scanned.setText(s);
+                    SearchFirearm();
+                }
+            });
+        }
+    }
+
+    public synchronized void stopScan() {
+        if (this.barcodeReader.isRunning()) {
+            this.barcodeReader.stop();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
+            return super.onKeyDown(keyCode, event);
+        }
+        startScan();
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN) {
+            return super.onKeyUp(keyCode, event);
+        }
+        stopScan();
+        return true;
+    }
+
+    public void playSuccess() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(SearchFirearmsActivity.this, R.raw.snd_scan_success);
+            mp.start();
+        } catch (Exception e) {
+            Log.e(TAG, "Error play sound: " + e);
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 }

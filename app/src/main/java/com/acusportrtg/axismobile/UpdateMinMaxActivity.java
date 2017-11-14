@@ -3,6 +3,8 @@ package com.acusportrtg.axismobile;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -27,6 +29,9 @@ import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.alien.barcode.BarcodeCallback;
+import com.alien.barcode.BarcodeReader;
+import com.alien.common.KeyCode;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -54,6 +59,8 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
     private SendProductView productView;
     private EditText edt_min_value, edt_max_value;
     private Drawer result = null;
+    private BarcodeReader barcodeReader;
+    private EditText edt_upc_field;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +71,9 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        Log.d("Device", Build.MODEL);
+        if ( Build.MODEL.equals("ALR-H450"))
+            barcodeReader = new BarcodeReader(this);
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
         customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp);
@@ -72,7 +81,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
-        final EditText edt_upc_field = (EditText) findViewById(R.id.edt_upc_field);
+        edt_upc_field = (EditText) findViewById(R.id.edt_upc_field);
         final Button btn_update = (Button) findViewById(R.id.btn_submit_change);
         edt_min_value = (EditText) findViewById(R.id.edt_min_value);
         edt_max_value = (EditText) findViewById(R.id.edt_max_value);
@@ -94,18 +103,11 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                upc = new SearchByUPC();
-                String upc_scanned = edt_upc_field.getText().toString().trim();
-                edt_upc_field.setText("");
-                if (!upc_scanned.equals("")) {
-                    upc.setProductUPC(upc_scanned);
-                    GetProductInfo(upc,UpdateMinMaxActivity.this);
-                } else 
-                    Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+                Search();
             }
         });
+
+
 
         edt_upc_field.setOnKeyListener(new View.OnKeyListener()
         {
@@ -222,6 +224,18 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
 
     }
 
+    private void Search() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        upc = new SearchByUPC();
+        String upc_scanned = edt_upc_field.getText().toString().trim();
+        edt_upc_field.setText("");
+        if (!upc_scanned.equals("")) {
+            upc.setProductUPC(upc_scanned);
+            GetProductInfo(upc,UpdateMinMaxActivity.this);
+        } else
+            Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+    }
     private void Update_Product_Min_Max(UpdateMinMax upd, Context context) {
         JSONObject postData = new JSONObject();
         try {
@@ -354,6 +368,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         df.applyPattern(pattern);
 
         txt_upc_data.setText(productView.getProductUPC());
+        if (txt_manufacture_data != null)
         txt_manufacture_data.setText(productView.getManufacture());
         txt_qty_on_order_data.setText(df.format(productView.getQtyOnOrder()));
         txt_qty_committed_data.setText(df.format(productView.getQtyCommitted()));
@@ -417,6 +432,52 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
             clearResults();
         } else {
             Toast.makeText(UpdateMinMaxActivity.this,"Invalid Min or Max",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startScan() {
+        if (!this.barcodeReader.isRunning()) {
+            this.barcodeReader.start(new BarcodeCallback() {
+                @Override
+                public void onBarcodeRead(String s) {
+                    playSuccess();
+                    Log.v("Scanned", s);
+                    edt_upc_field.setText(s);
+                    Search();
+                }
+            });
+        }
+    }
+
+    public synchronized void stopScan() {
+        if (this.barcodeReader.isRunning()) {
+            this.barcodeReader.stop();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
+            return super.onKeyDown(keyCode, event);
+        }
+        startScan();
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN) {
+            return super.onKeyUp(keyCode, event);
+        }
+        stopScan();
+        return true;
+    }
+
+    public void playSuccess() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(UpdateMinMaxActivity.this, R.raw.snd_scan_success);
+            mp.start();
+        } catch (Exception e) {
+            Log.e(TAG, "Error play sound: " + e);
+            e.printStackTrace();
         }
     }
 

@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -43,6 +45,9 @@ import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.alien.barcode.BarcodeCallback;
+import com.alien.barcode.BarcodeReader;
+import com.alien.common.KeyCode;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -81,6 +86,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     private Switch switch_continuous_mode;
     private Drawer result = null;
     private Toolbar toolbar;
+    private BarcodeReader barcodeReader;
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +100,9 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Log.d("Device", Build.MODEL);
+        if ( Build.MODEL.equals("ALR-H450"))
+            barcodeReader = new BarcodeReader(this);
 
 
 
@@ -320,6 +329,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
 
         // Create and show the dialog.
         Firearm_Inv_Type_Dialog newFragment = new Firearm_Inv_Type_Dialog();
+        newFragment.setCancelable(false);
         newFragment.show(ft,"dialog");
     }
 
@@ -550,5 +560,51 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
         //Toast.makeText(InventoryFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
         currentFirearmType = firearmType;
         toolbar.setTitle("Firearm Inventory"+ ": " + firearmType);
+    }
+
+    private void startScan() {
+        if (!this.barcodeReader.isRunning()) {
+            this.barcodeReader.start(new BarcodeCallback() {
+                @Override
+                public void onBarcodeRead(String s) {
+                    playSuccess();
+                    Log.v("Scanned", s);
+                    edt_input_scanned.setText(s);
+                    Search();
+                }
+            });
+        }
+    }
+
+    public synchronized void stopScan() {
+        if (this.barcodeReader.isRunning()) {
+            this.barcodeReader.stop();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
+            return super.onKeyDown(keyCode, event);
+        }
+        startScan();
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN) {
+            return super.onKeyUp(keyCode, event);
+        }
+        stopScan();
+        return true;
+    }
+
+    public void playSuccess() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(InventoryFirearmsActivity.this, R.raw.snd_scan_success);
+            mp.start();
+        } catch (Exception e) {
+            Log.e(TAG, "Error play sound: " + e);
+            e.printStackTrace();
+        }
     }
 }

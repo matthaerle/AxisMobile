@@ -17,7 +17,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <com.acusportrtg.axismobile.ClearableEditText
+    <EditText
         android:id="@+id/edt_firearm_scan"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

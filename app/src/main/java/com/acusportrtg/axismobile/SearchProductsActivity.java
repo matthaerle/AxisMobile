@@ -189,7 +189,7 @@ public class SearchProductsActivity extends AppCompatActivity {
             }
         });
 
-        upc_Field.setOnKeyListener(new View.OnKeyListener()
+       /* upc_Field.setOnKeyListener(new View.OnKeyListener()
         {
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
@@ -213,7 +213,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                 }
             }
 
-        });
+        });*/
 
         upc_Field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -264,6 +264,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                 @Override
                 public void onBarcodeRead(String s) {
                     playSuccess();
+                    Log.v("Scanned", s);
                     upc_Field.setText(s);
                     SearchProduct();
                 }
@@ -293,8 +294,14 @@ public class SearchProductsActivity extends AppCompatActivity {
         return true;
     }
 
-    private void FillEditText(String s) {
-
+    public void playSuccess() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(SearchProductsActivity.this, R.raw.snd_scan_success);
+            mp.start();
+        } catch (Exception e) {
+            Log.e(TAG, "Error play sound: " + e);
+            e.printStackTrace();
+        }
     }
 
 
@@ -506,15 +513,7 @@ public class SearchProductsActivity extends AppCompatActivity {
         sum_value = 0.00;
     }
 
-    public void playSuccess() {
-        try {
-            MediaPlayer mp = MediaPlayer.create(SearchProductsActivity.this, R.raw.snd_scan_success);
-            mp.start();
-        } catch (Exception e) {
-            Log.e(TAG, "Error play sound: " + e);
-            e.printStackTrace();
-        }
-    }
+
 
 
 }
