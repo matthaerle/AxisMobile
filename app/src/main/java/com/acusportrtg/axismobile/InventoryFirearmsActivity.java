@@ -47,9 +47,10 @@ import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
-import com.alien.barcode.BarcodeCallback;
-import com.alien.barcode.BarcodeReader;
-import com.alien.common.KeyCode;
+
+import com.symbol.emdk.*;
+import com.symbol.emdk.EMDKManager.EMDKListener;
+
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -77,7 +78,7 @@ import java.net.URL;
  * Created by mhaerle on 4/21/2017.
  */
 
-public class InventoryFirearmsActivity extends AppCompatActivity  implements Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
+public class InventoryFirearmsActivity extends AppCompatActivity  implements EMDKListener, Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
     private FirearmInfo fi = new FirearmInfo();
     private GetEmployees emp;
     private boolean displayedHint = false;
@@ -88,8 +89,19 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     private Switch switch_continuous_mode;
     private Drawer result = null;
     private Toolbar toolbar;
-    private BarcodeReader barcodeReader;
+
+
+    //Assign the profile name used in EMDKConfig.xml
+    private String profileName = "Barcode_Read";
+
+    //Declare a variable to store ProfileManager object
+    private ProfileManager mProfileManager = null;
+
+    //Declare a variable to store EMDKManager object
+    private EMDKManager emdkManager = null;
+
     private EmployeeRoles empRoles = new EmployeeRoles();
+
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +112,21 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
         showDialog();
 
 
+        //The EMDKManager object will be created and returned in the callback.
+        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
+
+//Check the return status of getEMDKManager
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+            //Failed to create EMDKManager object
+
+        }
+
         setContentView(R.layout.activity_inventory_firearms);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Log.d("Device", Build.MODEL);
-        if ( Build.MODEL.equals("ALR-H450"))
-            barcodeReader = new BarcodeReader(this);
 
 
 
@@ -117,6 +137,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
         edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
+        edt_input_scanned.requestFocus();
         switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
 
         radio_log.setChecked(true);
@@ -194,30 +215,15 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
             }
         });
 
-        edt_input_scanned.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
-                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        if(edt_input_scanned.getText().toString().trim().length() == 0){
-                            Toast.makeText(InventoryFirearmsActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
-                            edt_input_scanned.requestFocus();
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
-                        }
-                        else{
-                            Search();
-                        }
-                    }
+        edt_input_scanned.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    Search();
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
-
         });
 
         edt_input_scanned.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -537,7 +543,10 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
                         fsu.setEmployeeID(emp.getEmployeeID());
                         fsu.setMachineName("Axis Mobile");
                         fsu.setBoundBookType(currentFirearmType);
-                        try {
+                        edt_input_scanned.requestFocus();
+                        edt_input_scanned.setText("");
+                        try
+                        {
                             UpdateFirearmScan(fsu,InventoryFirearmsActivity.this);
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage());
@@ -547,6 +556,8 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
                             fillFirearmInfo(fi);
                         } else {
                             Log.e(TAG,"Error filling firearm info");
+                            edt_input_scanned.requestFocus();
+                            edt_input_scanned.setText("");
                         }
                     }
                     }};
@@ -566,49 +577,45 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
         toolbar.setTitle("Firearm Inventory"+ ": " + firearmType);
     }
 
-    private void startScan() {
-        if (!this.barcodeReader.isRunning()) {
-            this.barcodeReader.start(new BarcodeCallback() {
-                @Override
-                public void onBarcodeRead(String s) {
-                    playSuccess();
-                    Log.v("Scanned", s);
-                    edt_input_scanned.setText(s);
-                    Search();
-                }
-            });
-        }
-    }
 
-    public synchronized void stopScan() {
-        if (this.barcodeReader.isRunning()) {
-            this.barcodeReader.stop();
-        }
-    }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
-            return super.onKeyDown(keyCode, event);
-        }
-        startScan();
-        return true;
-    }
 
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode != KeyCode.ALR_H450.SCAN) {
-            return super.onKeyUp(keyCode, event);
-        }
-        stopScan();
-        return true;
-    }
 
-    public void playSuccess() {
-        try {
-            MediaPlayer mp = MediaPlayer.create(InventoryFirearmsActivity.this, R.raw.snd_scan_success);
-            mp.start();
-        } catch (Exception e) {
-            Log.e(TAG, "Error play sound: " + e);
-            e.printStackTrace();
+@Override
+public void onOpened(EMDKManager emdkManager) {
+        this.emdkManager = emdkManager;
+        //Get the ProfileManager object to process the profiles
+        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
+        if(mProfileManager != null)
+        {
+        try{
+
+        String[] modifyData = new String[1];
+        //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
+
+        EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+        //Failed to set profile
         }
-    }
+        }catch (Exception ex){
+        // Handle any exception
+        }
+
+
+        }
+        }
+
+        @Override
+        protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        //Clean up the objects created by EMDK manager
+        emdkManager.release();
+        }
+
+@Override
+public void onClosed() {
+
+        }
 }

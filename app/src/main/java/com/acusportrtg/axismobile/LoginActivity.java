@@ -153,6 +153,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+        username.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    Login();
+                    return true;
+                }
+                return false;
+            }
+        });
         password.setOnKeyListener(new View.OnKeyListener()
         {
             public boolean onKey(View v, int keyCode, KeyEvent event)

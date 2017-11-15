@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -30,12 +29,10 @@ import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
-import com.alien.barcode.BarcodeCallback;
-import com.alien.barcode.BarcodeReader;
-import com.alien.common.KeyCode;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
+
+import com.symbol.emdk.*;
+import com.symbol.emdk.EMDKManager.EMDKListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,17 +50,28 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 4/14/2017.
  */
 
-public class UpdateMinMaxActivity extends AppCompatActivity {
+public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKListener{
     private SearchByUPC upc;
     private String JSONReturnData = "";
     private GetEmployees emp;
     private SendProductView productView;
     private EditText edt_min_value, edt_max_value;
     private Drawer result = null;
-    private BarcodeReader barcodeReader;
     private EditText edt_upc_field;
+
+    //Assign the profile name used in EMDKConfig.xml
+    private String profileName = "Barcode_Read";
+
+    //Declare a variable to store ProfileManager object
+    private ProfileManager mProfileManager = null;
+
+    //Declare a variable to store EMDKManager object
+    private EMDKManager emdkManager = null;
+
+
     private EmployeeRoles empRoles = new EmployeeRoles();
     
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +81,17 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         empRoles = glob.getEmpRoles();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //The EMDKManager object will be created and returned in the callback.
+        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
 
-        Log.d("Device", Build.MODEL);
-        if ( Build.MODEL.equals("ALR-H450"))
-            barcodeReader = new BarcodeReader(this);
+//Check the return status of getEMDKManager
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+            //Failed to create EMDKManager object
+
+        }
+
+
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
         customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
@@ -88,6 +103,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         final Button btn_update = (Button) findViewById(R.id.btn_submit_change);
         edt_min_value = (EditText) findViewById(R.id.edt_min_value);
         edt_max_value = (EditText) findViewById(R.id.edt_max_value);
+        edt_upc_field.requestFocus();
         
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,39 +128,15 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
 
 
 
-        edt_upc_field.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
-                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        if(btn_search.getText().toString().trim().length() == 0){
-                            Toast.makeText(UpdateMinMaxActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
-                            btn_search.requestFocus();
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
-                        }
-                        else{
-                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                            upc = new SearchByUPC();
-                            String upc_scanned = edt_upc_field.getText().toString().trim();
-                            edt_upc_field.setText("");
-                            if (!upc_scanned.equals("")) {
-                                upc.setProductUPC(upc_scanned);
-                                GetProductInfo(upc,UpdateMinMaxActivity.this);
-                            } else
-                                Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        edt_upc_field.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    Search();
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
-
         });
 
         edt_upc_field.addTextChangedListener(new TextWatcher()
@@ -233,12 +225,16 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         upc = new SearchByUPC();
         String upc_scanned = edt_upc_field.getText().toString().trim();
         edt_upc_field.setText("");
+        edt_upc_field.requestFocus();
         if (!upc_scanned.equals("")) {
             upc.setProductUPC(upc_scanned);
             GetProductInfo(upc,UpdateMinMaxActivity.this);
-        } else
-            Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
-    }
+        } else {
+            //Toast.makeText(UpdateMinMaxActivity.this, "Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+            edt_upc_field.requestFocus();
+        }
+        }
+
     private void Update_Product_Min_Max(UpdateMinMax upd, Context context) {
         JSONObject postData = new JSONObject();
         try {
@@ -297,8 +293,12 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
 
                 upd_status.setSuccesfull(updateJson.getBoolean("IsSuccesfull"));
             }
-            if (upd_status.isSuccesfull())
-                Toast.makeText(UpdateMinMaxActivity.this,"Update Complete", Toast.LENGTH_SHORT).show();
+            if (upd_status.isSuccesfull()) {
+                Toast.makeText(UpdateMinMaxActivity.this, "Update Complete", Toast.LENGTH_SHORT).show();
+
+            edt_upc_field.requestFocus();
+            }
+
             else
                 Toast.makeText(UpdateMinMaxActivity.this,"Update Failed", Toast.LENGTH_SHORT).show();
 
@@ -438,41 +438,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         }
     }
 
-    private void startScan() {
-        if (!this.barcodeReader.isRunning()) {
-            this.barcodeReader.start(new BarcodeCallback() {
-                @Override
-                public void onBarcodeRead(String s) {
-                    playSuccess();
-                    Log.v("Scanned", s);
-                    edt_upc_field.setText(s);
-                    Search();
-                }
-            });
-        }
-    }
 
-    public synchronized void stopScan() {
-        if (this.barcodeReader.isRunning()) {
-            this.barcodeReader.stop();
-        }
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
-            return super.onKeyDown(keyCode, event);
-        }
-        startScan();
-        return true;
-    }
-
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode != KeyCode.ALR_H450.SCAN) {
-            return super.onKeyUp(keyCode, event);
-        }
-        stopScan();
-        return true;
-    }
 
     public void playSuccess() {
         try {
@@ -484,4 +450,40 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onOpened(EMDKManager emdkManager) {
+        this.emdkManager = emdkManager;
+//Get the ProfileManager object to process the profiles
+        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
+        if(mProfileManager != null)
+        {
+            try{
+
+                String[] modifyData = new String[1];
+                //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
+
+                EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
+                if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+                {
+                    //Failed to set profile
+                }
+            }catch (Exception ex){
+                // Handle any exception
+            }
+
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        //Clean up the objects created by EMDK manager
+        emdkManager.release();
+    }
+    @Override
+    public void onClosed() {
+
+    }
 }

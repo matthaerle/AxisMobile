@@ -10,7 +10,11 @@ import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+
+import android.support.v7.appcompat.*;
+
 import android.widget.Toast;
+
 
 import com.acusportrtg.axismobile.AppSettingsActivity;
 import com.acusportrtg.axismobile.Globals;
