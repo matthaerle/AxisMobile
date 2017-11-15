@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -28,10 +29,12 @@ import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.alien.barcode.BarcodeCallback;
+import com.alien.barcode.BarcodeReader;
+import com.alien.common.KeyCode;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
-
-import com.symbol.emdk.*;
-import com.symbol.emdk.EMDKManager.EMDKListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,23 +52,16 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 4/14/2017.
  */
 
-public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKListener{
+public class UpdateMinMaxActivity extends AppCompatActivity {
     private SearchByUPC upc;
     private String JSONReturnData = "";
     private GetEmployees emp;
     private SendProductView productView;
     private EditText edt_min_value, edt_max_value;
     private Drawer result = null;
+    private BarcodeReader barcodeReader;
     private EditText edt_upc_field;
-    //Assign the profile name used in EMDKConfig.xml
-    private String profileName = "DataCaptureProfile";
-
-    //Declare a variable to store ProfileManager object
-    private ProfileManager mProfileManager = null;
-
-    //Declare a variable to store EMDKManager object
-    private EMDKManager emdkManager = null;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,17 +70,10 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
         emp = glob.getEmployee();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //The EMDKManager object will be created and returned in the callback.
-        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
 
-//Check the return status of getEMDKManager
-        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
-        {
-            //Failed to create EMDKManager object
-
-        }
-
-
+        Log.d("Device", Build.MODEL);
+        if ( Build.MODEL.equals("ALR-H450"))
+            barcodeReader = new BarcodeReader(this);
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
         customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp);
@@ -446,7 +435,41 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
         }
     }
 
+    private void startScan() {
+        if (!this.barcodeReader.isRunning()) {
+            this.barcodeReader.start(new BarcodeCallback() {
+                @Override
+                public void onBarcodeRead(String s) {
+                    playSuccess();
+                    Log.v("Scanned", s);
+                    edt_upc_field.setText(s);
+                    Search();
+                }
+            });
+        }
+    }
 
+    public synchronized void stopScan() {
+        if (this.barcodeReader.isRunning()) {
+            this.barcodeReader.stop();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
+            return super.onKeyDown(keyCode, event);
+        }
+        startScan();
+        return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode != KeyCode.ALR_H450.SCAN) {
+            return super.onKeyUp(keyCode, event);
+        }
+        stopScan();
+        return true;
+    }
 
     public void playSuccess() {
         try {
@@ -458,40 +481,4 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
         }
     }
 
-    @Override
-    public void onOpened(EMDKManager emdkManager) {
-        this.emdkManager = emdkManager;
-//Get the ProfileManager object to process the profiles
-        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
-        if(mProfileManager != null)
-        {
-            try{
-
-                String[] modifyData = new String[1];
-                //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
-
-                EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
-                if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
-                {
-                    //Failed to set profile
-                }
-            }catch (Exception ex){
-                // Handle any exception
-            }
-
-
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        // TODO Auto-generated method stub
-        super.onDestroy();
-        //Clean up the objects created by EMDK manager
-        emdkManager.release();
-    }
-    @Override
-    public void onClosed() {
-
-    }
 }
