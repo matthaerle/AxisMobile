@@ -3,10 +3,12 @@ package com.acusportrtg.axismobile;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,13 +20,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateMinMax;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.mikepenz.materialdrawer.Drawer;
+
+import com.symbol.emdk.*;
+import com.symbol.emdk.EMDKManager.EMDKListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,27 +50,60 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 4/14/2017.
  */
 
-public class UpdateMinMaxActivity extends AppCompatActivity {
+public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKListener{
     private SearchByUPC upc;
     private String JSONReturnData = "";
     private GetEmployees emp;
     private SendProductView productView;
     private EditText edt_min_value, edt_max_value;
+    private Drawer result = null;
+    private EditText edt_upc_field;
+
+    //Assign the profile name used in EMDKConfig.xml
+    private String profileName = "Barcode_Read";
+
+    //Declare a variable to store ProfileManager object
+    private ProfileManager mProfileManager = null;
+
+    //Declare a variable to store EMDKManager object
+    private EMDKManager emdkManager = null;
+
+
+    private EmployeeRoles empRoles = new EmployeeRoles();
     
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_minmax);
         Globals glob = ((Globals)getApplicationContext());
-        getSupportActionBar().setTitle("Update Min/Max");
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //The EMDKManager object will be created and returned in the callback.
+        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
+
+//Check the return status of getEMDKManager
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+            //Failed to create EMDKManager object
+
+        }
+
+
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
+
         
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
-        final EditText edt_upc_field = (EditText) findViewById(R.id.edt_upc_field);
+        edt_upc_field = (EditText) findViewById(R.id.edt_upc_field);
         final Button btn_update = (Button) findViewById(R.id.btn_submit_change);
         edt_min_value = (EditText) findViewById(R.id.edt_min_value);
         edt_max_value = (EditText) findViewById(R.id.edt_max_value);
+        edt_upc_field.requestFocus();
         
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,52 +122,21 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                upc = new SearchByUPC();
-                String upc_scanned = edt_upc_field.getText().toString().trim();
-                edt_upc_field.setText("");
-                if (!upc_scanned.equals("")) {
-                    upc.setProductUPC(upc_scanned);
-                    GetProductInfo(upc,UpdateMinMaxActivity.this);
-                } else 
-                    Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+                Search();
             }
         });
 
-        edt_upc_field.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
-                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        if(btn_search.getText().toString().trim().length() == 0){
-                            Toast.makeText(UpdateMinMaxActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
-                            btn_search.requestFocus();
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
-                        }
-                        else{
-                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                            upc = new SearchByUPC();
-                            String upc_scanned = edt_upc_field.getText().toString().trim();
-                            edt_upc_field.setText("");
-                            if (!upc_scanned.equals("")) {
-                                upc.setProductUPC(upc_scanned);
-                                GetProductInfo(upc,UpdateMinMaxActivity.this);
-                            } else
-                                Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    return true;
-                } else {
-                    return false;
-                }
-            }
 
+
+        edt_upc_field.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    Search();
+                    return true;
+                }
+                return false;
+            }
         });
 
         edt_upc_field.addTextChangedListener(new TextWatcher()
@@ -209,6 +219,22 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
 
     }
 
+    private void Search() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        upc = new SearchByUPC();
+        String upc_scanned = edt_upc_field.getText().toString().trim();
+        edt_upc_field.setText("");
+        edt_upc_field.requestFocus();
+        if (!upc_scanned.equals("")) {
+            upc.setProductUPC(upc_scanned);
+            GetProductInfo(upc,UpdateMinMaxActivity.this);
+        } else {
+            //Toast.makeText(UpdateMinMaxActivity.this, "Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+            edt_upc_field.requestFocus();
+        }
+        }
+
     private void Update_Product_Min_Max(UpdateMinMax upd, Context context) {
         JSONObject postData = new JSONObject();
         try {
@@ -267,8 +293,12 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
 
                 upd_status.setSuccesfull(updateJson.getBoolean("IsSuccesfull"));
             }
-            if (upd_status.isSuccesfull())
-                Toast.makeText(UpdateMinMaxActivity.this,"Update Complete", Toast.LENGTH_SHORT).show();
+            if (upd_status.isSuccesfull()) {
+                Toast.makeText(UpdateMinMaxActivity.this, "Update Complete", Toast.LENGTH_SHORT).show();
+
+            edt_upc_field.requestFocus();
+            }
+
             else
                 Toast.makeText(UpdateMinMaxActivity.this,"Update Failed", Toast.LENGTH_SHORT).show();
 
@@ -341,6 +371,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         df.applyPattern(pattern);
 
         txt_upc_data.setText(productView.getProductUPC());
+        if (txt_manufacture_data != null)
         txt_manufacture_data.setText(productView.getManufacture());
         txt_qty_on_order_data.setText(df.format(productView.getQtyOnOrder()));
         txt_qty_committed_data.setText(df.format(productView.getQtyCommitted()));
@@ -407,4 +438,52 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         }
     }
 
+
+
+    public void playSuccess() {
+        try {
+            MediaPlayer mp = MediaPlayer.create(UpdateMinMaxActivity.this, R.raw.snd_scan_success);
+            mp.start();
+        } catch (Exception e) {
+            Log.e(TAG, "Error play sound: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onOpened(EMDKManager emdkManager) {
+        this.emdkManager = emdkManager;
+//Get the ProfileManager object to process the profiles
+        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
+        if(mProfileManager != null)
+        {
+            try{
+
+                String[] modifyData = new String[1];
+                //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
+
+                EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
+                if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+                {
+                    //Failed to set profile
+                }
+            }catch (Exception ex){
+                // Handle any exception
+            }
+
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        //Clean up the objects created by EMDK manager
+        emdkManager.release();
+    }
+    @Override
+    public void onClosed() {
+
+    }
 }

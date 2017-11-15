@@ -2,6 +2,7 @@ package com.acusportrtg.axismobile;
 
 import android.app.Application;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
 
@@ -14,6 +15,7 @@ public class Globals extends Application {
     private int Inventory_Group_Id;
     private SendInventoryGroup invGroup;
     private Boolean ShowKeybaord;
+    private EmployeeRoles empRoles;
 
     public SendInventoryGroup getInvGroup() {
         return invGroup;
@@ -42,5 +44,9 @@ public class Globals extends Application {
     public void setKeyboardStatus(boolean status){ShowKeybaord = status;}
 
     public Boolean getKeyboardStatus() {return ShowKeybaord;}
+
+    public EmployeeRoles getEmpRoles() {return empRoles;}
+
+    public void setEmpRoles(EmployeeRoles empRoles) {this.empRoles = empRoles;}
 
 }

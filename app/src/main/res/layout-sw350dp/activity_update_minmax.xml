@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusableInTouchMode="true">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
     <android.support.constraint.ConstraintLayout
@@ -42,7 +50,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:text="TextView"
             android:textSize="18sp"
             app:layout_constraintLeft_toRightOf="@+id/txt_product_upc_header"
@@ -251,7 +258,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/upc_title"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -259,73 +265,71 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-            android:id="@+id/InnerRelativeLayout"
-            android:layout_width="214dp"
-            android:layout_height="124dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline34"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline25"
-            app:layout_constraintRight_toLeftOf="@+id/guideline26"
-            app:layout_constraintTop_toTopOf="@+id/guideline27"
-            tools:layout_constraintBottom_creator="1"
+        android:id="@+id/InnerRelativeLayout"
+        android:layout_width="214dp"
+        android:layout_height="124dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline34"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline25"
+        app:layout_constraintRight_toLeftOf="@+id/guideline26"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1">
+
+        <EditText
+            android:id="@+id/edt_upc_field"
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#95a5a6"
+            android:ems="10"
+            android:hint="UPC"
+            android:inputType="textNoSuggestions"
+            android:textColor="#2980b9"
+            android:textColorHint="#95a5a6"
+            android:textCursorDrawable="@drawable/cursor_grey"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1">
+            tools:layout_constraintRight_creator="1" />
 
-            <EditText
-                android:id="@+id/edt_upc_field"
-                android:layout_width="0dp"
-                android:layout_height="53dp"
-                android:layout_marginTop="8dp"
-                android:backgroundTint="#95a5a6"
-                android:ems="10"
-                android:hint="UPC"
-                android:inputType="textNoSuggestions"
-                android:textColor="#2980b9"
-                android:textColorHint="#95a5a6"
-                android:textCursorDrawable="@drawable/cursor_grey"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_constraintLeft_creator="1"
-                tools:layout_constraintRight_creator="1" />
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_border_round"
+            android:text="@string/clear_upc_field"
+            android:textColor="@drawable/txt_border_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_upc_field" />
 
-            <Button
-                android:id="@+id/btn_clear"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/btn_border_round"
-                android:text="@string/clear_upc_field"
-                android:textColor="@drawable/txt_border_button"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_upc_field" />
-
-            <Button
-                android:id="@+id/btn_search"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/btn_solid_round"
-                android:text="@string/search_upc"
-                android:textColor="#ffffff"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toRightOf="@+id/btn_clear"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_upc_field" />
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_solid_round"
+            android:text="@string/search_upc"
+            android:textColor="#ffffff"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/btn_clear"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_upc_field" />
 
 
-        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline25"
@@ -373,42 +377,37 @@
 
 
     <android.support.constraint.Guideline
-            android:id="@+id/guideline37"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.33" />
+        android:id="@+id/guideline37"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.329806" />
 
-        <ImageView
-            android:id="@+id/horizontal_rule"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/colorCloudGrey"
-            app:layout_constraintBottom_toTopOf="@+id/guideline37"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline46"
-            app:layout_constraintRight_toLeftOf="@+id/guideline49"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+    <ImageView
+        android:id="@+id/horizontal_rule"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/colorCloudGrey"
+        app:layout_constraintBottom_toTopOf="@+id/guideline37"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline46"
+        app:layout_constraintRight_toLeftOf="@+id/guideline49"
+        app:layout_constraintTop_toTopOf="@+id/guideline34" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline46"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="41dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline46"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline49"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="370dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline49"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98" />
 
 
 </android.support.constraint.ConstraintLayout>

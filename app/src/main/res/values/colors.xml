@@ -6,4 +6,5 @@
     <color name="colorCloudGrey">#ecf0f1</color>
     <color name="colorDarkGrey">#95a5a6</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="selected_text">#f44242</color>
 </resources>

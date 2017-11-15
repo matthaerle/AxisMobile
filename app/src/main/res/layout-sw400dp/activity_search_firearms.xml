@@ -1,410 +1,414 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:focusableInTouchMode="true"
-    android:clickable="true"
-    android:windowSoftInputMode="stateHidden"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:windowSoftInputMode="stateHidden">
 
-        <com.acusportrtg.axismobile.ClearableEditText
-            android:id="@+id/edt_firearm_scan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Scan"
-            android:inputType="textPersonName"
-            android:textColorHint="#95a5a6"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline43"
-            app:layout_constraintRight_toLeftOf="@+id/guideline44"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <RadioButton
-            android:id="@+id/rdl_serial_number"
+    <EditText
+        android:id="@+id/edt_firearm_scan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Scan"
+        android:inputType="textPersonName"
+        android:textColorHint="#95a5a6"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline43"
+        app:layout_constraintRight_toLeftOf="@+id/guideline44"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <RadioButton
+        android:id="@+id/rdl_serial_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/txt_serial_number_radio"
+        app:layout_constraintRight_toLeftOf="@+id/guideline44"
+        app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan" />
+
+    <RadioButton
+        android:id="@+id/rdl_log_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Log #"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline43"
+        app:layout_constraintRight_toLeftOf="@+id/rdl_serial_number"
+        app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline43"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.14722222"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="81dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline44"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.86"
+        tools:layout_editor_absoluteX="354dp"
+        tools:layout_editor_absoluteY="81dp" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/btn_solid_square"
+        android:text="@android:string/search_go"
+        android:textColor="#ffffff"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline43"
+        app:layout_constraintRight_toLeftOf="@+id/guideline44"
+        app:layout_constraintTop_toBottomOf="@+id/rdl_serial_number" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_firearminfo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guideline45"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline43"
+        app:layout_constraintRight_toLeftOf="@+id/guideline44"
+        app:layout_constraintTop_toBottomOf="@+id/btn_search"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/txt_log_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/txt_serial_number_radio"
-            app:layout_constraintRight_toLeftOf="@+id/guideline44"
-            app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan" />
-
-        <RadioButton
-            android:id="@+id/rdl_log_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Log #"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline43"
-            app:layout_constraintRight_toLeftOf="@+id/rdl_serial_number"
-            app:layout_constraintTop_toBottomOf="@+id/edt_firearm_scan" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline43"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.14722222"
-            tools:layout_editor_absoluteX="61dp"
-            tools:layout_editor_absoluteY="81dp" />
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline44"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.86"
-            tools:layout_editor_absoluteX="354dp"
-            tools:layout_editor_absoluteY="81dp" />
-
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="7dp"
-            android:background="@drawable/btn_solid_square"
-            android:text="@android:string/search_go"
-            android:textColor="#ffffff"
-            app:layout_constraintRight_toLeftOf="@+id/guideline44"
-            app:layout_constraintTop_toBottomOf="@+id/rdl_serial_number"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline43" />
+            android:text="@string/txt_log_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraint_firearminfo"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
+
+        <TextView
+            android:id="@+id/txt_gauge_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/txt_gauge_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_model_header" />
+
+        <TextView
+            android:id="@+id/txt_new_or_used_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_new_or_used_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_type_of_action_header" />
+
+
+        <TextView
+            android:id="@+id/txt_type_of_action_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_type_of_action_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_gauge_header" />
+
+
+        <TextView
+            android:id="@+id/txt_model_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_model_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_importer_header" />
+
+        <TextView
+            android:id="@+id/txt_importer_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_importer_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_manufacturer_header" />
+
+
+        <TextView
+            android:id="@+id/txt_firearm_desc_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_firearm_description"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_upc_header" />
+
+        <TextView
+            android:id="@+id/txt_status_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/guideline45"
-            app:layout_constraintTop_toBottomOf="@+id/btn_search"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline43"
-            app:layout_constraintRight_toLeftOf="@+id/guideline44"
-            android:layout_marginRight="8dp">
-
-            <TextView
-                android:id="@+id/txt_log_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/txt_log_header"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="7dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
+            android:text="@string/txt_status_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_new_or_used_header" />
 
 
-            <TextView
-                android:id="@+id/txt_gauge_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_gauge_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="7dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_model_header"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_new_or_used_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_new_or_used_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_type_of_action_header"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-
-            <TextView
-                android:id="@+id/txt_type_of_action_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_type_of_action_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_gauge_header"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-
-            <TextView
-                android:id="@+id/txt_model_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_model_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_importer_header"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_importer_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_importer_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_manufacturer_header" />
-
-
-            <TextView
-                android:id="@+id/txt_firearm_desc_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_firearm_description"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_upc_header"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_status_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_status_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_new_or_used_header" />
-
-
-            <TextView
-                android:id="@+id/txt_Serial_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_serial_number_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_firearm_desc_data" />
-
-
-            <Button
-                android:id="@+id/btn_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/clear_upc_field"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="0dp" />
-
-            <TextView
-                android:id="@+id/txt_upc_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/txt_upc_header"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_log_header" />
-
-            <TextView
-                android:id="@+id/txt_manufacturer_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_manufacturer_header"
-                android:textStyle="bold"
-                android:layout_marginStart="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/txt_Serial_header" />
-
-
-                <TextView
-                    android:id="@+id/txtManufactureData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_serial_data" />
-
-                <TextView
-                    android:id="@+id/txt_upc_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="7dp"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_log_data"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    tools:layout_editor_absoluteX="123dp" />
-
-                <TextView
-                    android:id="@+id/txt_serial_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_firearm_desc_data" />
-
-                <TextView
-                    android:id="@+id/txt_firearm_desc_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_upc_data" />
-
-                <TextView
-                    android:id="@+id/txt_log_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    android:textColor="@color/colorPrimary"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="7dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header" />
-
-                <TextView
-                    android:id="@+id/txt_importer_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    app:layout_constraintTop_toBottomOf="@+id/txtManufactureData" />
-
-                <TextView
-                    android:id="@+id/txt_model_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_importer_data" />
-
-                <TextView
-                    android:id="@+id/txt_new_or_used_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_type_of_action_data" />
-
-                <TextView
-                    android:id="@+id/txt_type_of_action_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_gauge_data" />
-
-                <TextView
-                    android:id="@+id/txt_gauge_data"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/firearm_info_placeholder"
-                    android:layout_marginStart="14dp"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_model_data" />
-
-
-                <CheckBox
-                    android:id="@+id/chk_sold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sold"
-                    android:layout_marginStart="0dp"
-                    android:scaleX="0.80"
-                    android:scaleY="0.80"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
-                    android:layout_marginTop="8dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_new_or_used_data"
-                    android:layout_marginBottom="8dp" />
-
-                <CheckBox
-                    android:id="@+id/chk_committed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Commited"
-                    android:layout_marginStart="0dp"
-                    android:scaleX="0.80"
-                    android:scaleY="0.80"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_new_or_used_data"
-                    app:layout_constraintLeft_toRightOf="@+id/chk_sold"
-                    android:layout_marginBottom="8dp" />
-
-
-
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline45"
+        <TextView
+            android:id="@+id/txt_Serial_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.97" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_serial_number_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_firearm_desc_data" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline47"
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/clear_upc_field"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_upc_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.055555556"
-            tools:layout_editor_absoluteY="81dp"
-            tools:layout_editor_absoluteX="23dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_upc_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_log_header" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline48"
+        <TextView
+            android:id="@+id/txt_manufacturer_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.94"
-            tools:layout_editor_absoluteY="81dp"
-            tools:layout_editor_absoluteX="387dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_manufacturer_header"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_Serial_header" />
 
+
+        <TextView
+            android:id="@+id/txtManufactureData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_serial_data" />
+
+        <TextView
+            android:id="@+id/txt_upc_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_log_data"
+            tools:layout_editor_absoluteX="123dp" />
+
+        <TextView
+            android:id="@+id/txt_serial_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_firearm_desc_data" />
+
+        <TextView
+            android:id="@+id/txt_firearm_desc_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_upc_data" />
+
+        <TextView
+            android:id="@+id/txt_log_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/firearm_info_placeholder"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_importer_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txtManufactureData" />
+
+        <TextView
+            android:id="@+id/txt_model_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_importer_data" />
+
+        <TextView
+            android:id="@+id/txt_new_or_used_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_type_of_action_data" />
+
+        <TextView
+            android:id="@+id/txt_type_of_action_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_gauge_data" />
+
+        <TextView
+            android:id="@+id/txt_gauge_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/firearm_info_placeholder"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_model_data" />
+
+
+        <CheckBox
+            android:id="@+id/chk_sold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scaleX="0.80"
+            android:scaleY="0.80"
+            android:text="Sold"
+            app:layout_constraintLeft_toRightOf="@+id/txt_gauge_header"
+            app:layout_constraintTop_toBottomOf="@+id/txt_new_or_used_data" />
+
+        <CheckBox
+            android:id="@+id/chk_committed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:scaleX="0.80"
+            android:scaleY="0.80"
+            android:text="Commited"
+            app:layout_constraintLeft_toRightOf="@+id/chk_sold"
+            app:layout_constraintTop_toBottomOf="@+id/txt_new_or_used_data" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline45"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.97" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline47"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.055555556"
+        tools:layout_editor_absoluteX="23dp"
+        tools:layout_editor_absoluteY="81dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline48"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.94"
+        tools:layout_editor_absoluteX="387dp"
+        tools:layout_editor_absoluteY="81dp" />
 
 
 </android.support.constraint.ConstraintLayout>

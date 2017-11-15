@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -33,14 +36,30 @@ import android.widget.Toast;
 import static android.content.ContentValues.TAG;
 import android.widget.CompoundButton;
 import android.app.AlertDialog;
+
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockUpdate;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.IsFirearmDisposed;
 import com.acusportrtg.axismobile.JSON_Classes.UpdateStatus;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithPOSTData;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+
+import com.symbol.emdk.*;
+import com.symbol.emdk.EMDKManager.EMDKListener;
+
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.ExpandableDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +78,7 @@ import java.net.URL;
  * Created by mhaerle on 4/21/2017.
  */
 
-public class InventoryFirearmsActivity extends AppCompatActivity  implements Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
+public class InventoryFirearmsActivity extends AppCompatActivity  implements EMDKListener, Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
     private FirearmInfo fi = new FirearmInfo();
     private GetEmployees emp;
     private boolean displayedHint = false;
@@ -68,20 +87,57 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     private EditText edt_input_scanned;
     private String currentFirearmType;
     private Switch switch_continuous_mode;
+    private Drawer result = null;
+    private Toolbar toolbar;
+
+
+    //Assign the profile name used in EMDKConfig.xml
+    private String profileName = "Barcode_Read";
+
+    //Declare a variable to store ProfileManager object
+    private ProfileManager mProfileManager = null;
+
+    //Declare a variable to store EMDKManager object
+    private EMDKManager emdkManager = null;
+
+    private EmployeeRoles empRoles = new EmployeeRoles();
+
 
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
-        showDialog();
-        getSupportActionBar().setTitle("Firearm Count");
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
+        showDialog();
+
+
+        //The EMDKManager object will be created and returned in the callback.
+        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
+
+//Check the return status of getEMDKManager
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+            //Failed to create EMDKManager object
+
+        }
+
         setContentView(R.layout.activity_inventory_firearms);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Log.d("Device", Build.MODEL);
+
+
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(InventoryFirearmsActivity.this,InventoryFirearmsActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
         radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);
         final Button btn_count = (Button) findViewById(R.id.btn_count_submit);
         edt_input_scanned = (EditText) findViewById(R.id.edt_firearm_scan);
+        edt_input_scanned.requestFocus();
         switch_continuous_mode = (Switch) findViewById(R.id.swtch_continuous_mode);
 
         radio_log.setChecked(true);
@@ -159,30 +215,15 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
             }
         });
 
-        edt_input_scanned.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
-                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        if(edt_input_scanned.getText().toString().trim().length() == 0){
-                            Toast.makeText(InventoryFirearmsActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
-                            edt_input_scanned.requestFocus();
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
-                        }
-                        else{
-                            Search();
-                        }
-                    }
+        edt_input_scanned.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    Search();
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
-
         });
 
         edt_input_scanned.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -277,40 +318,6 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            case R.id.app_settings:
-                try {
-                    Intent appSettings = new Intent(InventoryFirearmsActivity.this,AppSettingsActivity.class);
-                    startActivity(appSettings);
-                } catch (Exception e) {
-                    Log.e(TAG,e.getLocalizedMessage());
-                    try {
-
-                        Process process = Runtime.getRuntime().exec("logcat -d -t 50");
-                        BufferedReader bufferedReader = new BufferedReader(
-                                new InputStreamReader(process.getInputStream()));
-                        String line;
-                        String output = "";
-                        while ((line = bufferedReader.readLine()) != null) {
-                            output = output + line +" \n";
-                        }
-
-                        Log.v(TAG,InventoryFirearmsActivity.this.getApplicationContext().getPackageName());
-
-                        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-                        emailIntent.putExtra(Intent.EXTRA_EMAIL, "rtgsupport@acusport.com");
-                        emailIntent.setType("plain/text");
-                        emailIntent.putExtra(Intent.EXTRA_TEXT,output +  "\n" +e.getLocalizedMessage());
-                        emailIntent.putExtra(Intent.EXTRA_EMAIL, "rtgsupport@acusport.com");
-                        startActivity(emailIntent);
-                    } catch (IOException ex) {
-                        Log.e(TAG,ex.getMessage());
-                    }
-
-
-                }
-
-               break;
             case R.id.firearm_type:
                 showDialog();
                 break;
@@ -332,6 +339,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
 
         // Create and show the dialog.
         Firearm_Inv_Type_Dialog newFragment = new Firearm_Inv_Type_Dialog();
+        newFragment.setCancelable(false);
         newFragment.show(ft,"dialog");
     }
 
@@ -535,7 +543,10 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
                         fsu.setEmployeeID(emp.getEmployeeID());
                         fsu.setMachineName("Axis Mobile");
                         fsu.setBoundBookType(currentFirearmType);
-                        try {
+                        edt_input_scanned.requestFocus();
+                        edt_input_scanned.setText("");
+                        try
+                        {
                             UpdateFirearmScan(fsu,InventoryFirearmsActivity.this);
                         } catch (Exception e) {
                             Log.e(TAG, e.getMessage());
@@ -545,6 +556,8 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
                             fillFirearmInfo(fi);
                         } else {
                             Log.e(TAG,"Error filling firearm info");
+                            edt_input_scanned.requestFocus();
+                            edt_input_scanned.setText("");
                         }
                     }
                     }};
@@ -559,8 +572,50 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements Fir
 
     @Override
     public void onFragmentInteraction(String firearmType) {
-        Toast.makeText(InventoryFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(InventoryFirearmsActivity.this,firearmType,Toast.LENGTH_SHORT).show();
         currentFirearmType = firearmType;
-        getSupportActionBar().setTitle("Firearm Inventory"+ ": " + firearmType);
+        toolbar.setTitle("Firearm Inventory"+ ": " + firearmType);
     }
+
+
+
+
+
+@Override
+public void onOpened(EMDKManager emdkManager) {
+        this.emdkManager = emdkManager;
+        //Get the ProfileManager object to process the profiles
+        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
+        if(mProfileManager != null)
+        {
+        try{
+
+        String[] modifyData = new String[1];
+        //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
+
+        EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+        //Failed to set profile
+        }
+        }catch (Exception ex){
+        // Handle any exception
+        }
+
+
+        }
+        }
+
+        @Override
+        protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        //Clean up the objects created by EMDK manager
+        emdkManager.release();
+        }
+
+@Override
+public void onClosed() {
+
+        }
 }

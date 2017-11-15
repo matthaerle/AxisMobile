@@ -5,16 +5,23 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
+import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
+import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.acusportrtg.axismobile.Methods.GetJSONStringWithoutPostData;
 import com.acusportrtg.axismobile.Methods.Inventory_List_Adapter;
 import com.acusportrtg.axismobile.Methods.SharedPrefs;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,13 +42,24 @@ public class Inventory_Task extends AppCompatActivity {
     private ArrayList<SendInventoryGroup> inventoryGroupList = new ArrayList<>();
     private ListView inventoryGroupListView;
     private Inventory_List_Adapter invAdapter;
+    private Drawer result = null;
+    private GetEmployees emp;
+    private EmployeeRoles empRoles = new EmployeeRoles();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_products_groups);
+        Globals glob = ((Globals)getApplicationContext());
+        emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Product Inventory");
+
+
+        CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
+        customDrawerBuilder.CustomDrawer(Inventory_Task.this,Inventory_Task.this,toolbar,result,savedInstanceState,emp, empRoles);
 
         try {
             URL url = new URL("http://" + SharedPrefs.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveInventoryGroups");
