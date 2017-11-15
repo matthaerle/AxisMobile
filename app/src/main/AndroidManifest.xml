@@ -20,13 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:windowSoftInputMode="adjustNothing">
-        <uses-library android:name="com.symbol.emdk" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
             android:label="Axis Mobile">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
