@@ -5,7 +5,16 @@ package com.acusportrtg.axismobile.JSON_Classes;
  */
 
 public class EmployeeRoles {
-    private Boolean Firearms, FirearmBoundBook, FirearmPhysicalInventory, FirearmViewCost, Pricing, ProductCost, IMProdMaintAdjQoH, IMUpdate, InventoryManagement;
+    private Boolean Firearms;
+    private Boolean FirearmBoundBook;
+    private Boolean FirearmPhysicalInventory;
+    private Boolean FirearmViewCost;
+    private Boolean Pricing;
+    private Boolean ProductCost;
+    private Boolean IMProdMaintAdjQoH;
+    private Boolean InventoryManagement;
+    private Boolean IMUpdate;
+    private Boolean IMInvStockTaking;
 
     public EmployeeRoles() {
         Firearms = false;
@@ -17,6 +26,7 @@ public class EmployeeRoles {
         IMProdMaintAdjQoH = false;
         IMUpdate = false;
         InventoryManagement = false;
+        IMInvStockTaking = false;
     }
 
     public Boolean getFirearmsPermission() {
@@ -77,6 +87,9 @@ public class EmployeeRoles {
         return InventoryManagement;
     }
     public void setInventoryManagementPermission(Boolean permission) { InventoryManagement = permission; }
+
+    public Boolean getIMInvStockTaking() {return IMInvStockTaking;}
+    public void setIMInvStockTaking(Boolean IMInvStockTaking) {this.IMInvStockTaking = IMInvStockTaking;}
 
 
 

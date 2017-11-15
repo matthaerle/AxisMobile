@@ -24,6 +24,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
@@ -60,6 +61,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
 
     private Drawer result = null;
     private GetEmployees emp;
+    private EmployeeRoles empRoles = new EmployeeRoles();
     private BarcodeReader barcodeReader;
 
     @Override
@@ -71,6 +73,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
 
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
 
         if (currentFirearmType == null) {
             showDialog();
@@ -86,7 +89,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(SearchFirearmsActivity.this,SearchFirearmsActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(SearchFirearmsActivity.this,SearchFirearmsActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
 
 
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
@@ -169,6 +172,16 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
         };
         radio_serial.setOnClickListener(radio_serial_listener);
         radio_log.setOnClickListener(radio_log_listener);
+
+        edt_input_scanned.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!edt_input_scanned.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
 
 
     }

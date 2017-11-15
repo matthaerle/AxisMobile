@@ -501,6 +501,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(permission.equalsIgnoreCase("IMProdMaintAdjQoH")){employeeRoles.setIMProdMaintAdjQoHPermission(true);}
                     if(permission.equalsIgnoreCase("IMUpdate")){employeeRoles.setIMUpdatePermission(true);}
                     if(permission.equalsIgnoreCase("InventoryManagement")){employeeRoles.setInventoryManagementPermission(true);}
+                    if(permission.equalsIgnoreCase("IMInvStockTaking")){employeeRoles.setIMInvStockTaking(true);}
                 }
             }
 

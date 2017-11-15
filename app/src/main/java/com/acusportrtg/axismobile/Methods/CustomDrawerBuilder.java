@@ -56,13 +56,10 @@ public class CustomDrawerBuilder {
     private AccountHeader headerResult = null;
     private String JSONReturnData = "";
     private EmployeeRoles empRoles = new EmployeeRoles();
-    public Drawer CustomDrawer(Context context, Activity activity, Toolbar toolbar, Drawer result, Bundle savedInstanceState, GetEmployees employee) {
+    public Drawer CustomDrawer(Context context, Activity activity, Toolbar toolbar, Drawer result, Bundle savedInstanceState, GetEmployees employee, EmployeeRoles empRoles) {
         final Context context1 = context;
         final Globals globals = new Globals();
 
-
-
-        Log.e(TAG, "EMPLOYEE ROLE CHECK 3:"+empRoles.getFirearmsPermission().toString());
 
         profile = new ProfileDrawerItem().withName(employee.getFirstName() + ' ' + employee.getLastName());
         buildHeader(false, savedInstanceState, activity);
@@ -72,14 +69,14 @@ public class CustomDrawerBuilder {
                 .withAccountHeader(headerResult)
                 .withTranslucentStatusBar(true)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.btn_product_search).withIdentifier(1).withSelectable(false),
-                        new PrimaryDrawerItem().withName(R.string.btn_firearm_search).withIdentifier(2).withSelectable(false),
+                        new PrimaryDrawerItem().withName(R.string.btn_product_search).withIdentifier(1).withSelectable(false).withIcon(R.drawable.img_inventory_icon),
+                        new PrimaryDrawerItem().withName(R.string.btn_firearm_search).withIdentifier(2).withSelectable(false).withIcon(R.drawable.img_firearm_icon),
                         new ExpandableDrawerItem().withName(R.string.btn_Inventory).withIdentifier(3).withSelectable(false).withSubItems(
-                                new SecondaryDrawerItem().withName(R.string.inv_stocktaking).withLevel(2).withIdentifier(2001),
-                                new SecondaryDrawerItem().withName(R.string.firearm_inventory_title).withLevel(2).withIdentifier(2000)
+                                new SecondaryDrawerItem().withName(R.string.inv_stocktaking).withLevel(2).withIdentifier(2001).withIcon(R.drawable.img_inventoryproduct_icon),
+                                new SecondaryDrawerItem().withName(R.string.firearm_inventory_title).withLevel(2).withIdentifier(2000).withIcon(R.drawable.img_pistol_icon)
 
-                        ),
-                        new PrimaryDrawerItem().withName(R.string.btn_Update_MinMax).withIdentifier(4).withSelectable(false)
+                        ).withIcon(R.drawable.img_inventory_icon),
+                        new PrimaryDrawerItem().withName(R.string.btn_Update_MinMax).withIdentifier(4).withSelectable(false).withIcon(R.drawable.img_minmax_icon)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -112,20 +109,27 @@ public class CustomDrawerBuilder {
                 .withSavedInstance(savedInstanceState)
                 .build();
         if (empRoles != null) {
-            if(!empRoles.getFirearmsPermission()){
-                Log.v(TAG,"REMOVING FIREARM SEARCH OPTION");
-                result.removeItem(2);
-            }
-            if(!empRoles.getFirearmPhysicalInventory()){
-                Log.v(TAG,"REMOVING FIREARM INVENTORY OPTION");
-                result.removeItem(2001);
-            }
             if(!empRoles.getInventoryManagementPermission()){
                 Log.v(TAG,"REMOVING PRODUCT SEARCH OPTION");
                 result.removeItem(1);
             }
-            if(!empRoles.getFirearmPhysicalInventory() && !empRoles.getIMProdMaintAdjQoHPermission()){
+            if(!empRoles.getFirearmsPermission()){
+                Log.v(TAG,"REMOVING FIREARM SEARCH OPTION");
+                result.removeItem(2);
+            }
+            if(!empRoles.getIMInvStockTaking()){
+                Log.v(TAG,"REMOVING INVENTORY StockTaking OPTION");
+                result.removeItem((long)2001);
+            }
+            if(!empRoles.getFirearmPhysicalInventory()){
+                Log.v(TAG,"REMOVING FIREARM INVENTORY OPTION");
+                result.removeItem(2000);
+            }
+            if(!empRoles.getFirearmPhysicalInventory() && !empRoles.getIMInvStockTaking()){
                 result.removeItem(3);
+            }
+            if(!empRoles.getIMUpdatePermission()){
+                result.removeItem(4);
             }
         }
 
@@ -137,6 +141,7 @@ public class CustomDrawerBuilder {
         headerResult = new AccountHeaderBuilder()
                 .withActivity(activity)
                 .withTranslucentStatusBar(false)
+                .withSelectionListEnabledForSingleProfile(false)
                 .withHeaderBackground(R.drawable.header)
                 .withSavedInstance(savedInstanceState)
                 .addProfiles(profile)

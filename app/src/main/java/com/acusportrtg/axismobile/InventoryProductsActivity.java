@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -58,6 +59,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
     private TextView txt_qoh_data,txt_upc_data,txt_price_data,txt_desc_data;
     private BarcodeReader barcodeReader;
     private Drawer result = null;
+    private EmployeeRoles empRoles = new EmployeeRoles();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
         Globals glob = ((Globals)getApplicationContext());
         invGroupID = glob.getInvGroup().getInventoryGroupID();
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +78,7 @@ public class InventoryProductsActivity extends AppCompatActivity {
             barcodeReader = new BarcodeReader(this);
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,toolbar,result,savedInstanceState, emp);
+        customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,toolbar,result,savedInstanceState, emp, empRoles);
 
 
 

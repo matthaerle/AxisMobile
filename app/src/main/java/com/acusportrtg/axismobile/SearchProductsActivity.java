@@ -34,6 +34,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.alien.barcode.BarcodeCallback;
@@ -94,6 +95,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
     private Drawer result = null;
     private GetEmployees emp;
+    private EmployeeRoles empRoles = new EmployeeRoles();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +103,14 @@ public class SearchProductsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_products);
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(SearchProductsActivity.this,SearchProductsActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(SearchProductsActivity.this,SearchProductsActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
         constraintLayout = (ConstraintLayout) findViewById(R.id.SearchProductLayout);
         btn_search_UPC = (Button)findViewById(R.id.btn_search);
         upc_Field = (EditText)findViewById(R.id.edt_upc_field);

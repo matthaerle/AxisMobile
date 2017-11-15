@@ -25,7 +25,7 @@
         android:layout_height="0dp"
         android:text="@string/btn_non_firearm_inventory"
         android:textColor="@drawable/txt_border_button"
-        android:drawableStart="@drawable/selector_inventory_icon"
+        android:drawableStart="@drawable/selector_inventoryproduct_icon"
         android:layout_gravity="start"
         android:drawablePadding="2dip"
         android:paddingStart="30dip"

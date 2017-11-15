@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -61,6 +62,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
     private Drawer result = null;
     private BarcodeReader barcodeReader;
     private EditText edt_upc_field;
+    private EmployeeRoles empRoles = new EmployeeRoles();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_minmax);
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -76,7 +79,7 @@ public class UpdateMinMaxActivity extends AppCompatActivity {
             barcodeReader = new BarcodeReader(this);
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
 
         
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
