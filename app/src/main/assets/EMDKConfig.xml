@@ -3,25 +3,29 @@
     <parm name="created_wizard_version" value="6.6.0"/>
   </characteristic>
   <characteristic type="Profile">
-    <parm name="ProfileName" value="Barcode_Symbol"/>
-    <parm name="ModifiedDate" value="2017-11-13 13:15:42"/>
-    <parm name="TargetSystemVersion" value="6.3"/>
+    <parm name="ProfileName" value="Barcode_Read"/>
+    <parm name="ModifiedDate" value="2017-11-14 18:22:18"/>
+    <parm name="TargetSystemVersion" value="6.1"/>
     
     
   <characteristic type="ActivitySelection" version="0.1">
-      <parm name="emdk_name" value="Symbol"/>
+      <parm name="emdk_name" value="FirearmSearch"/>
       <characteristic type="Application">
         <parm name="PrefixAppName" value="true"/>
         <parm name="package" value="com.acusportrtg.axismobile"/>
         <characteristic type="Activities">
           <parm name="activity" value="SearchFirearmsActivity"/>
+          <parm name="activity" value="SearchProductsActivity"/>
+          <parm name="activity" value="InventoryProductsActivity"/>
+          <parm name="activity" value="InventoryFirearmsActivity"/>
+          <parm name="activity" value="UpdateMinMaxActivity"/>
         </characteristic>
       </characteristic>
     </characteristic>
     <characteristic type="Barcode" version="6.6">
       <parm name="emdk_name" value=""/>
       <parm name="scanner_input_enabled" value="true"/>
-      <parm name="ScannerSelection" value="INTERNAL_CAMERA1"/>
+      <parm name="ScannerSelection" value="INTERNAL_IMAGER1"/>
       <parm name="use_auto" value="Default"/>
       <parm name="trigger-wakeup" value="Default"/>
       <characteristic type="Decoders">
@@ -252,7 +256,7 @@
     <characteristic type="Keystroke" version="6.3">
       <parm name="emdk_name" value=""/>
       <parm name="ime_output_enabled" value="true"/>
-      <parm name="keystroke_action_char" value="Default"/>
+      <parm name="keystroke_action_char" value="13"/>
       <parm name="keystroke_delay_extended_ascii" value="0"/>
       <parm name="keystroke_delay_control_chars" value="0"/>
       <characteristic type="BasicDataFormatting">

@@ -50,7 +50,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:text="TextView"
             android:textSize="18sp"
             app:layout_constraintLeft_toRightOf="@+id/txt_product_upc_header"
@@ -259,7 +258,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:text="@string/upc_title"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -379,42 +377,37 @@
 
 
     <android.support.constraint.Guideline
-            android:id="@+id/guideline37"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.33" />
+        android:id="@+id/guideline37"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.329806" />
 
-        <ImageView
-            android:id="@+id/horizontal_rule"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/colorCloudGrey"
-            app:layout_constraintBottom_toTopOf="@+id/guideline37"
-            app:layout_constraintLeft_toLeftOf="@+id/guideline46"
-            app:layout_constraintRight_toLeftOf="@+id/guideline49"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+    <ImageView
+        android:id="@+id/horizontal_rule"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/colorCloudGrey"
+        app:layout_constraintBottom_toTopOf="@+id/guideline37"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline46"
+        app:layout_constraintRight_toLeftOf="@+id/guideline49"
+        app:layout_constraintTop_toTopOf="@+id/guideline34" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline46"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="41dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline46"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline49"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9"
-            tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="370dp" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline49"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98" />
 
 
 </android.support.constraint.ConstraintLayout>

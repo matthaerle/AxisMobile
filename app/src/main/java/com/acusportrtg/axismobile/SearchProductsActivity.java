@@ -34,6 +34,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.symbol.emdk.*;
+import com.symbol.emdk.EMDKManager.EMDKListener;
+
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 
@@ -73,7 +76,7 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 4/14/2017.
  */
 
-public class SearchProductsActivity extends AppCompatActivity {
+public class SearchProductsActivity extends AppCompatActivity implements EMDKListener{
 
     private EditText upc_Field;
     private TextView txt_sum_value, txt_total_header;
@@ -92,6 +95,15 @@ public class SearchProductsActivity extends AppCompatActivity {
     private Drawer result = null;
     private GetEmployees emp;
 
+    //Assign the profile name used in EMDKConfig.xml
+    private String profileName = "Barcode_Read";
+
+    //Declare a variable to store ProfileManager object
+    private ProfileManager mProfileManager = null;
+
+    //Declare a variable to store EMDKManager object
+    private EMDKManager emdkManager = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +113,16 @@ public class SearchProductsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //The EMDKManager object will be created and returned in the callback.
+        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
+
+        //Check the return status of getEMDKManager
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+            //Failed to create EMDKManager object
+
+        }
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
@@ -125,8 +147,18 @@ public class SearchProductsActivity extends AppCompatActivity {
         txt_sum_value.setText("$" + Double.toString(sum_value));
         chk_include_subtotal.setVisibility(View.GONE);
 
+        upc_Field.requestFocus();
 
-
+        upc_Field.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    SearchProduct();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -393,6 +425,8 @@ public class SearchProductsActivity extends AppCompatActivity {
                     public void run() {
                         upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
                         upc_Field.setTextColor(Color.parseColor("#2980b9"));
+                        upc_Field.setText("");
+                        upc_Field.requestFocus();
                     }
                 }, 1000);
             }
@@ -444,6 +478,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                         upc_Field.getBackground().setColorFilter(Color.parseColor("#2980b9"), PorterDuff.Mode.SRC_ATOP);
                         upc_Field.setTextColor(Color.parseColor("#2980b9"));
                         upc_Field.setText("");
+                        upc_Field.requestFocus();
                     }
                 }, 1000);
             }
@@ -474,6 +509,42 @@ public class SearchProductsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onOpened(EMDKManager emdkManager) {
+        this.emdkManager = emdkManager;
+//Get the ProfileManager object to process the profiles
+        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
+        if(mProfileManager != null)
+        {
+            try{
 
+                String[] modifyData = new String[1];
+                //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
+
+                EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
+                if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+                {
+                    //Failed to set profile
+                }
+            }catch (Exception ex){
+                // Handle any exception
+            }
+
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        //Clean up the objects created by EMDK manager
+        emdkManager.release();
+    }
+
+    @Override
+    public void onClosed() {
+
+    }
 
 }

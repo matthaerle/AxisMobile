@@ -58,7 +58,7 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
     private Drawer result = null;
     private EditText edt_upc_field;
     //Assign the profile name used in EMDKConfig.xml
-    private String profileName = "DataCaptureProfile";
+    private String profileName = "Barcode_Read";
 
     //Declare a variable to store ProfileManager object
     private ProfileManager mProfileManager = null;
@@ -96,6 +96,7 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
         final Button btn_update = (Button) findViewById(R.id.btn_submit_change);
         edt_min_value = (EditText) findViewById(R.id.edt_min_value);
         edt_max_value = (EditText) findViewById(R.id.edt_max_value);
+        edt_upc_field.requestFocus();
         
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,39 +121,15 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
 
 
 
-        edt_upc_field.setOnKeyListener(new View.OnKeyListener()
-        {
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if (keyCode ==  KeyEvent.KEYCODE_DPAD_CENTER
-                        || keyCode ==  KeyEvent.KEYCODE_ENTER) {
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    } else if (event.getAction() == KeyEvent.ACTION_UP) {
-                        if(btn_search.getText().toString().trim().length() == 0){
-                            Toast.makeText(UpdateMinMaxActivity.this, "UPC field cannot be blank", Toast.LENGTH_LONG).show();
-                            btn_search.requestFocus();
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.showSoftInput(getCurrentFocus(), InputMethodManager.SHOW_IMPLICIT);
-                        }
-                        else{
-                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-                            upc = new SearchByUPC();
-                            String upc_scanned = edt_upc_field.getText().toString().trim();
-                            edt_upc_field.setText("");
-                            if (!upc_scanned.equals("")) {
-                                upc.setProductUPC(upc_scanned);
-                                GetProductInfo(upc,UpdateMinMaxActivity.this);
-                            } else
-                                Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        edt_upc_field.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    Search();
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
-
         });
 
         edt_upc_field.addTextChangedListener(new TextWatcher()
@@ -241,12 +218,16 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
         upc = new SearchByUPC();
         String upc_scanned = edt_upc_field.getText().toString().trim();
         edt_upc_field.setText("");
+        edt_upc_field.requestFocus();
         if (!upc_scanned.equals("")) {
             upc.setProductUPC(upc_scanned);
             GetProductInfo(upc,UpdateMinMaxActivity.this);
-        } else
-            Toast.makeText(UpdateMinMaxActivity.this,"Invalid Item Scanned", Toast.LENGTH_SHORT).show();
-    }
+        } else {
+            //Toast.makeText(UpdateMinMaxActivity.this, "Invalid Item Scanned", Toast.LENGTH_SHORT).show();
+            edt_upc_field.requestFocus();
+        }
+        }
+
     private void Update_Product_Min_Max(UpdateMinMax upd, Context context) {
         JSONObject postData = new JSONObject();
         try {
@@ -305,8 +286,12 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
 
                 upd_status.setSuccesfull(updateJson.getBoolean("IsSuccesfull"));
             }
-            if (upd_status.isSuccesfull())
-                Toast.makeText(UpdateMinMaxActivity.this,"Update Complete", Toast.LENGTH_SHORT).show();
+            if (upd_status.isSuccesfull()) {
+                Toast.makeText(UpdateMinMaxActivity.this, "Update Complete", Toast.LENGTH_SHORT).show();
+
+            edt_upc_field.requestFocus();
+            }
+
             else
                 Toast.makeText(UpdateMinMaxActivity.this,"Update Failed", Toast.LENGTH_SHORT).show();
 

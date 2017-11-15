@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.0'
     defaultConfig {
         applicationId "com.acusportrtg.axismobile"
         minSdkVersion 19
-        targetSdkVersion 23
+        targetSdkVersion 27
         versionCode 2
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -26,14 +26,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:27.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:design:27.0.1'
     testCompile 'junit:junit:4.12'
-    implementation("com.mikepenz:materialdrawer:6.0.0@aar") {
+    implementation('com.mikepenz:materialdrawer:6.0.0@aar') {
         transitive = true
     }
-//used to provide different itemAnimators for the RecyclerView
+    //used to provide different itemAnimators for the RecyclerView
     //https://github.com/mikepenz/ItemAnimators
     implementation 'com.mikepenz:itemanimators:1.0.1@aar'
     // used to provide the MiniDrawer to normal Drawer crossfade effect via a SlidingPane layout
@@ -43,15 +43,12 @@ dependencies {
     // used to provide the two step crossfade DrawerLayout. Which allows to have a mini layout which transforms to a normal layout within the drawer
     // --> https://github.com/mikepenz/MaterialDrawer/blob/develop/app/src/main/java/com/mikepenz/materialdrawer/app/CrossfadeDrawerLayoutActvitiy.java
     // https://github.com/mikepenz/CrossfadeDrawerLayout
-    implementation('com.mikepenz:crossfadedrawerlayout:1.0.1@aar')
-
+    implementation 'com.mikepenz:crossfadedrawerlayout:1.0.1@aar'
     // icon fonts used inside the sample
     // https://github.com/mikepenz/Android-Iconics
     implementation 'com.mikepenz:google-material-typeface:3.0.1.1.original@aar'
     implementation 'com.mikepenz:fontawesome-typeface:4.7.0.1@aar'
     implementation 'com.mikepenz:octicons-typeface:3.0.0.1@aar'
-
-
-        provided fileTree(include: ['com.symbol.emdk.jar'], dir: 'C:\\Program Files (x86)\\Symbol EMDK for Android\\v6.6\\Integrator\\add-ons\\addon-symbol_emdk-symbol-23\\libs')
-        compile fileTree(exclude: ['com.symbol.emdk.jar'], dir: 'libs')
+    provided fileTree(include: ['com.symbol.emdk.jar'], dir: 'C:\\Program Files (x86)\\Symbol EMDK for Android\\v6.6\\Integrator\\add-ons\\addon-symbol_emdk-symbol-23\\libs')
+    compile fileTree(exclude: ['com.symbol.emdk.jar'], dir: 'libs')
 }

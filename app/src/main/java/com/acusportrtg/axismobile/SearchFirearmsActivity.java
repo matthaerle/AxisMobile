@@ -24,6 +24,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.symbol.emdk.*;
+import com.symbol.emdk.EMDKManager.EMDKListener;
+
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
@@ -46,7 +49,7 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 5/2/2017.
  */
 
-public class SearchFirearmsActivity extends AppCompatActivity implements Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
+public class SearchFirearmsActivity extends AppCompatActivity implements EMDKListener, Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
 
 
     private String JSONReturnData = "";
@@ -58,6 +61,14 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
 
     private Drawer result = null;
     private GetEmployees emp;
+    //Assign the profile name used in EMDKConfig.xml
+    private String profileName = "Barcode_Read";
+
+    //Declare a variable to store ProfileManager object
+    private ProfileManager mProfileManager = null;
+
+    //Declare a variable to store EMDKManager object
+    private EMDKManager emdkManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +79,16 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
 
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        //The EMDKManager object will be created and returned in the callback.
+        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
+
+//Check the return status of getEMDKManager
+        if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+        {
+            //Failed to create EMDKManager object
+
+        }
+
 
         if (currentFirearmType == null) {
             showDialog();
@@ -93,6 +114,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
         radio_log.setChecked(true);
         edt_input_scanned.setHint("Log Number");
         edt_input_scanned.setInputType(InputType.TYPE_CLASS_NUMBER);
+        edt_input_scanned.requestFocus();
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +128,17 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
             @Override
             public void onClick(View v) {
             SearchFirearm();
+            }
+        });
+
+        edt_input_scanned.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == keyEvent.KEYCODE_ENTER) {
+                    SearchFirearm();
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -359,6 +392,41 @@ public class SearchFirearmsActivity extends AppCompatActivity implements Firearm
     }
 
 
+    @Override
+    public void onOpened(EMDKManager emdkManager) {
+        this.emdkManager = emdkManager;
+        //Get the ProfileManager object to process the profiles
+        mProfileManager = (ProfileManager) emdkManager.getInstance(EMDKManager.FEATURE_TYPE.PROFILE);
+        if(mProfileManager != null)
+        {
+            try{
+
+                String[] modifyData = new String[1];
+                //Call processPrfoile with profile name and SET flag to create the profile. The modifyData can be null.
+
+                EMDKResults results = mProfileManager.processProfile(profileName, ProfileManager.PROFILE_FLAG.SET, modifyData);
+                if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
+                {
+                    //Failed to set profile
+                }
+            }catch (Exception ex){
+                // Handle any exception
+            }
 
 
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        //Clean up the objects created by EMDK manager
+        emdkManager.release();
+    }
+
+    @Override
+    public void onClosed() {
+
+    }
 }
