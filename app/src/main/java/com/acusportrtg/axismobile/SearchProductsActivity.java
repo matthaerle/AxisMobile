@@ -36,9 +36,7 @@ import android.widget.Toast;
 
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
-import com.alien.barcode.BarcodeCallback;
-import com.alien.barcode.BarcodeReader;
-import com.alien.common.KeyCode;
+
 
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -90,7 +88,6 @@ public class SearchProductsActivity extends AppCompatActivity {
     private CheckBox chk_include_subtotal;
     private double sum_value = 0.00;
     private ConstraintLayout constraintLayout;
-    private BarcodeReader barcodeReader;
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
     private Drawer result = null;
     private GetEmployees emp;
@@ -129,9 +126,6 @@ public class SearchProductsActivity extends AppCompatActivity {
         chk_include_subtotal.setVisibility(View.GONE);
 
 
-        Log.d("Device", Build.MODEL);
-        if ( Build.MODEL.equals("ALR-H450"))
-            barcodeReader = new BarcodeReader(this);
 
 
         btn_clear_results_list.setOnClickListener(new View.OnClickListener() {
@@ -258,41 +252,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     }
 
 
-    private void startScan() {
-        if (!this.barcodeReader.isRunning()) {
-            this.barcodeReader.start(new BarcodeCallback() {
-                @Override
-                public void onBarcodeRead(String s) {
-                    playSuccess();
-                    Log.v("Scanned", s);
-                    upc_Field.setText(s);
-                    SearchProduct();
-                }
-            });
-        }
-    }
 
-    public synchronized void stopScan() {
-        if (this.barcodeReader.isRunning()) {
-            this.barcodeReader.stop();
-        }
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode != KeyCode.ALR_H450.SCAN || event.getRepeatCount() != 0) {
-            return super.onKeyDown(keyCode, event);
-        }
-        startScan();
-        return true;
-    }
-
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode != KeyCode.ALR_H450.SCAN) {
-            return super.onKeyUp(keyCode, event);
-        }
-        stopScan();
-        return true;
-    }
 
     public void playSuccess() {
         try {
