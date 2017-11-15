@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -34,6 +36,7 @@ public class InventoryTasksActivity extends AppCompatActivity {
     private Drawer result = null;
     private AccountHeader headerResult = null;
     private GetEmployees emp;
+    private EmployeeRoles empRoles = new EmployeeRoles();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,37 +46,59 @@ public class InventoryTasksActivity extends AppCompatActivity {
         //getSupportActionBar().setHomeButtonEnabled(true);
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(InventoryTasksActivity.this,InventoryTasksActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(InventoryTasksActivity.this,InventoryTasksActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
         //getSupportActionBar().setTitle("Inventory Type");
 
         myActivityTitle = getSupportActionBar().getTitle().toString();
-
-
 
         TextView txt_Emp = (TextView)findViewById(R.id.txtEmpId);
         txt_Emp.setText(String.valueOf(glob.getEmployee().getEmployeeNumber()));
         btn_Non_Firearm_Inventory = (Button)findViewById(R.id.btn_non_firearm_inventory);
         btn_Firearm_Inventory = (Button)findViewById(R.id.btn_firearm_inventory);
 
+
+        if(empRoles != null){
+            if(!empRoles.getIMInvStockTaking()){
+                btn_Non_Firearm_Inventory.setAlpha(.3f);
+                //btn_Product_Search.setEnabled(false);
+            }
+            if(!empRoles.getFirearmPhysicalInventory()){
+                btn_Firearm_Inventory.setAlpha(.3f);
+            }
+        }
+
         btn_Non_Firearm_Inventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent non_firearm_activity = new Intent(InventoryTasksActivity.this,Inventory_Task.class);
-                startActivity(non_firearm_activity);
+                if(!empRoles.getIMInvStockTaking()){
+                    Toast.makeText(InventoryTasksActivity.this, "IMInvStockTaking\nPermission Required", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent non_firearm_activity = new Intent(InventoryTasksActivity.this,Inventory_Task.class);
+                    startActivity(non_firearm_activity);
+                }
+
             }
         });
 
         btn_Firearm_Inventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent firearm_inventory_activity = new Intent(InventoryTasksActivity.this,InventoryFirearmsActivity.class);
-                startActivity(firearm_inventory_activity);
+                if(!empRoles.getFirearmPhysicalInventory()){
+                    Toast.makeText(InventoryTasksActivity.this, "FirearmPhysicalInventory\nPermission Required", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent firearm_inventory_activity = new Intent(InventoryTasksActivity.this,InventoryFirearmsActivity.class);
+                    startActivity(firearm_inventory_activity);
+                }
+
             }
         });
 

@@ -24,8 +24,12 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.symbol.emdk.*;
 import com.symbol.emdk.EMDKManager.EMDKListener;
+
+
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
@@ -61,6 +65,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
 
     private Drawer result = null;
     private GetEmployees emp;
+
     //Assign the profile name used in EMDKConfig.xml
     private String profileName = "Barcode_Read";
 
@@ -69,6 +74,10 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
 
     //Declare a variable to store EMDKManager object
     private EMDKManager emdkManager = null;
+
+    private EmployeeRoles empRoles = new EmployeeRoles();
+    private BarcodeReader barcodeReader;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +88,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
 
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+
         //The EMDKManager object will be created and returned in the callback.
         EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
 
@@ -88,6 +98,9 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
             //Failed to create EMDKManager object
 
         }
+
+
+        empRoles = glob.getEmpRoles();
 
 
         if (currentFirearmType == null) {
@@ -101,7 +114,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(SearchFirearmsActivity.this,SearchFirearmsActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(SearchFirearmsActivity.this,SearchFirearmsActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
 
 
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
@@ -196,6 +209,16 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
         };
         radio_serial.setOnClickListener(radio_serial_listener);
         radio_log.setOnClickListener(radio_log_listener);
+
+        edt_input_scanned.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!edt_input_scanned.hasFocus()) {
+                    InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
 
 
     }

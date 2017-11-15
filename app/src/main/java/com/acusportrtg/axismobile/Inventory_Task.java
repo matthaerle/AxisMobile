@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SendInventoryGroup;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
@@ -43,6 +44,7 @@ public class Inventory_Task extends AppCompatActivity {
     private Inventory_List_Adapter invAdapter;
     private Drawer result = null;
     private GetEmployees emp;
+    private EmployeeRoles empRoles = new EmployeeRoles();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +52,14 @@ public class Inventory_Task extends AppCompatActivity {
         setContentView(R.layout.activity_inventory_products_groups);
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(Inventory_Task.this,Inventory_Task.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(Inventory_Task.this,Inventory_Task.this,toolbar,result,savedInstanceState,emp, empRoles);
 
         try {
             URL url = new URL("http://" + SharedPrefs.GetSavedServerAddress(this) + ":8899/RestWCFServiceLibrary/GetActiveInventoryGroups");

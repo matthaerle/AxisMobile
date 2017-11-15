@@ -19,8 +19,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.symbol.emdk.*;
 import com.symbol.emdk.EMDKManager.EMDKListener;
+
+
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.GetInventoryGroupProductID;
@@ -55,6 +59,7 @@ public class InventoryProductsActivity extends AppCompatActivity implements EMDK
     private GetEmployees emp;
     private TextView txt_qoh_data,txt_upc_data,txt_price_data,txt_desc_data;
     private Drawer result = null;
+
     //Assign the profile name used in EMDKConfig.xml
     private String profileName = "Barcode_Read";
 
@@ -64,6 +69,9 @@ public class InventoryProductsActivity extends AppCompatActivity implements EMDK
     //Declare a variable to store EMDKManager object
     private EMDKManager emdkManager = null;
 
+    private EmployeeRoles empRoles = new EmployeeRoles();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +79,7 @@ public class InventoryProductsActivity extends AppCompatActivity implements EMDK
         Globals glob = ((Globals)getApplicationContext());
         invGroupID = glob.getInvGroup().getInventoryGroupID();
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,7 +96,7 @@ public class InventoryProductsActivity extends AppCompatActivity implements EMDK
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,toolbar,result,savedInstanceState, emp);
+        customDrawerBuilder.CustomDrawer(InventoryProductsActivity.this,InventoryProductsActivity.this,toolbar,result,savedInstanceState, emp, empRoles);
 
 
 

@@ -36,6 +36,8 @@ import android.widget.Toast;
 import static android.content.ContentValues.TAG;
 import android.widget.CompoundButton;
 import android.app.AlertDialog;
+
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmInfo;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockScan;
 import com.acusportrtg.axismobile.JSON_Classes.FirearmStockUpdate;
@@ -88,6 +90,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements EMD
     private Drawer result = null;
     private Toolbar toolbar;
 
+
     //Assign the profile name used in EMDKConfig.xml
     private String profileName = "Barcode_Read";
 
@@ -97,11 +100,15 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements EMD
     //Declare a variable to store EMDKManager object
     private EMDKManager emdkManager = null;
 
+    private EmployeeRoles empRoles = new EmployeeRoles();
+
+
     private String JSONReturnData = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
         showDialog();
 
 
@@ -124,7 +131,7 @@ public class InventoryFirearmsActivity extends AppCompatActivity  implements EMD
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(InventoryFirearmsActivity.this,InventoryFirearmsActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(InventoryFirearmsActivity.this,InventoryFirearmsActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
         radio_serial = (RadioButton) findViewById(R.id.rdl_serial_number);
         radio_log = (RadioButton) findViewById(R.id.rdl_log_number);
         final Button btn_search = (Button) findViewById(R.id.btn_search);

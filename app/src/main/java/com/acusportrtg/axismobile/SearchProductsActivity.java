@@ -34,8 +34,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.symbol.emdk.*;
 import com.symbol.emdk.EMDKManager.EMDKListener;
+
+
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.Methods.CustomDrawerBuilder;
@@ -94,6 +98,7 @@ public class SearchProductsActivity extends AppCompatActivity implements EMDKLis
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
     private Drawer result = null;
     private GetEmployees emp;
+    private EmployeeRoles empRoles = new EmployeeRoles();
 
     //Assign the profile name used in EMDKConfig.xml
     private String profileName = "Barcode_Read";
@@ -110,6 +115,7 @@ public class SearchProductsActivity extends AppCompatActivity implements EMDKLis
         setContentView(R.layout.activity_search_products);
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -126,7 +132,7 @@ public class SearchProductsActivity extends AppCompatActivity implements EMDKLis
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(SearchProductsActivity.this,SearchProductsActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(SearchProductsActivity.this,SearchProductsActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
         constraintLayout = (ConstraintLayout) findViewById(R.id.SearchProductLayout);
         btn_search_UPC = (Button)findViewById(R.id.btn_search);
         upc_Field = (EditText)findViewById(R.id.edt_upc_field);

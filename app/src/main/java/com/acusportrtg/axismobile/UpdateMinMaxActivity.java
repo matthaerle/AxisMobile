@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acusportrtg.axismobile.JSON_Classes.EmployeeRoles;
 import com.acusportrtg.axismobile.JSON_Classes.GetEmployees;
 import com.acusportrtg.axismobile.JSON_Classes.SearchByUPC;
 import com.acusportrtg.axismobile.JSON_Classes.SendProductView;
@@ -57,6 +58,7 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
     private EditText edt_min_value, edt_max_value;
     private Drawer result = null;
     private EditText edt_upc_field;
+
     //Assign the profile name used in EMDKConfig.xml
     private String profileName = "Barcode_Read";
 
@@ -66,12 +68,17 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
     //Declare a variable to store EMDKManager object
     private EMDKManager emdkManager = null;
 
+
+    private EmployeeRoles empRoles = new EmployeeRoles();
+    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_minmax);
         Globals glob = ((Globals)getApplicationContext());
         emp = glob.getEmployee();
+        empRoles = glob.getEmpRoles();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //The EMDKManager object will be created and returned in the callback.
@@ -87,7 +94,7 @@ public class UpdateMinMaxActivity extends  AppCompatActivity implements EMDKList
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
-        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp);
+        customDrawerBuilder.CustomDrawer(UpdateMinMaxActivity.this,UpdateMinMaxActivity.this,toolbar,result,savedInstanceState,emp, empRoles);
 
         
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
