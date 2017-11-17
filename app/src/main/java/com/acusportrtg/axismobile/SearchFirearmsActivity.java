@@ -53,7 +53,7 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 5/2/2017.
  */
 
-public class SearchFirearmsActivity extends AppCompatActivity implements EMDKListener, Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
+public class SearchFirearmsActivity extends AppCompatActivity implements /*EMDKListener,*/ Firearm_Inv_Type_Dialog.OnFragmentInteractionListener{
 
 
     private String JSONReturnData = "";
@@ -67,16 +67,16 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
     private GetEmployees emp;
 
     //Assign the profile name used in EMDKConfig.xml
-    private String profileName = "Barcode_Read";
+    //private String profileName = "Barcode_Read";
 
     //Declare a variable to store ProfileManager object
-    private ProfileManager mProfileManager = null;
+    //private ProfileManager mProfileManager = null;
 
     //Declare a variable to store EMDKManager object
-    private EMDKManager emdkManager = null;
+    //private EMDKManager emdkManager = null;
 
     private EmployeeRoles empRoles = new EmployeeRoles();
-    private BarcodeReader barcodeReader;
+    //private BarcodeReader barcodeReader;
 
 
     @Override
@@ -90,15 +90,15 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
         emp = glob.getEmployee();
 
         //The EMDKManager object will be created and returned in the callback.
-        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
+        /*EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
 
-//Check the return status of getEMDKManager
+        //Check the return status of getEMDKManager
         if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
         {
             //Failed to create EMDKManager object
 
         }
-
+        */
 
         empRoles = glob.getEmpRoles();
 
@@ -108,9 +108,6 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
@@ -415,6 +412,7 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
     }
 
 
+    /*
     @Override
     public void onOpened(EMDKManager emdkManager) {
         this.emdkManager = emdkManager;
@@ -452,4 +450,5 @@ public class SearchFirearmsActivity extends AppCompatActivity implements EMDKLis
     public void onClosed() {
 
     }
+    */
 }

@@ -80,7 +80,7 @@ import static android.content.ContentValues.TAG;
  * Created by mhaerle on 4/14/2017.
  */
 
-public class SearchProductsActivity extends AppCompatActivity implements EMDKListener{
+public class SearchProductsActivity extends AppCompatActivity /*implements EMDKListener*/{
 
     private EditText upc_Field;
     private TextView txt_sum_value, txt_total_header;
@@ -101,13 +101,13 @@ public class SearchProductsActivity extends AppCompatActivity implements EMDKLis
     private EmployeeRoles empRoles = new EmployeeRoles();
 
     //Assign the profile name used in EMDKConfig.xml
-    private String profileName = "Barcode_Read";
+    //private String profileName = "Barcode_Read";
 
     //Declare a variable to store ProfileManager object
-    private ProfileManager mProfileManager = null;
+    //private ProfileManager mProfileManager = null;
 
     //Declare a variable to store EMDKManager object
-    private EMDKManager emdkManager = null;
+    //private EMDKManager emdkManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,14 +121,16 @@ public class SearchProductsActivity extends AppCompatActivity implements EMDKLis
         setSupportActionBar(toolbar);
 
         //The EMDKManager object will be created and returned in the callback.
-        EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
+        //EMDKResults results = EMDKManager.getEMDKManager(getApplicationContext(), this);
 
         //Check the return status of getEMDKManager
+        /*
         if(results.statusCode == EMDKResults.STATUS_CODE.FAILURE)
         {
             //Failed to create EMDKManager object
 
         }
+        */
 
 
         CustomDrawerBuilder customDrawerBuilder = new CustomDrawerBuilder();
@@ -514,7 +516,7 @@ public class SearchProductsActivity extends AppCompatActivity implements EMDKLis
         sum_value = 0.00;
     }
 
-
+    /*
     @Override
     public void onOpened(EMDKManager emdkManager) {
         this.emdkManager = emdkManager;
@@ -552,5 +554,5 @@ public class SearchProductsActivity extends AppCompatActivity implements EMDKLis
     public void onClosed() {
 
     }
-
+    */
 }
